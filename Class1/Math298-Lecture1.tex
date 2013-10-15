@@ -1,0 +1,333 @@
+\documentclass[mathserif,notes]{beamer}
+\usepackage{mybeamertheme}
+%\usepackage{pdfsync} % works only on TeXShop, comment otherwise
+\usepackage{pgf}
+\usepackage{multimedia} % to embed movies in the PDF file
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{pgfpages}
+
+\mode<presentation>
+{
+  \usetheme{Madrid}   %  \usetheme{Warsaw}
+  % Note: this next command makes nice slides, but Adobe doesn't like it (you get blank pages)
+  %\setbeamertemplate{background canvas}[vertical shading][bottom=white,top=structure.fg!15]
+  \setbeamertemplate{footline}{\pgfuseimage{UCM-logo}}
+
+  %\usecolortheme{seahorse}
+  \usecolortheme{beaver}
+ % \setbeamercovered{transparent}
+}
+%\usepackage[T1]{fontenc}
+% For printing purposes only
+%\pgfpagesuselayout{4 on 1}[letterpaper,border shrink=5mm,landscape]
+
+\usepackage{amssymb,amsmath}
+\hypersetup{%
+ pdftitle={Math298 Lecture1},
+ pdfauthor={Juan Meza(UC Merced)},
+ pdfsubject={},
+ pdfkeywords={}
+ }
+ 
+\title[Math 298]{Math 298 \\
+Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{}
+\author[Juan Meza]{Juan Meza \\ School of Natural Sciences \\ University of California, Merced}
+\date[September 9, 2013]{}
+\institute[UC Merced]
+
+\pgfdeclareimage[height=0.35cm]{UCM-logo}{UCM-logo}
+% \logo{\pgfuseimage{UCM-logo}}
+
+%% figures
+
+\input{latex-defs}
+
+\definecolor{navy}{RGB}{0,0,128}
+\definecolor{forestgreen}{RGB}{34,139,34}
+\definecolor{mylightsteelblue}{RGB}{176,196,222}
+\definecolor{mylightcyan}{RGB}{180,255,255}
+\definecolor{mypaleturquoise}{RGB}{175,238,238}
+\definecolor{mylightgoldenrod}{RGB}{250,250,210}
+\definecolor{mylightyellow}{RGB}{255,255,224}
+\definecolor{mylightsalmon}{RGB}{255,160,122}
+
+\setbeamercolor{blacklightsteelblue}{fg=black,bg=mylightsteelblue}
+\setbeamercolor{blackpaleturquoise}{fg=black,bg=mypaleturquoise}
+\setbeamercolor{blacklightcyan}{fg=black,bg=mylightcyan}
+\setbeamercolor{blacklightgoldenrod}{fg=black,bg=mylightgoldenrod}
+\setbeamercolor{blacklightyellow}{fg=black,bg=mylightyellow}
+\setbeamercolor{blacklightsalmon}{fg=black,bg=mylightsalmon}
+\setbeamercolor{blackcyan}{fg=black,bg=cyan}
+
+
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+
+\titlepage
+
+} % end frame
+
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Course Goals}
+
+\begin{itemize}
+\item Introduce fundamental concepts in computational and applied mathematics.
+\item Highlight some of the classic NA papers and algorithms.
+\item Demonstrate use of these concepts in real world applications.
+\item We will not go into any one area in depth.
+\end{itemize}
+} % end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Learning Outcomes}
+
+\begin{itemize}
+
+\item Be familiar with key mathematical concepts used in developing numerical algorithms.
+\item Understand some of the basic skills and resources necessary to start research in computational and applied mathematics.
+\item Be aware of basic communications skills needed to present mathematics clearly to a
+  broad audience in writing and in speaking.
+\end{itemize}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Ground Rules}
+
+\begin{itemize}
+\item Class participation is critical to getting the most out of this course
+\item Some assigned readings
+\item Presentations at the end of the semester
+\end{itemize}
+
+} % end frame
+
+\section{Preliminaries}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Theory vs. Practice}
+
+\begin{itemize}
+\item In theory there is no difference between theory and practice. \pause
+\item In practice there is.
+
+\end{itemize} 
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Phil Colella's 7 Dwarfes}
+
+\begin{enumerate}
+\item Dense linear algebra
+\item Sparse line algebra
+\item Spectral methods (Fast Fourier transform)
+\item N-body methods (Particle)
+\item Structured grids
+\item Unstructured grids
+\item Monte Carlo
+\end{enumerate} 
+{\bf Defining Software Requirements for Scientific Computing}, P. Colella, DARPA presentation, 2004.
+} % end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{13 Motifs -- Patterson et al.}
+
+\begin{enumerate}
+\item Dense linear algebra
+\item Sparse line algebra
+\item Spectral methods
+\item N-body methods
+\item Structured grids
+\item Unstructured grids
+\item MapReduce
+\item Combinational Logic
+\item Graph Traversal
+\item Dynamic Programming
+\item Backtrack and Branch-and-Bound
+\item Graphical Models
+\item Finite State Machines
+\end{enumerate} 
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Nick Trefethen's 13 Classic Numerical Analysis Papers.}
+
+\begin{enumerate}
+\item Cover some of the most important NA papers in the last 40 years 
+\item Cover most of the areas mentioned above
+\item You should have a passing familiarity with all of them
+\item Note: Copies have all of these have been uploaded into CROPS
+
+\end{enumerate} 
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Top 10 Algorithms of the Century}
+
+\begin{enumerate}
+\item[1946] Monte Carlo
+\item[1947] Simplex method for LP
+\item[1950] Conjugate gradient (Krylov subspace iteration methods)
+\item[1951] Decompositional approach to matrix computations
+\item[1957] Fortran compiler
+\item[1959] QR for computing eigenvalues
+\item[1962] Quicksort
+\item[1965] Fast Fourier transform
+\item[1977] PSLQ (integer relation detection algorithm)
+\item[1987] Fast Multipole
+
+\end{enumerate} 
+} % end frame
+
+
+\section{Finite Precision}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Finite Precision}
+
+\begin{itemize}
+\item Difference between infinite precision and computer arithmetic
+\item You will always make an error when approximating a mathematical object on a computer
+\item One of the major types of errors is discretization(truncation), which is the difference between the solution of the discrete problem and the exact solution of the mathematical object
+\item Example: Suppose you have a function defined by an infinite series and you ``truncate" it at some point, e.g.
+
+\begin{eqnarray*}
+\exp(x) &=& 1 + x + \frac{x^2}{2!} +  \frac{x^3}{3!} + \ldots \\
+&\approx& 1 + x
+\end{eqnarray*}
+
+\end{itemize}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Finite Precision}
+
+\begin{itemize}
+\item Example
+
+\begin{equation*}
+f^{\prime} (x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} 
+\end{equation*}
+\end{itemize}
+
+\begin{itemize}
+\item How do we pick $h$ to get the best approximation? \pause
+\item Discussion
+\end{itemize}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Finite Precision Example}
+
+\pgfputat{\pgfxy(0.0,-4.6)}{\pgfbox[left,base]{\pgfimage[width=0.85\textwidth]{Rplot01.pdf}}}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Finite Precision}
+
+\begin{itemize}
+\item Example
+
+\begin{equation*}
+f^{\prime} (x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} 
+\end{equation*}
+
+\item Lesson: Don't solve an approximate problem too exactly
+\item {\color{red}Rule of Thumb:} Choose $h$ to perturb about half of the digits in $x$.
+\end{itemize}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Finite Precision Real World Examples}
+
+Applications requiring extra precision
+\begin{itemize}
+\item Climate Modeling
+\item Supernova Simulations
+\item Coulomb N-Body Atomic System Simulations
+\item Computational Geometry and Grid Generation
+\item Many, many more, \ldots
+\end{itemize}
+
+\vspace{.2in}
+
+Reference: {\bf High-Precision Floating-Point Arithmetic in Scientific Computation}, David H. Bailey, Computing in Science \& Engineering,  IEEE, May/June 2005.
+} % end frame
+
+\section{Conditioning}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Conditioning}
+
+\begin{itemize}
+\item Suppose we would like to know how perturbing $x$ will affect the value of $y = f(x)$
+\item Define 
+\begin{equation*}
+\kappa_f(x) = \frac{| x| \cdot | f^{\prime}(x)|}{| f(x)|}
+\end{equation*}
+\item Then
+\begin{equation*}
+\frac{| \hat{y} - y |}{|y|} \approx \kappa_f(x) \cdot \frac{| \hat{x} - x |}{|x|}
+\end{equation*}
+\item Fact: $-\log_{10} ( $relative error$) \approx $ \# decimal digits to which two numbers agree! 
+\end{itemize}
+{\color{red} Rule of thumb:}You will lose approximately $\log_{10} (\kappa_f(x))$ decimal digits
+
+} % end frame
+
+\section{Stability}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Stability}
+\begin{itemize}
+\item Informal definition of stability.  An algorithm for computing $f(x)$ is {\it stable} if it returns a $\hat{y}$ that satisfies:
+\begin{equation*}
+\frac{| \hat{y} - y |}{|y|} \approx \kappa_f(x) \cdot \frac{| \hat{x} - x |}{|x|}
+\end{equation*}
+
+\item Question:  What do you think of the following algorithm for computing $\exp(x)$? \pause
+\begin{equation*}
+\exp(x) = 1 + x + \frac{x^2}{2!} +  \frac{x^3}{3!} + \ldots 
+\end{equation*} \pause
+
+\item Discussion
+
+\end{itemize}
+
+} % end frame
+
+
+\section{Summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Summary}
+
+\begin{itemize}
+\item Beware catastrophic cancellation - know limits of precision
+\item Ask about conditioning of a problem
+\item Choose stable algorithms so as to not introduce any more loss of precision than is necessary
+\item {\color{red} Conditioning} is fundamentally a characteristic of the problem, while {\color{red} stability} is related to algorithms.
+\end{itemize}
+
+}% end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{References}
+
+\begin{itemize}
+\item {\bf High-Precision Floating-Point Arithmetic in Scientific Computation}, David H. Bailey, Computing in Science \& Engineering,  IEEE, May/June 2005.
+\item {\bf Numerical Computing with IEEE Floating Point Arithmetic}, Michael L. Overton, SIAM, 2001.
+\item {\bf What Every Computer Scientist Should Know About Floating Point Arithmetic}, David Goldberg, Computing Surveys,  ACM, March 1991.
+\end{itemize}
+
+}% end frame
+
+\end{document}

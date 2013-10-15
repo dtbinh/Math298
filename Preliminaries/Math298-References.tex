@@ -1,0 +1,130 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{Fall 2013 Math 298\\Fundamental Concepts in \\ Computational and Applied Mathematics\\ {\small Some Useful References}}
+\author{Juan C. Meza}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+%\section{}
+%\subsection{}
+
+In order to start our discussions, we need to have some basic common understandings and background materials.  This is a working list of some references that I think you might find useful in our directed group study.   This list is not comprehensive and by design it will be biased because of my own experiences over the years.  However, part of the fun of doing research is talking to others in the field and finding out what books and papers they like.
+
+Caveat: As with most of our material, it is subject to change as we proceed through the course and we discuss our topics during class.  I expect that we will add and revise this list as part of our discussions.  In fact, I would encourage you to make recommendations of some of your favorite reading materials and references so that we can have a class discussion and improve on this list.  My ultimate goal is to have this passed on from one class to another, so here's your chance to be remembered by future graduate students.
+
+\section{Introductory NA books}
+
+There are many good books for numerical analysis each with different emphasis and styles.   Some are more classical both in their writing and topics.  Others are more modern in the sense that newer algorithms and concepts are emphasized.  I urge you to find one that suits your background, experience, and tastes.  Here are a few of my favorites.
+
+\subsection{General}
+
+\begin{description}
+
+\item {\bf Scientific Computing with Case Studies, Dianne P. O'Leary, SIAM, 2009.}  Nice introduction with all of the necessary materials.  What sets this book apart is the case studies illustrating the main topics.
+
+\item {\bf Numerical Analysis A Second Course, James M. Ortega, SIAM Classics in Applied Mathematics, 1990.} This book covers most of the essentials from one of the founding fathers of numerical analysts.  It's a bit heavy on the theory and it has an emphasis on rounding errors, discretization error, and convergence error.  This book also has a good introduction to stability and ill conditioning.
+
+ \item[] {\bf Afternotes Goes to Graduate School, Lectures on Advanced Numerical Analysis, G.W. Stewart, SIAM, 1998.}  Popular sequel to Prof. Stewart's book, {\it Afternotes on Numerical Analysis}.  This second book emphasizes Krylov methods, approximation, splines, and eigensystems. As the name implies, this book is more advanced than the previous book as well as the other books in this list. 
+
+\end{description}
+
+\subsection{Linear Algebra}
+\begin{description}
+\item[] {\bf Matrix Computations, Gene H. Golub and Charles F. Van Loan, 3rd ed. Johns Hopkins, 1996.}  THE book on numerical linear algebra.   You should go to bed with this book for the next 4 years.
+
+\item[] {\bf Numerical Linear Algebra, Lloyd N. Trefethen and David Bau III, SIAM, 1997.} Another excellent book on numerical linear algebra. 
+ 
+\end{description}
+
+\subsection{Nonlinear Equations and Optimization}
+\begin{description}
+
+\item[] {\bf Numerical Optimization, Jorge Nocedal and Stephen J. Wright, 2nd ed. Springer, 2006.}  One of several introductory and fairly comprehensive books on nonlinear optimization. This books covers all of the basic methods with a nice mix of algorithms and theory.
+
+\item[] {\bf Numerical Methods for Unconstrained Optimization and Nonlinear Equations, J.E. Dennis, Jr. and Robert B. Schnabel, SIAM Classics in Applied Mathematics Series, SIAM,1996.}  This is the book that I learned optimization from as taught by Prof. Dennis, so I have a bias about this book.  The software and algorithms are now a bit outdated, but the exposition of the material is as clear as you'll see anywhere else.  The book also has one of the best balances between theory and algorithms.   Chapter 7 on Stopping, Scaling, and Testing is a must read for any algorithm developer.
+
+\end{description}
+
+\subsection{Partial Differential Equations}
+\begin{description}
+
+\item[] {\bf Numerical Solution of Partial Differential Equations, G.D. Smith,  Oxford University Press, 1995.}  This books covers the basics of finite difference methods for parabolic, hyperbolic, and elliptic equations.  This book has been around in various forms since 1965, but it still contains all of the necessary information to learn how most finite difference methods work in the real applications.  As an added bonus, the book also covers some of the fundamentals of iterative methods for the linear systems arising out of the different discretizations.
+
+\item[] {\bf Finite Difference Methods for Ordinary and Partial Differential Equations, Randall J. LeVeque, SIAM, 2007.}   A more modern treatment of finite difference methods.  The main advantage of this book is the inclusion of the Matlab files for all of the exercises so that you can try out the various methods yourself.
+
+\item[] {\bf Understanding and Implementing the Finite Element Method, Mark S. Gockenbach, SIAM, 2006.}  In my opinion, one of the better expository books on the finite element method.  A nice balance of algorithms with theory helps the student to understand how this method works.  The working Matlab code that is available at Prof. Gockenbach's web site is well-documented and easy to use.
+\end{description}
+
+\subsection{Spectral Methods}
+\begin{description}
+\item[]{\bf Spectral Methods in MATLAB, Lloyd N. Trefethen, SIAM, 2000.}  Concise introduction to spectral methods with numerous examples given in short Matlab programs.
+
+ \end{description}
+ 
+ 
+ \section{Books on Writing}
+Doing mathematics is only part of the game.  You also need to be able to communicate with your colleagues and to document your research.  The task of learning how to be a good writer is hard and tedious.  The only way to improve is to spend a lot of time writing and receiving criticism from others.  Nevertheless, if you can learn to write well, you will find that it not only helps you communicate your ideas more effectively, but it will also help you organize and analyze your various research ideas. 
+  
+\begin{description}
+
+\item[ ] {\bf Handbook of Writing for the Mathematical Sciences, Nicholas J. Higham, SIAM, 1993.} If you only have one book on writing, get this one. Professor Higham is regarded as one of the best writers in the mathematical sciences and this book will help you understand the important aspects of clear writing.
+
+\item[ ] {\bf \LaTeX  \ A Document Preparation System User's Guide and Reference Manual, Addison-Wesley, 2nd ed. 1994.} Easiest and clearest book to start learning \LaTeX.  There are other more comprehensive and advanced books, but this is a great place to start.
+
+\item[] {\bf The Elements of Style, William Strunk Jr. and E.B. White, 4th ed., Longman, 1999.} One of the best books on writing style.  Short and witty, with easy to remember and classic advice on how to improve your writing.
+
+\item[] {\bf On Writing Well, William Zinsser, Harper Perennial, 2006.}  Another classic on writing style.   Longer than Strunk and White, but full of great advice.
+
+\item[] {\bf Bird by Bird: Some Instructions on Writing and Life, Anne Lamott, Anchor, 1995.}  Although not an obvious choice for scientific or mathematical writing at first glance, this is one of my favorite books to help you get past the barrier of getting those first words down on paper.  In turns inspirational, funny, and with great advice for the novice writer.  The focus in on writing books, but I've found her advice to be worthwhile for any type of writing.
+
+\end{description}
+
+\section{Mathematical Software}
+One component that has grown tremendously in the past 20 years is in the field of software and programming languages that you have at your disposal.  From essentially one language (Fortran) in the 1960s, today there are literally dozens of languages used in all areas of computational mathematics.  It will be important for you to learn at least one language (and preferably several) as well as knowing the advantages and disadvantages of them.  Because of the rapid changes in computing, your best bets are usually found on the web.
+
+\begin{description}
+\item[ ] {\bf Matlab Guide, Desmond J. Higham and Nicholas J. Higham, 2nd ed. SIAM, 2005.}  Great introduction to one of the most heavily used software packages used in NA.  Matlab has been around since the mid 1980s and has grown from a research tool to a software tool used in many industrial applications.  Many books even use Matlab code to illustrate some key applied mathematics algorithms.  Knowing the rudimentary commands in Matlab will be essential.
+
+
+\item[ ] {\bf R Cookbook, Paul Teetor, O'Reilly, 2011.} Nice introduction to the R programming language, which is becoming the {\it de facto} programming language for statistical programming.  Similar in spirit and style to Matlab, the R programming language has numerous open-source packages that can be used to do fairly sophisticated statistical analysis.  This book has numerous recipes for a wide range of common tasks that can be used to quickly learn R.
+
+\item[] {\url{www.r-project.org}} The home page for the R project, ``R is a language and environment for statistical computing and graphics. It is a GNU project which is similar to the S language and environment which was developed at Bell Laboratories (formerly AT\&T, now Lucent Technologies) by John Chambers and colleagues.``
+
+
+\item[] {\url{www.python.org}} Another popular open source programming language for rapid prototyping.  With the addition of numpy (\url{www.numpy.org}) and scipy (\url{www.scipy.org}) the python programming language has gain wide used in many scientific computing environments.  Complete distributions can 
+
+\end{description}
+
+\section{Presentation Skills}
+
+\begin{description}
+\item[ ]  {\bf Visual Strategies A Practical Guide to Graphics for Scientists and Engineers, Felice C. Frankel and Angela H. DePace, Yale University Press, 2012.}  Excellent book on the critical components of representing scientific data visually.   The book has numerous before and after graphics that explain the good (and bad) use of the graphical techniques that the authors advocate.
+
+\item[] {\bf The Visual Display of Quantitative Information, Edward R. Tufte, 2nd ed., Graphics Press LLC.} A now classic book on displaying data to best get your point across. If you're not familiar with Tufte, you should definitely see his wonderful essay on {\it PowerPoint Does Rocket Science -- and Better Techniques for Technical Reports} (\url{http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001yB&topic_id=1}) on the use of PowerPoint at NASA to analyze the threat to the Columbia shuttle.
+
+\item[] {\bf Even a Geek Can Speak, Joey Asher, Longstreet Press, 2001.}  A short and entertaining book on how to speaking skills for techies.   From the introduction, the book claims that, ``it will show you how to speak simply about complex things``.
+ 
+\item[] {\bf So, What's Your Point?,  James C. Wetherbe and Bond Wetherbe, Mead Publishing, 1996.}  Another short book on some basic communication skills.  The book is based on six verbal and twelve nonverbal messages that apply to many settings where one tries to communicate a message.
+ 
+\end{description}
+
+\section{Miscellaneous Graduate Survival Skills}
+
+\begin{description}
+\item[] {\bf A PhD is Not Enough!: A Guide to Survival in Science, Peter J. Feibelman, 2nd ed. Basic Books, 2011.} I found this book about 5 years after I had received my PhD.  The book makes a good case for all of those other practical skills that you will need to be successful after you graduate.  I don't agree with everything in the book, but there are enough good tips that all graduate students will get something useful from reading this book.
+
+\item[] {\bf Tomorrow's Professor: Preparing for Careers in Science and Engineering, Richard M. Reis, Wiley-IEEE Press, 1997.}  The author's goal is to help you prepare for and succeed in science and engineering academic careers. A mailing list archive can be found at \url{http://www.stanford.edu/dept/CTL/Tomprof/index.shtml} has some useful articles. You may also want to subscribe to their newsletter.  Recommended by Prof. Arnold Kim, UC Merced. 
+
+\end{description}
+\end{document}  

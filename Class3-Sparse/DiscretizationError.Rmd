@@ -1,0 +1,31 @@
+Discretization Error
+========================================================
+
+This is an example of what can happen when one doesn't pay attention to subtleties of finite precision.  Let's try to compute the derivative of sin(x) using forward finite differences.
+
+First initialize the vectors.  We will approximate the derivative about the point x = 1
+```{r}
+x <- 1.0
+```
+Set up a vector, h,  with values from $10^{-1}$ to $10^{-20}$
+```{r}
+t <- seq(1:20)
+h <- 10^-t
+h
+```
+
+Now compute the finite difference approximation to the derivative of sin(x) about x = 1, varying h
+
+```{r}
+diff_quo <- (sin(x+h) - sin(x))/h
+diff_error <- abs(cos(x)-diff_quo)
+```
+
+```{r}
+library(ggplot2)
+```
+Plot the error between $cos(x) = \frac{dsin(x)}{dx}$ and the finite difference approximation
+```{r fig.width=7, fig.height=6}
+qplot(x=h,y=diff_error,log="xy",main="Error in FD Approx",ylab="abs(error)")
+```
+

@@ -1,0 +1,339 @@
+\documentclass[mathserif,notes]{beamer}
+\usepackage{mybeamertheme}
+%\usepackage{pdfsync} % works only on TeXShop, comment otherwise
+\usepackage{pgf}
+\usepackage{multimedia} % to embed movies in the PDF file
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{pgfpages}
+\usepackage{topcapt}
+\usepackage{booktabs}
+
+% for the tikz pictures
+\usepackage{geometry}
+\geometry{hmargin=1cm,vmargin=1cm}
+\usepackage{tikz}
+\def\width{5}
+\def\hauteur{5}
+\mode<presentation>
+{
+  \usetheme{Madrid}   %  \usetheme{Warsaw}
+  % Note: this next command makes nice slides, but Adobe doesn't like it (you get blank pages)
+  %\setbeamertemplate{background canvas}[vertical shading][bottom=white,top=structure.fg!15]
+  \setbeamertemplate{footline}{\pgfuseimage{UCM-logo}}
+
+  %\usecolortheme{seahorse}
+  \usecolortheme{beaver}
+ % \setbeamercovered{transparent}
+}
+%\usepackage[T1]{fontenc}
+% For printing purposes only
+%\pgfpagesuselayout{2 on 1}[letterpaper,border shrink=5mm,portrait]
+
+\usepackage{amssymb,amsmath}
+\hypersetup{%
+ pdftitle={Math298 Lecture 5},
+ pdfauthor={Juan Meza(UC Merced)},
+ pdfsubject={Fundamental Concepts in Computational and Applied Mathematics},
+ pdfkeywords={spectral methods, FFT, DFT}
+ }
+ 
+\title[Math 298]{Math 298 \\
+Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{Lecture 5}
+\author[Juan Meza]{Juan Meza \\ School of Natural Sciences \\ University of California, Merced}
+\date[September 23, 2013]{}
+\institute[UC Merced]
+
+\pgfdeclareimage[height=0.35cm]{UCM-logo}{UCM-logo}
+% \logo{\pgfuseimage{UCM-logo}}
+
+%% figures
+
+\input{latex-defs}
+
+\definecolor{navy}{RGB}{0,0,128}
+\definecolor{forestgreen}{RGB}{34,139,34}
+\definecolor{mylightsteelblue}{RGB}{176,196,222}
+\definecolor{mylightcyan}{RGB}{180,255,255}
+\definecolor{mypaleturquoise}{RGB}{175,238,238}
+\definecolor{mylightgoldenrod}{RGB}{250,250,210}
+\definecolor{mylightyellow}{RGB}{255,255,224}
+\definecolor{mylightsalmon}{RGB}{255,160,122}
+
+\setbeamercolor{blacklightsteelblue}{fg=black,bg=mylightsteelblue}
+\setbeamercolor{blackpaleturquoise}{fg=black,bg=mypaleturquoise}
+\setbeamercolor{blacklightcyan}{fg=black,bg=mylightcyan}
+\setbeamercolor{blacklightgoldenrod}{fg=black,bg=mylightgoldenrod}
+\setbeamercolor{blacklightyellow}{fg=black,bg=mylightyellow}
+\setbeamercolor{blacklightsalmon}{fg=black,bg=mylightsalmon}
+\setbeamercolor{blackcyan}{fg=black,bg=cyan}
+
+
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+
+\titlepage
+
+} % end frame
+
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Spectral methods}
+
+\begin{itemize}
+\item Temporal/spatial vs frequency
+\item Particularly useful in problems that have periodicity or infinite domains
+\item Still useful if that's not the case 
+\end{itemize}
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Motivation}
+
+\begin{itemize}
+\item Consider the case of differentiation of a function
+\item One possibility is finite differences
+\item Another general idea: Interpolate the function of interest by a polynomial and then take derivative of polynomial
+\item This idea leads to the notion of a differentiation matrix
+\end{itemize}
+
+} % end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Motivation}
+
+\begin{itemize}
+\item Consider case in 1D, on an equally spaced grid, periodic function $u(x)$
+\item $h$ is the spatial discretization
+\item $u(0) = u(N)$
+\vspace{.25in}
+
+\end{itemize}
+\begin{tikzpicture}[x=1cm, y=1cm, semitransparent]
+%\draw[step=1mm, line width=0.1mm, black!30!white] (0,0) grid (\width,\hauteur);
+%\draw[step=5mm, line width=0.2mm, black!40!white] (0,0) grid (\width,\hauteur);
+\draw[step=5cm, line width=0.5mm, black!50!white] (0,0) grid (10,0);
+%\draw[step=1cm, line width=0.5mm, black!50!white] (1,1) grid (10,0);
+
+
+    \coordinate (u0) at (0,0)     node[above]  {$u_0$};  
+    \coordinate (u1) at (1,0);
+    \coordinate (u2) at (2,0);
+    \coordinate (u3) at (3,0);
+    \coordinate (u4) at (4,0);
+    \coordinate (u5) at (5,0);
+    \coordinate (u6) at (6,0);
+    \coordinate (u7) at (7,0);
+    \coordinate (u8) at (8,0);
+    \coordinate (u9) at (9,0);
+    \coordinate (u10) at (10,0);
+    \fill[red] (u0) circle (2pt);
+    \fill[red] (u1) circle (2pt);
+    \fill[red] (u2) circle (2pt);
+    \fill[red] (u3) circle (2pt);
+    \fill[red] (u4) circle (2pt);
+     \fill[red] (u5) circle (2pt) node[ above right ] {$\ \ {\color{black} h}$};
+     \fill[red] (u6) circle (2pt);
+     \fill[red] (u7) circle (2pt);
+     \fill[red] (u8) circle (2pt);    
+     \fill[red] (u9) circle (2pt);
+     \fill[red] (u10) circle (2pt);
+
+\draw[step=1cm, line width=0.5mm, black!50!white] (0,0) grid (10,0)     node[above] {$u_N$};;
+
+                
+\end{tikzpicture}
+$$
+{w^{\prime}}(x) = \frac{u(x_{j+1}) - u(x_{j-1})}{2h}
+$$
+} % end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Differentiation Matrix}
+
+\begin{itemize}
+
+\item A second order method can be given by the following matrix
+\end{itemize}
+
+$$
+D= \begin{bmatrix}
+0          & 1/2        &  0 & 0 & \dots & -1/2 \\
+-1/2      &     0       &  1/2 & 0 & \dots &  0 \\
+0          & -1/2      &  0 & 1/2 & \dots  &  0  \\
+\dots  &  0          &  -1/2 & 0 & \ddots &  0  \\
+0          & \dots          & 0 &  \ddots & 0   &  1/2    \\
+1/2       & 0          &  0 & 0 & -1/2     &   0 \\
+\end{bmatrix}
+$$
+{\color{red} Note:}  This matrix is skew-symmetrix, Toeplitz (diagonal-constant), and circulant!  All very nice properties. \\
+The derivative is given by $w = \frac{1}{h} D \cdot u$
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Spectral Method}
+
+General Principle
+\begin{itemize}
+\item Generate a high-order interpolant of your function, e.g. trigonometric polynomial
+\item Take the derivative of the interpolant
+\item Substitute this in your differential equation
+
+\end{itemize}
+
+} % end frame
+
+
+\section{Discrete Fourier Transform}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Discrete Fourier Transform and Fast Fourier Transform}
+
+\begin{itemize}
+\item The DFT is a natural extension of differentiation to a bounded, periodic grid using Fourier transforms
+\item The bounded physical domain implies that the Fourier domain will be discrete, i.e. the wavenumbers, $k$, will be integers
+\item The derivative in Fourier space can be computed by multiplying the transform by $ik$
+\item The FFT is a fast algorithm for computing the DFT
+\end{itemize}
+
+}% end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Discrete Fourier Transform}
+
+DFT is given by
+\begin{equation}
+\hat{X}(k) = \sum_{j=0}^{N-1} X(j) W_{N}^{jk}, \label{eq:DFT}
+\end{equation}
+where
+$$
+W_{N} = \exp \left ( \frac{ -2 \pi i }{N} \right ).
+$$
+which can also be viewed as a matrix-vector multiply $F_N \cdot X$, where
+$$
+F_N = W_N^{jk}
+$$
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Example: N = 2, 4}
+Let $\omega =  \exp \left ( \frac{- 2 \pi i }{N} \right ).$ \\
+\vspace{.25in}
+$N = 2$
+$$
+F_2 = 
+\begin{bmatrix}
+1   & 1                 \\
+1   & -1      
+\end{bmatrix}, 
+$$
+$N= 4$
+$$
+F_4 = 
+\begin{bmatrix}
+1   & 1                  &  1                 & 1 \\
+1   &  \omega       &  \omega^{2} & \omega^{3}  \\
+1   &  \omega^{2} &  \omega^{4} & \omega^{6}  \\
+1   &  \omega^{3}  &  \omega^{6} & \omega^{9}  \\
+\end{bmatrix} = 
+\begin{bmatrix}
+1   &  1     &  1  & 1 \\
+1   & -i      &  -1 & i  \\
+1   & -1 &  1& -1  \\
+1   &  i  &  -1 & -i \\
+\end{bmatrix}.
+$$
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Key Idea}
+One can permute the columns of $F_4$ so that 
+$$
+F_4 \Pi_{4} = \left [
+\begin{array}{c c | c c}
+1   &  1     &  1  & 1 \\
+1   & -1    &  -i & i  \\
+\hline
+1   & 1 &   -1& -1  \\
+1   & -1  &  i & -i \\
+\end{array} \right ], 
+\Pi_4 = \begin{bmatrix}
+1   &  0     &  0  & 0 \\
+0    & 0      &  1 & 0  \\
+0   &  1 &  0& 0  \\
+0   &  0  &  0 & 1 \\
+\end{bmatrix}
+$$
+which is just $F_4$ with even-indexed columns ordered first.
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Key Idea}
+Now notice that
+$$
+F_4 \Pi_{4} = 
+\begin{bmatrix}
+F_2   & \Omega_2 F_2               \\
+F_2  & -  \Omega_2 F_2   
+   
+\end{bmatrix}, 
+$$
+where
+$$
+\Omega_{2} = 
+\begin{bmatrix}
+ 1  & 0  \\
+0  & -i    
+\end{bmatrix}, 
+$$
+in other words, each block of $F_4\Pi_4$ is either $F_2$ or a diagonal scaling of $F_2.$
+
+} % end frame
+
+
+
+\section{Summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Some consequences}
+
+\begin{itemize}
+\item An $N-$point DFT can be computed from two $N/2-$point DFTs!
+\item The complexity of the algorithm can be shown to be $\mathcal{O}(N \log N)$ vs. $\mathcal{O}(N^2)$
+\item Spectral methods are highly accurate for smooth functions
+\end{itemize}
+
+}% end frame
+
+
+\section{Summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Summary}
+
+\begin{itemize}
+\item Spectral methods work in Fourier (frequency) space
+\item The development of the FFT led to many new areas of research and applications
+\item Many applications in image processing, computational chemistry, Fast Poisson solvers, etc.
+\item Can also be used for non-periodic or non-uniform data, but that's another talk
+\end{itemize}
+
+}% end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{References}
+
+\begin{itemize}
+\item {\bf An Algorithm for the Machine Calculation of Complex Fourier Series}, James W. Cooley and John W. Tukey, Math. Comp. 19, 297-301, 1965
+\item {\bf Spectral Methods in Matlab}, Lloyd N. Trefethen, SIAM 2000.
+\item {\bf Computational Frameworks for the Fast Fourier Transform}, Charles Van Loan, SIAM,  1992.
+\end{itemize}
+
+}% end frame
+
+\end{document}
