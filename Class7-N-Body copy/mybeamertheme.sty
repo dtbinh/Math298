@@ -1,0 +1,106 @@
+%\ProvidesPackage{beamerthemesplit}[2003/10/29 ver 0.92]
+\ProvidesPackage{mybeamertheme}[2004/04/27 ver 0.92]
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+
+% Copyright 2003 by Till Tantau <tantau@cs.tu-berlin.de>.
+%
+% This program can be redistributed and/or modified under the terms
+% of the LaTeX Project Public License Distributed from CTAN
+% archives in directory macros/latex/base/lppl.txt.
+
+\mode<presentation>
+
+% Define some colors:
+\definecolor{DarkFern}{HTML}{407428}
+\definecolor{DarkCharcoal}{HTML}{4D4944}
+\colorlet{Fern}{DarkFern!85!white}
+\colorlet{Charcoal}{DarkCharcoal!85!white}
+\colorlet{LightCharcoal}{Charcoal!50!white}
+\colorlet{AlertColor}{orange!80!black}
+\colorlet{DarkRed}{red!70!black}
+\colorlet{DarkBlue}{blue!70!black}
+\colorlet{DarkGreen}{green!70!black}
+% Use the colors:
+%\setbeamercolor{title}{fg=Fern}
+%\setbeamercolor{frametitle}{fg=Fern}
+%\setbeamercolor{normal text}{fg=Charcoal}
+%\setbeamercolor{block title}{fg=black,bg=Fern!25!white}
+%\setbeamercolor{block body}{fg=black,bg=Fern!25!white}
+%\setbeamercolor{alerted text}{fg=AlertColor}
+%\setbeamercolor{itemize item}{fg=Charcoal}
+
+\beamertemplatelargetitlepage
+\beamertemplatelargepartpage
+\beamertemplatelargeframetitle
+\beamertemplateplaintoc
+\beamertemplatelargeblocks
+
+\setbeamertemplate{navigation symbols}{}
+
+\usesectionheadtemplate
+  {\hfill\color{white}\tiny\textbf{\insertsectionhead}}
+  {\hfill\color{white!50!black}\tiny\textbf{\insertsectionhead}}
+
+\usesubsectionheadtemplate
+  {\color{white}\tiny\textbf{\insertsubsectionhead}}
+  {\color{white!50!structure}\tiny\textbf{\insertsubsectionhead}}
+
+                                % Head
+\ifbeamer@compress
+\useheadtemplate{%
+  \vbox{%
+    \tiny%
+    \setbox\beamer@linebox=\hbox to\paperwidth{%
+      \insertsectionnavigationhorizontal{.5\paperwidth}{\hskip0pt plus1filll}{}%
+      \insertsubsectionnavigationhorizontal{.5\paperwidth}{}{\hskip0pt plus1filll}\hfil}%
+    \ht\beamer@linebox=2.625ex
+    \dp\beamer@linebox=0pt
+    \setbox\beamer@linebox=\vbox{\box\beamer@linebox\vskip1.125ex}%
+    \hbox to\textwidth{%
+      {\color{structure}\hskip-\Gm@lmargin\vrule width.5\paperwidth height\ht\beamer@linebox
+      \color{structure}\vrule width.5\paperwidth height\ht\beamer@linebox\hskip-\paperwidth\hskip\Gm@lmargin}%
+    \hskip-\Gm@lmargin\box\beamer@linebox\hfill\hskip-\Gm@rmargin
+    }%
+  }%
+}
+\else
+\useheadtemplate{%
+  \vbox{%
+    \tiny%
+    \beamer@tempdim=2.4375ex%
+    \ifnum\beamer@subsectionmax<\beamer@sectionmax%
+    \multiply\beamer@tempdim by\beamer@sectionmax%
+    \else%
+    \multiply\beamer@tempdim by\beamer@subsectionmax%
+    \fi%
+    \advance\beamer@tempdim by 1.125ex%
+    \setbox\beamer@linebox=\hbox to\paperwidth{%
+      \vbox to \beamer@tempdim{\vfil\insertsectionnavigation{.5\paperwidth}\vfil}%
+      \vbox to \beamer@tempdim{\vfil\insertsubsectionnavigation{.5\paperwidth}\vfil}\hfill}%
+    \hbox to\textwidth{%
+      {\color{structure}\hskip-\Gm@lmargin\vrule width.5\paperwidth
+      height\ht\beamer@linebox\color{structure}\vrule width.5\paperwidth
+      height\ht\beamer@linebox\hskip-\paperwidth\hskip\Gm@lmargin}%
+     \hskip-\Gm@lmargin\box\beamer@linebox\hfill\hskip-\Gm@rmargin%
+      }%
+  }%
+}
+\fi
+
+\usefoottemplate{%
+  \vbox{\tiny%
+  \hbox{%
+  \setbox\beamer@linebox=\hbox to\paperwidth{%
+    \hbox to.5\paperwidth{\hfill\tiny\color{white}\textbf{\insertshortauthor}\hskip.3cm}%
+    \hbox to.5\paperwidth{\hskip.3cm\tiny\color{white}\textbf{\insertshorttitle\quad -- \quad \insertframenumber}\hfill}\hfill  }%
+  \ht\beamer@linebox=2.625ex%
+  \dp\beamer@linebox=0pt%
+  \setbox\beamer@linebox=\vbox{\box\beamer@linebox\vskip1.125ex}%
+  \color{structure}\hskip-\Gm@lmargin\vrule width.5\paperwidth
+  height\ht\beamer@linebox\color{structure}\vrule width.5\paperwidth 
+  height\ht\beamer@linebox\hskip-\paperwidth% 
+  \hbox{\box\beamer@linebox\hfill}\hfill \hskip-\Gm@rmargin}}}
+
+
+\mode
+<all>

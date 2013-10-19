@@ -1,0 +1,190 @@
+\documentclass[mathserif,notes]{beamer}
+\usepackage{mybeamertheme}
+%\usepackage{pdfsync} % works only on TeXShop, comment otherwise
+\usepackage{pgf}
+\usepackage{multimedia} % to embed movies in the PDF file
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{pgfpages}
+\usepackage{topcapt}
+\usepackage{booktabs}
+
+% for the tikz pictures
+\usepackage{geometry}
+\geometry{hmargin=1cm,vmargin=1cm}
+\usepackage{tikz}
+\def\width{5}
+\def\hauteur{5}
+\mode<presentation>
+{
+  \usetheme{Madrid}   %  \usetheme{Warsaw}
+  % Note: this next command makes nice slides, but Adobe doesn't like it (you get blank pages)
+  %\setbeamertemplate{background canvas}[vertical shading][bottom=white,top=structure.fg!15]
+  \setbeamertemplate{footline}{\pgfuseimage{UCM-logo}}
+
+  %\usecolortheme{seahorse}
+  \usecolortheme{beaver}
+ % \setbeamercovered{transparent}
+}
+%\usepackage[T1]{fontenc}
+% For printing purposes only
+%\pgfpagesuselayout{2 on 1}[letterpaper,border shrink=5mm,portrait]
+
+\usepackage{amssymb,amsmath}
+\hypersetup{%
+ pdftitle={Math298 Lecture 7},
+ pdfauthor={Juan Meza(UC Merced)},
+ pdfsubject={Fundamental Concepts in Computational and Applied Mathematics},
+ pdfkeywords={N-Body, Fast Multipole}
+ }
+ 
+\title[Math 298]{Math 298 \\
+Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{Lecture 7}
+\author[Juan Meza]{Juan Meza \\ School of Natural Sciences \\ University of California, Merced}
+\date[October 14, 2013]{}
+\institute[UC Merced]
+
+\pgfdeclareimage[height=0.35cm]{UCM-logo}{UCM-logo}
+% \logo{\pgfuseimage{UCM-logo}}
+
+%% figures
+
+\input{latex-defs}
+
+\definecolor{navy}{RGB}{0,0,128}
+\definecolor{forestgreen}{RGB}{34,139,34}
+\definecolor{mylightsteelblue}{RGB}{176,196,222}
+\definecolor{mylightcyan}{RGB}{180,255,255}
+\definecolor{mypaleturquoise}{RGB}{175,238,238}
+\definecolor{mylightgoldenrod}{RGB}{250,250,210}
+\definecolor{mylightyellow}{RGB}{255,255,224}
+\definecolor{mylightsalmon}{RGB}{255,160,122}
+
+\setbeamercolor{blacklightsteelblue}{fg=black,bg=mylightsteelblue}
+\setbeamercolor{blackpaleturquoise}{fg=black,bg=mypaleturquoise}
+\setbeamercolor{blacklightcyan}{fg=black,bg=mylightcyan}
+\setbeamercolor{blacklightgoldenrod}{fg=black,bg=mylightgoldenrod}
+\setbeamercolor{blacklightyellow}{fg=black,bg=mylightyellow}
+\setbeamercolor{blacklightsalmon}{fg=black,bg=mylightsalmon}
+\setbeamercolor{blackcyan}{fg=black,bg=cyan}
+
+
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+
+\titlepage
+
+} % end frame
+
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{N-Body methods}
+
+\begin{itemize}
+\item Involve computation of interactions between N-bodies/particles
+\item Examples arise in molecular dynamics, gravitation, electrostatics, etc.
+\item Also useful for solution of boundary value problems,  biharmonic equations, Poisson equation, etc.
+\item Algorithms typically $\mathcal{O}(N^2)$ 
+\end{itemize}
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Motivation}
+
+\begin{itemize}
+\item For large $N$, standard algorithms take too long
+\item Forces can usually be broken down into ``short-range" and ``long-range"
+\item Can we take advantage of this to develop faster algorithms?
+\end{itemize}
+
+} % end frame
+
+
+\section{Examples}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Gravitation}
+
+$$
+\Phi(x_j) = \sum^{N}_{i=1, i \neq j} \frac{m_i}{r_{ij}}
+$$
+and
+$$
+E(x_j) = \sum^{N}_{i=1, i \neq j} m_i \frac{x_j - x_i}{r^{3}_{ij}}
+$$
+} % end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{2 Key Ideas}
+
+\begin{itemize}
+\item Replace group of distant particles by one ``pseudo-particle"
+\item Decompose space into a hierarchy of areas that are suitably ``distant"
+\end{itemize}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Replacing group of particles}
+
+General Principle
+\begin{itemize}
+\item Standard method is to use a multipole expansion
+\end{itemize}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Hierarchy of domains}
+
+\begin{itemize}
+\item Similar to our old friend divide and conquer
+\item Need to be careful about dividing space
+\item Too coarse a division and your approximation is not good enough
+\item Too fine a division leads you back to the original problem
+\end{itemize}
+
+}% end frame
+
+
+\section{Summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Comparison of FFT and FMM}
+% Requires the booktabs if the memoir class is not being used
+\begin{table}[htbp]
+   \centering
+   %\topcaption{Table captions are better up top} % requires the topcapt package
+   \begin{tabular}{@{} lcr @{}} % Column formatting, @{} suppresses leading/trailing space
+      \toprule
+%      \cmidrule(r){1-2} % Partial rule. (r) trims the line a little bit on the right; (l) & (lr) also possible
+      Property   & FFT & FFM \\
+      \midrule
+      Work         & $5N \log N$             & $N \log N$ \\
+      Accuracy   & exact                       & approximate \\
+      Domain     & uniform spatial grid  & any \\
+      Based on  & Algebra                   & Analytics \\
+      \bottomrule
+   \end{tabular}
+   \caption{Comparison of FFT with FMM}
+   \label{tab:booktabs}
+\end{table}
+
+}% end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{References}
+
+\begin{itemize}
+\item {\bf An Algorithm for the Machine Calculation of Complex Fourier Series}, James W. Cooley and John W. Tukey, Math. Comp. 19, 297-301, 1965
+\item {\bf Spectral Methods in Matlab}, Lloyd N. Trefethen, SIAM 2000.
+\item {\bf Computational Frameworks for the Fast Fourier Transform}, Charles Van Loan, SIAM,  1992.
+\end{itemize}
+
+}% end frame
+
+\end{document}
