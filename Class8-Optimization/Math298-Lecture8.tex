@@ -1,0 +1,278 @@
+\documentclass[mathserif,notes]{beamer}
+\usepackage{mybeamertheme}
+%\usepackage{pdfsync} % works only on TeXShop, comment otherwise
+\usepackage{pgf}
+\usepackage{multimedia} % to embed movies in the PDF file
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{pgfpages}
+\usepackage{topcapt}
+\usepackage{booktabs}
+
+% for the tikz pictures
+\usepackage{geometry}
+\geometry{hmargin=1cm,vmargin=1cm}
+\usepackage{tikz}
+\def\width{5}
+\def\hauteur{5}
+\mode<presentation>
+{
+  \usetheme{Madrid}   %  \usetheme{Warsaw}
+  % Note: this next command makes nice slides, but Adobe doesn't like it (you get blank pages)
+  %\setbeamertemplate{background canvas}[vertical shading][bottom=white,top=structure.fg!15]
+  \setbeamertemplate{footline}{\pgfuseimage{UCM-logo}}
+
+  %\usecolortheme{seahorse}
+  \usecolortheme{beaver}
+ % \setbeamercovered{transparent}
+}
+%\usepackage[T1]{fontenc}
+% For printing purposes only
+%\pgfpagesuselayout{2 on 1}[letterpaper,border shrink=5mm,portrait]
+
+\usepackage{amssymb,amsmath}
+\hypersetup{%
+ pdftitle={Math298 Lecture 7},
+ pdfauthor={Juan Meza(UC Merced)},
+ pdfsubject={Fundamental Concepts in Computational and Applied Mathematics},
+ pdfkeywords={N-Body, Fast Multipole}
+ }
+ 
+\title[Math 298]{Math 298 \\
+Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{Lecture 7: N-Body Methods}
+\author[Juan Meza]{Juan Meza \\ School of Natural Sciences \\ University of California, Merced}
+\date[October 21, 2013]{}
+\institute[UC Merced]
+
+\pgfdeclareimage[height=0.35cm]{UCM-logo}{UCM-logo}
+% \logo{\pgfuseimage{UCM-logo}}
+\pgfdeclareimage[width=0.7\textwidth]{galaxy}{galaxy}
+%% figures
+
+% My LaTeX definitions with some common abbreviations
+\input{latex-defs}
+
+\definecolor{navy}{RGB}{0,0,128}
+\definecolor{forestgreen}{RGB}{34,139,34}
+\definecolor{mylightsteelblue}{RGB}{176,196,222}
+\definecolor{mylightcyan}{RGB}{180,255,255}
+\definecolor{mypaleturquoise}{RGB}{175,238,238}
+\definecolor{mylightgoldenrod}{RGB}{250,250,210}
+\definecolor{mylightyellow}{RGB}{255,255,224}
+\definecolor{mylightsalmon}{RGB}{255,160,122}
+
+\setbeamercolor{blacklightsteelblue}{fg=black,bg=mylightsteelblue}
+\setbeamercolor{blackpaleturquoise}{fg=black,bg=mypaleturquoise}
+\setbeamercolor{blacklightcyan}{fg=black,bg=mylightcyan}
+\setbeamercolor{blacklightgoldenrod}{fg=black,bg=mylightgoldenrod}
+\setbeamercolor{blacklightyellow}{fg=black,bg=mylightyellow}
+\setbeamercolor{blacklightsalmon}{fg=black,bg=mylightsalmon}
+\setbeamercolor{blackcyan}{fg=black,bg=cyan}
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+
+\titlepage
+
+} % end frame
+
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{N-Body methods}
+
+\begin{columns}
+\column{.5\textwidth}
+\begin{itemize}
+\item Involve computation of interactions between N-bodies/particles
+\item Examples arise in molecular dynamics, gravitation, electrostatics, etc.
+\item Also useful for solution of boundary value problems,  biharmonic equations, Poisson equation, etc.
+\end{itemize}
+\column{.5\textwidth}
+	\pgfputat{\pgfxy(0,-4.0)}{\pgfbox[left,base]{\pgfuseimage{galaxy}}}
+\end{columns}
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{N-Body Problem Description}
+
+Want to compute sums of the following form:
+\begin{equation}
+u(x) = \sum^N_{i=1} w_i K(x,y_i), \label{eq:nbody}
+\end{equation}
+where
+\begin{itemize}
+\item $x_i, i=1, \ldots, N$ are called the {\color{navy} source} points
+\item $y_j, j=1, \ldots, N$ are called the {\color{navy} target} points
+\item $w_i$ are source weights
+\item $K(x,y_i)$ is called the kernel, e.g. potential function
+\end{itemize}
+\vspace{.25in}
+\remark: A straightforward algorithm would appear to be $\bigO (N^2)$ 
+} % end frame
+
+
+\section{Examples}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{N-Body problem of gravitation}
+
+The gravitational potential is given by 
+$$
+\Phi(x_j) = \sum^{N}_{\substack{
+i=1 \\
+i \neq j}} \frac{m_i}{r_{ij}}
+$$
+and the gravitational field $E$ by:
+$$
+E(x_j) = \sum^{N}_{\substack{
+i=1 \\
+i \neq j}} m_i \frac{x_j - x_i}{r^{3}_{ij}}
+$$
+
+\remark Same equations applicable to electrostatics
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{N-Body Problem (Short Detour)}
+
+Recall one such problem from our previous class, i.e. the FFT:
+$$
+u_j = \sum^N_{k=1} e^{2\pi i j k / N}w_k ,
+$$
+for $j = 1, \ldots, N.$ \\
+\vspace{.25in}
+What is the complexity for such an algorithm?
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Finite Rank/Degenerate Kernels}
+
+First consider a kernel which can be written as:
+$$
+K(x,y) =  \sum^p_{k=1} \phi_k(x) \psi_k(y). 
+$$
+These are called {\color{forestgreen} finite rank or degenerate} kernels.  \\
+We can reduce our original problem Eq (\ref{eq:nbody}) to the following 2-step procedure.
+\begin{enumerate}
+\item Compute $A_k = \sum^N_{i=1} w_i \psi_k (y)$
+\item Evaluate $u(x) = \sum^p_{k=1} A_k \phi_k (x)$
+\end{enumerate}
+\vspace{.25in}
+What was the complexity for such an algorithm?
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Class Participation}
+
+Question:
+\vspace{.5in}
+
+Can you think of another example where you might be able to use this idea?
+
+\vspace{.5in}
+Answer:
+
+} % end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Motivation}
+
+Like many other problems first take a look at the structure of the problem
+\begin{itemize}
+\item Forces can usually be broken down into ``short-range" and ``long-range"
+\item Can we take advantage of this to develop faster algorithms?
+\end{itemize}
+\vspace{.25in}
+2 Key Ideas
+\begin{enumerate}
+\item Replace group of ``distant'' particles by one ``pseudo-particle"
+\item Decompose space into a hierarchy of areas that are suitably ``distant"
+\end{enumerate}
+
+} % end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Replacing group of particles: multipole expansion}
+
+
+Example: Electrostatic Potential due to a set of charges $q_i$ located at $x_i$\\
+\vspace{.15in}
+Want \\
+$$ K(y-x) = \frac{1}{|y - x|} \approx \sum_{k=0}^{p} \phi_k(x) \psi_k(y)$$
+which is given by
+$$
+ \frac{1}{|y - x|} = \frac{1}{|y|} \sum_{n=0}^{\infty} P_n(\cos \theta) \left ( \frac{|x|}{|y|} \right )^n
+$$
+where $P_n(\cos \theta)$ are the Legendre polynomials.\\
+\vspace{.15in}
+{\color{forestgreen} N.B.} Series is convergent for $v = \frac{|x|}{|y|} < 1 $ 
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Hierarchy of domains}
+
+\begin{itemize}
+\item Similar to our old friend divide and conquer
+\item Need to be careful about dividing space
+\item Too coarse a division and your approximation is not good enough
+\item Too fine a division leads you back to the original problem
+\end{itemize}
+
+}% end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Four key features of an FMM code}
+
+\begin{itemize}
+\item A specified acceptable accuracy
+\item A hierarchical subdivision of space into panels or clusters of sources
+\item A far field expansion of the kernel in which the influence of source and evaluation of points separates
+\item (Optional) Conversion of far field expansions into local expansions
+\end{itemize}
+N.B. From Reference 2, Beatson and Greengard
+}% end frame
+
+
+
+\section{Summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Comparison of FFT and FMM}
+% Requires the booktabs if the memoir class is not being used
+\begin{table}[htbp]
+   \centering
+   %\topcaption{Table captions are better up top} % requires the topcapt package
+   \begin{tabular}{@{} lcr @{}} % Column formatting, @{} suppresses leading/trailing space
+      \toprule
+%      \cmidrule(r){1-2} % Partial rule. (r) trims the line a little bit on the right; (l) & (lr) also possible
+      Property   & FFT & FFM \\
+      \midrule
+      Work         & $5N \log N$             & $N \log N$ \\
+      Accuracy   & exact                       & approximate \\
+      Domain     & uniform spatial grid  & any \\
+      Based on  & Algebra                   & Analytics \\
+      \bottomrule
+   \end{tabular}
+   \caption{Comparison of FFT with FMM}
+   \label{tab:booktabs}
+\end{table}
+
+}% end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{References}
+
+\begin{itemize}
+\item {\bf A Fast Algorithm for Particle Simulations}, L. Greengard and V. Rokhlin, J. Comp. Phys. 73, 325-348, 1987
+\item {\bf A Short Course on Fast Multipole Methods}, R. Beatson and L. Greengard
+\item {\bf A Short Primer on the Fast Multipole Method}, Vikas Chandrakant Raykar, vikas@umiacs.umd.edu
+\end{itemize}
+
+}% end frame
+
+\end{document}

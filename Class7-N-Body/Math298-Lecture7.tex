@@ -40,16 +40,17 @@
  }
  
 \title[Math 298]{Math 298 \\
-Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{Lecture 7}
+Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{Lecture 7: N-Body Methods}
 \author[Juan Meza]{Juan Meza \\ School of Natural Sciences \\ University of California, Merced}
-\date[October 14, 2013]{}
+\date[October 21, 2013]{}
 \institute[UC Merced]
 
 \pgfdeclareimage[height=0.35cm]{UCM-logo}{UCM-logo}
 % \logo{\pgfuseimage{UCM-logo}}
-
+\pgfdeclareimage[width=0.7\textwidth]{galaxy}{galaxy}
 %% figures
 
+% My LaTeX definitions with some common abbreviations
 \input{latex-defs}
 
 \definecolor{navy}{RGB}{0,0,128}
@@ -70,8 +71,6 @@ Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{Lec
 \setbeamercolor{blackcyan}{fg=black,bg=cyan}
 
 
-
-
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -85,58 +84,133 @@ Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{Lec
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{N-Body methods}
 
+\begin{columns}
+\column{.5\textwidth}
 \begin{itemize}
 \item Involve computation of interactions between N-bodies/particles
 \item Examples arise in molecular dynamics, gravitation, electrostatics, etc.
 \item Also useful for solution of boundary value problems,  biharmonic equations, Poisson equation, etc.
-\item Algorithms typically $\mathcal{O}(N^2)$ 
 \end{itemize}
+\column{.5\textwidth}
+	\pgfputat{\pgfxy(0,-4.0)}{\pgfbox[left,base]{\pgfuseimage{galaxy}}}
+\end{columns}
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Motivation}
+\frame{\frametitle{N-Body Problem Description}
 
+Want to compute sums of the following form:
+\begin{equation}
+u(x) = \sum^N_{i=1} w_i K(x,y_i), \label{eq:nbody}
+\end{equation}
+where
 \begin{itemize}
-\item For large $N$, standard algorithms take too long
-\item Forces can usually be broken down into ``short-range" and ``long-range"
-\item Can we take advantage of this to develop faster algorithms?
+\item $x_i, i=1, \ldots, N$ are called the {\color{navy} source} points
+\item $y_j, j=1, \ldots, N$ are called the {\color{navy} target} points
+\item $w_i$ are source weights
+\item $K(x,y_i)$ is called the kernel, e.g. potential function
 \end{itemize}
-
+\vspace{.25in}
+\remark: A straightforward algorithm would appear to be $\bigO (N^2)$ 
 } % end frame
 
 
 \section{Examples}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Gravitation}
+\frame{\frametitle{N-Body problem of gravitation}
 
+The gravitational potential is given by 
 $$
-\Phi(x_j) = \sum^{N}_{i=1, i \neq j} \frac{m_i}{r_{ij}}
+\Phi(x_j) = \sum^{N}_{\substack{
+i=1 \\
+i \neq j}} \frac{m_i}{r_{ij}}
 $$
-and
+and the gravitational field $E$ by:
 $$
-E(x_j) = \sum^{N}_{i=1, i \neq j} m_i \frac{x_j - x_i}{r^{3}_{ij}}
+E(x_j) = \sum^{N}_{\substack{
+i=1 \\
+i \neq j}} m_i \frac{x_j - x_i}{r^{3}_{ij}}
 $$
+
+\remark Same equations applicable to electrostatics
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{N-Body Problem (Short Detour)}
+
+Recall one such problem from our previous class, i.e. the FFT:
+$$
+u_j = \sum^N_{k=1} e^{2\pi i j k / N}w_k ,
+$$
+for $j = 1, \ldots, N.$ \\
+\vspace{.25in}
+What is the complexity for such an algorithm?
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Finite Rank/Degenerate Kernels}
+
+First consider a kernel which can be written as:
+$$
+K(x,y) =  \sum^p_{k=1} \phi_k(x) \psi_k(y). 
+$$
+These are called {\color{forestgreen} finite rank or degenerate} kernels.  \\
+We can reduce our original problem Eq (\ref{eq:nbody}) to the following 2-step procedure.
+\begin{enumerate}
+\item Compute $A_k = \sum^N_{i=1} w_i \psi_k (y)$
+\item Evaluate $u(x) = \sum^p_{k=1} A_k \phi_k (x)$
+\end{enumerate}
+\vspace{.25in}
+What was the complexity for such an algorithm?
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Class Participation}
+
+Question:
+\vspace{.5in}
+
+Can you think of another example where you might be able to use this idea?
+
+\vspace{.5in}
+Answer:
+
 } % end frame
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{2 Key Ideas}
+\frame{\frametitle{Motivation}
 
+Like many other problems first take a look at the structure of the problem
 \begin{itemize}
-\item Replace group of distant particles by one ``pseudo-particle"
+\item Forces can usually be broken down into ``short-range" and ``long-range"
+\item Can we take advantage of this to develop faster algorithms?
+\end{itemize}
+\vspace{.25in}
+2 Key Ideas
+\begin{enumerate}
+\item Replace group of ``distant'' particles by one ``pseudo-particle"
 \item Decompose space into a hierarchy of areas that are suitably ``distant"
-\end{itemize}
+\end{enumerate}
 
 } % end frame
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Replacing group of particles}
+\frame{\frametitle{Replacing group of particles: multipole expansion}
 
-General Principle
-\begin{itemize}
-\item Standard method is to use a multipole expansion
-\end{itemize}
 
+Example: Electrostatic Potential due to a set of charges $q_i$ located at $x_i$\\
+\vspace{.15in}
+Want \\
+$$ K(y-x) = \frac{1}{|y - x|} \approx \sum_{k=0}^{p} \phi_k(x) \psi_k(y)$$
+which is given by
+$$
+ \frac{1}{|y - x|} = \frac{1}{|y|} \sum_{n=0}^{\infty} P_n(\cos \theta) \left ( \frac{|x|}{|y|} \right )^n
+$$
+where $P_n(\cos \theta)$ are the Legendre polynomials.\\
+\vspace{.15in}
+{\color{forestgreen} N.B.} Series is convergent for $v = \frac{|x|}{|y|} < 1 $ 
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -150,6 +224,20 @@ General Principle
 \end{itemize}
 
 }% end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Four key features of an FMM code}
+
+\begin{itemize}
+\item A specified acceptable accuracy
+\item A hierarchical subdivision of space into panels or clusters of sources
+\item A far field expansion of the kernel in which the influence of source and evaluation of points separates
+\item (Optional) Conversion of far field expansions into local expansions
+\end{itemize}
+N.B. From Reference 2, Beatson and Greengard
+}% end frame
+
 
 
 \section{Summary}
@@ -180,9 +268,9 @@ General Principle
 \frame{\frametitle{References}
 
 \begin{itemize}
-\item {\bf An Algorithm for the Machine Calculation of Complex Fourier Series}, James W. Cooley and John W. Tukey, Math. Comp. 19, 297-301, 1965
-\item {\bf Spectral Methods in Matlab}, Lloyd N. Trefethen, SIAM 2000.
-\item {\bf Computational Frameworks for the Fast Fourier Transform}, Charles Van Loan, SIAM,  1992.
+\item {\bf A Fast Algorithm for Particle Simulations}, L. Greengard and V. Rokhlin, J. Comp. Phys. 73, 325-348, 1987
+\item {\bf A Short Course on Fast Multipole Methods}, R. Beatson and L. Greengard
+\item {\bf A Short Primer on the Fast Multipole Method}, Vikas Chandrakant Raykar, vikas@umiacs.umd.edu
 \end{itemize}
 
 }% end frame
