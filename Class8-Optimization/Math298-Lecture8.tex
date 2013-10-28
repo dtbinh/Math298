@@ -163,7 +163,7 @@ We will consider the {\color{red} model-based} approach
 
 } % end frame
 
-\section{Background}
+\section{Examples}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Example 1}
@@ -204,10 +204,31 @@ $$
 
 } % end frame
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Theory}
+
+\begin{itemize}
+\item Under some fairly standard assumptions one can show convergence for Newton's method applied to NLE
+\begin{itemize}
+\item $F(x)$ is continuously differentiable
+\item A solution $\xstar$ exists s.t. $F(\xstar) = 0$
+\item $J(x)$ is Lipschitz continuous and $J(\xstar)^{-1}$ exists
+\end{itemize}
+
+\item For Newton's method one can show quadratic convergence, i.e.
+$$
+|| x_{k+1} - \xstar || \leq C || x_{k} - \xstar ||^2
+$$
+\item For variations on Newton's method still have fast convergence, i.e. superlinear convergence
+$$
+$$
+\end{itemize}
+
+} % end frame
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Some useful information}
+\frame{\frametitle{Practicalities}
 
 \begin{itemize}
 \item Many variations of based optimization based on problem characteristics
@@ -218,7 +239,7 @@ $$
       \item Stochastic
       \item $\ldots$
    \end{itemize}
-\item Many Science and Engineering problems do not have the usual analytic assumptions
+\item Many science and engineering problems do not have the usual analytic assumptions
    \begin{itemize}
      \item Smoothness
      \item Availability of derivatives
@@ -248,6 +269,34 @@ Starter questions
 
 } % end frame
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Advantages/Disadvantages of Newton's Method}
+% Requires the booktabs if the memoir class is not being used
+\begin{table}[htbp]
+   \centering
+   %\topcaption{Table captions are better up top} % requires the topcapt package
+   \begin{tabular}{@{} l @{}} % Column formatting, @{} suppresses leading/trailing space
+      \toprule
+%      \cmidrule(r){1-2} % Partial rule. (r) trims the line a little bit on the right; (l) & (lr) also possible
+      {\bf Advantages}\\
+      \midrule
+	1. $q$-quadratic convergence if $J(\xstar)$ is nonsingular \\
+	2. superlinear convergence for other variations of Newton's method \\
+	3. Exact solution in 1 iteration for affine F \\
+      \midrule
+      {\bf Disadvantages} \\
+      \midrule
+      1. Not globally convergent for all problems \\
+      2. Requires $J(x_k)$ at each iteration \\
+      3. Need solution to system of linear equations at each iteration \\
+      \bottomrule
+         \end{tabular}
+   \caption{Newton's method}
+   \label{tab:NM}
+\end{table}
+{\tiny {\it Numerical Methods for Unconstrained Optimization and Nonlinear Equations}, J.E. Dennis, Jr. and Robert B. Schnabel, Prentice-Hall}
+}% end frame
+
 \section{Summary}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Summary}
@@ -257,6 +306,7 @@ Starter questions
 \item Most practical problems do not lend themselves easily to standard set of assumptions
 \end{itemize}
 }% end frame
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{References}
