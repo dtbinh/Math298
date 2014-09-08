@@ -27,16 +27,17 @@
 
 \usepackage{amssymb,amsmath}
 \hypersetup{%
- pdftitle={Math298 Lecture1},
+ pdftitle={Math298 Lecture 1},
  pdfauthor={Juan Meza(UC Merced)},
  pdfsubject={Math298},
  pdfkeywords={computational mathematics}
  }
  
-\title[Math 298]{Math 298 \\
+\title[Math 298 Lecture 1]{
 Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{}
-\author[Juan Meza]{Juan Meza, School of Natural Sciences, University of California, Merced}
-\date[Fall 2014]{Fall 2014}
+\author[Juan Meza]{Juan Meza \inst{1}}
+\institute{School of Natural Sciences, University of California, Merced}
+\date[Fall 2014]{Math 298 Fall 2014}
 \institute[UC Merced]
 
 %\pgfdeclareimage[height=0.35cm]{UCM-logo}{UCM-logo}
@@ -63,9 +64,6 @@ Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{}
 \setbeamercolor{blacklightsalmon}{fg=black,bg=mylightsalmon}
 \setbeamercolor{blackcyan}{fg=black,bg=cyan}
 
-
-
-
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -84,8 +82,10 @@ Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{}
 \item Highlight some of the classic NA papers and algorithms.
 \item Demonstrate use of these concepts in real world applications.
 \end{itemize}
+
+\vspace{.5in}
 \begin{block}{Disclaimer}
-Please note that we will not be able to go into any one subject in much depth.
+Please note that we will not be able to go into any one subject in much depth. This course is a whirlwind tour of the fundamentals.
 \end{block}
 } % end frame
 
@@ -95,10 +95,10 @@ Please note that we will not be able to go into any one subject in much depth.
 
 \begin{itemize}
 
-\item Be familiar with key mathematical concepts used in developing numerical algorithms.
+\item Be familiar with key mathematical concepts and computational frameworks used in developing numerical algorithms.
 \item Understand some of the basic skills and resources necessary to start research in computational and applied mathematics.
 \item Be aware of basic communications skills needed to present mathematics clearly to a
-  broad audience in writing and in speaking.
+  broad audience in writing and in speech.
 \end{itemize}
 
 } % end frame
@@ -125,17 +125,17 @@ Please note that we will not be able to go into any one subject in much depth.
 \end{itemize} 
 } % end frame
 
-
+\section{Classics, Dwarfs, Motifs}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Nick Trefethen's 13 Classic Numerical Analysis Papers.}
 
-\begin{enumerate}
+\begin{itemize}
 \item Cover some of the most important NA papers in the last 60 years 
-\item Cover most of the areas mentioned above
-\item It is your responsibility to be be familiar with all of them
-\item Note: Copies have all of these have been uploaded into CROPS
+\item Cover most of the areas mentioned in the next 3 slides
+\item It is your responsibility to be familiar with all of the papers
+\item Note: Copies of all of these have been uploaded into CROPS
 
-\end{enumerate} 
+\end{itemize} 
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -145,11 +145,13 @@ Please note that we will not be able to go into any one subject in much depth.
 \item Dense linear algebra
 \item Sparse line algebra
 \item Spectral methods (Fast Fourier transform)
-\item N-body methods (Particle)
+\item N-body (particle) methods 
 \item Structured grids
 \item Unstructured grids
 \item Monte Carlo
 \end{enumerate} 
+\vspace{.5in}
+
 {\bf Defining Software Requirements for Scientific Computing}, P. Colella, DARPA presentation, 2004.
 } % end frame
 
@@ -196,43 +198,44 @@ Please note that we will not be able to go into any one subject in much depth.
 
 \begin{itemize}
 \item Difference between infinite precision and computer arithmetic
-\item You will always make an error when approximating a mathematical object on a computer
-\item One of the major types of errors is discretization(truncation), which is the difference between the solution of the discrete problem and the exact solution of the mathematical object
-\item Example: Suppose you have a function defined by an infinite series and you ``truncate" it at some point, e.g.
+\item You will almost always make an error when approximating a mathematical object on a computer
+\item One of the major types of errors is discretization(truncation), which is the difference between the solution of the discrete problem and the exact solution (representation) of the mathematical object
+\end{itemize}
+} % end frame
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Finite Precision}
+
+\begin{example}
+Suppose you have a function defined by an infinite series and you ``truncate" it at some point, e.g.
 \begin{eqnarray*}
 \exp(x) &=& 1 + x + \frac{x^2}{2!} +  \frac{x^3}{3!} + \ldots \\
 &\approx& 1 + x
 \end{eqnarray*}
-\end{itemize}
+\end{example}
 
 \begin{block}{Discussion:}
-How many terms in the series should we use?
+How many terms in the series should we use? Are all values of $x$ the same?
 \end{block}
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Finite Precision}
 
-\begin{itemize}
-\item Example
-
+\begin{example}
 \begin{equation*}
 f^{\prime} (x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} 
 \end{equation*}
-\end{itemize}
-
-\begin{itemize}
-\item How do we pick $h$ to get the best approximation? \pause
-\end{itemize}
+\end{example}
 
 \begin{block}{Discussion:}
+How do we pick $h$ to get the best approximation? 
 What value of h should we choose?
 \end{block}
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Finite Precision Example: $f(x) = sin(x),$ where $x = $}
+\frame{\frametitle{Finite Precision Example: $f(x) = \sin(x),$ where $x = $}
 
 \pgfputat{\pgfxy(0.0,-4.6)}{\pgfbox[left,base]{\pgfimage[width=0.85\textwidth]{Rplot01.pdf}}}
 
@@ -241,16 +244,18 @@ What value of h should we choose?
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Finite Precision}
 
-\begin{itemize}
-\item Example
+{\Large Important Lesson:\\
+\vspace{.25in} Don't solve an approximate problem too exactly!}
 
-\begin{equation*}
-f^{\prime} (x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} 
-\end{equation*}
+\vspace{.5in}
 
-\item Lesson: Don't solve an approximate problem too exactly
-\item {\color{red}Rule of Thumb:} Choose $h$ to perturb about half of the digits in $x$.
-\end{itemize}
+\begin{block}{Rule of Thumb}
+To approximate 
+\begin{equation*} f^{\prime} (x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} \end{equation*}
+choose $h$ to perturb about half of the digits in $x$.
+\end{block}
+
+
 
 } % end frame
 
@@ -277,17 +282,20 @@ Reference: {\bf High-Precision Floating-Point Arithmetic in Scientific Computati
 
 \begin{itemize}
 \item Suppose we would like to know how perturbing $x$ will affect the value of $y = f(x)$
-\item Define 
+\begin{definition} [Condition Number]
 \begin{equation*}
 \kappa_f(x) = \frac{| x| \cdot | f^{\prime}(x)|}{| f(x)|}
 \end{equation*}
+\end{definition}
 \item Then
 \begin{equation*}
 \frac{| \hat{y} - y |}{|y|} \approx \kappa_f(x) \cdot \frac{| \hat{x} - x |}{|x|}
 \end{equation*}
-\item Fact: $-\log_{10} ( $relative error$) \approx $ \# decimal digits to which two numbers agree! 
+\item Fact: \# decimal digits to which two numbers agree $ \approx -\log_{10} ( $relative error$) $ 
 \end{itemize}
-{\color{red} Rule of thumb:}You will lose approximately $\log_{10} (\kappa_f(x))$ decimal digits
+\begin{block}{Rule of Thumb}
+You will lose approximately $\log_{10} (\kappa_f(x))$ decimal digits when computing anything
+\end{block}
 
 } % end frame
 
@@ -295,17 +303,18 @@ Reference: {\bf High-Precision Floating-Point Arithmetic in Scientific Computati
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Stability}
 \begin{itemize}
-\item Informal definition of stability.  An algorithm for computing $f(x)$ is {\it stable} if it returns a $\hat{y}$ that satisfies:
+\item Informal definition of stability.  An algorithm for computing $\hat{y} = f(x)$ is {\it \bf stable} if it returns a $\hat{y}$ that satisfies:
 \begin{equation*}
-\frac{| \hat{y} - y |}{|y|} \approx \kappa_f(x) \cdot \frac{| \hat{x} - x |}{|x|}
+\frac{| \hat{y} - y |}{|y|} \approx \kappa_f(x) \cdot \frac{| \hat{x} - x |}{|x|} .
 \end{equation*}
 
-\item Question:  What do you think of the following algorithm for computing $\exp(x)$? \pause
+\begin{block}{Discussion:}
+What do you think of the following algorithm for computing $\exp(x)$?
 \begin{equation*}
 \exp(x) = 1 + x + \frac{x^2}{2!} +  \frac{x^3}{3!} + \ldots 
-\end{equation*} \pause
+\end{equation*}
+\end{block}
 
-\item Discussion
 
 \end{itemize}
 
@@ -318,15 +327,19 @@ Reference: {\bf High-Precision Floating-Point Arithmetic in Scientific Computati
 
 \begin{itemize}
 \item Beware catastrophic cancellation - know limits of precision
-\item Ask about conditioning of a problem
+\item Learn about the conditioning of a problem
 \item Choose stable algorithms so as to not introduce any more loss of precision than is necessary
-\item {\color{red} Conditioning} is fundamentally a characteristic of the problem, while {\color{red} stability} is related to algorithms.
+\item Always remember
+\begin{itemize}
+	\item {\color{red} Conditioning} is fundamentally a characteristic of the problem while
+	\item {\color{red} Stability} is related to algorithms
+	\end{itemize}
 \end{itemize}
 
 }% end frame
 
 \begin{frame}[allowframebreaks]
-  \frametitle<presentation>{References}    
+  \frametitle<presentation>{Further Reading}    
   \begin{thebibliography}{10}    
   \beamertemplatebookbibitems
  \bibitem{Ov01}
@@ -337,7 +350,7 @@ Reference: {\bf High-Precision Floating-Point Arithmetic in Scientific Computati
  \bibitem{Go91}
  D.~Goldberg.
   \newblock What Every Computer Scientist Should Know About Floating Point Arithmetic
- \newblock Computing Surveys,  ACM, March 1991.
+ \newblock Computing Surveys,  ACM, Vol. 23, No. 1, pp. 5--48, 1991.
  \beamertemplatearticlebibitems
  \bibitem{Ba05}
  D.H.~Bailey.

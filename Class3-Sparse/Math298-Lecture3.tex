@@ -1,6 +1,6 @@
-\documentclass[mathserif,notes]{beamer}
+\documentclass[mathserif,handout]{beamer}
 \usepackage{mybeamertheme}
-%\usepackage{pdfsync} % works only on TeXShop, comment otherwise
+\usepackage{pdfsync} % works only on TeXShop, comment otherwise
 \usepackage{pgf}
 \usepackage{multimedia} % to embed movies in the PDF file
 \usepackage{xcolor}
@@ -23,7 +23,8 @@
 }
 %\usepackage[T1]{fontenc}
 % For printing purposes only
-%\pgfpagesuselayout{4 on 1}[letterpaper,border shrink=5mm,landscape]
+\pgfpagesuselayout{4 on 1}[letterpaper,border shrink=5mm,landscape]
+%\pgfpagesuselayout{resize to}[letterpaper,border shrink=5mm,landscape]  % print out full size on paper
 
 \usepackage{amssymb,amsmath}
 \hypersetup{%
