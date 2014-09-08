@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 \beamer@endinputifotherversion {3.33pt}
+=======
+\beamer@endinputifotherversion {3.07pt}
+>>>>>>> FETCH_HEAD
 \beamer@sectionintoc {1}{Introduction}{2}{0}{1}
 \beamer@sectionintoc {2}{SIM}{7}{0}{2}
 \beamer@sectionintoc {3}{Applications}{9}{0}{3}

@@ -1,0 +1,56 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{Math 298: Directed Group Study\\ {\normalsize Fundamental Concepts in Computational and Applied Mathematics }}
+%\author{Juan C. Meza}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+{\bf Instructions:} This is a self-assessment quiz for your own use.  Give yourself 1 point for each question correctly answered.  For maximum benefit I suggest taking the quiz without reviewing the class lecture slides.  
+\vspace{.25in}
+\begin{enumerate}
+\item Define {\it stability} and {\it conditioning}.  Describe the difference between the two concepts and how they are related to numerical problems and algorithms. 
+\vspace{2.5in}
+\item Suppose we have a problem with a condition number, $\kappa = 10^6$.  What can we say about the accuracy of our computed solution?
+\vspace{2.5in}
+\item Suppose we have to solve, $Ax=b$, where the matrix $A$ is {\it dense}.  Give some advantages and disadvantages of using the following three methods: LU, LU with partial pivoting, QR.
+\vspace{2.5in}
+\item What do we mean by a {\it sparse matrix}?
+\vspace{2.5in}
+\item What is meant by an {\it iterative method}  for solving a system of linear equations as opposed to a {\it direct} method?
+\vspace{2.5in}
+\item What is a {\it splitting method} for solving a system of linear equations? Give an example.
+\vspace{2.5in}
+\item What is the defining characteristic of a {\it structured grid}?  Give one example where you would use a structured grid.
+\vspace{2.5in}
+\item What is a {\it stencil}?  
+\vspace{2.5in}
+\item What do we mean by an {\it unstructured grid}?   Give one example where using an unstructured grid would be appropriate.
+\vspace{2.5in}
+\item What is an {\it FFT}?  Give one example of where and how it might be used.
+\vspace{2.5in}
+\item What is an $N-$body problem and where do they arise? What principle is used to improve the computational efficiency of standard algorithms for $N-$body problems?
+\vspace{2.5in}
+\item What is meant by a {\it model-based} approach for solving a system of {\it nonlinear equations}?
+\vspace{2.5in}
+\item What is the main idea underlying {\it Newton's} method for solving nonlinear equations?  
+\vspace{2.5in}
+\item Give some advantages and disadvantages of Newton's method for the solution of either nonlinear equations or optimization?  
+\vspace{2.5in}
+\item What are the 3 key elements of a good talk?
+\vspace{2.5in}
+\item Name one common mistake when giving a talk?
+\vspace{2.5in}
+\item What was your favorite algorithm or NA Classics paper that we discussed in class?
+\vspace{2.5in}
+\end{enumerate}
+
+\end{document}  
