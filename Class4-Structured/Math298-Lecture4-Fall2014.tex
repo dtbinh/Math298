@@ -1,0 +1,254 @@
+\documentclass[mathserif,handout]{beamer} % Math 298 Fall 2014
+\usepackage{mybeamertheme}
+\usepackage{pdfsync} % works only on TeXShop, comment otherwise
+\usepackage{pgf}
+\usepackage{multimedia} % to embed movies in the PDF file
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{pgfpages}
+\usepackage{topcapt}
+\usepackage{booktabs}
+
+% for the tikz pictures
+\usepackage{geometry}
+\geometry{hmargin=1cm,vmargin=1cm}
+\usepackage{tikz}
+\def\width{5}
+\def\hauteur{5}
+
+\mode<presentation>
+{
+  \usetheme{Madrid}   %  \usetheme{Warsaw}
+  % Note: this next command makes nice slides, but Adobe doesn't like it (you get blank pages)
+  \setbeamertemplate{background canvas}[vertical shading][bottom=white,top=structure.fg!15]
+  %\setbeamertemplate{footline}{\pgfuseimage{UCM-logo}}
+
+  %\usecolortheme{seahorse}
+  \usecolortheme{beaver}
+ % \setbeamercovered{transparent}
+}
+%\usepackage[T1]{fontenc}
+% For printing purposes only
+%\pgfpagesuselayout{4 on 1}[letterpaper,border shrink=5mm,landscape]  % print out 4 slides to a page
+\pgfpagesuselayout{resize to}[letterpaper,border shrink=5mm,landscape]  % print out full size on paper
+  
+\usepackage{amssymb,amsmath}
+\hypersetup{%
+ pdftitle={Math298 Lecture 4},
+ pdfauthor={Juan Meza(UC Merced)},
+ pdfsubject={Fundamental Concepts in Computational and Applied Mathematics},
+ pdfkeywords={linear algebra, sparse, structured grids}
+ }
+ 
+\title[Math 298 Lecture 4]{Math 298 \\
+Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{}
+\author[Juan Meza]{Juan Meza \\ School of Natural Sciences \\ University of California, Merced}
+\date[Fall 2014]{Fall 2014}
+\institute[UC Merced]
+
+\pgfdeclareimage[height=0.35cm]{UCM-logo}{UCM-logo}
+\pgfdeclareimage[width=0.8\textwidth]{Hurricane}{Hurricane}
+\pgfdeclareimage[width=0.55\textwidth]{Uniform}{ParaView_UG_Uniform}
+\pgfdeclareimage[width=0.55\textwidth]{Curve}{ParaView_UG_Curvilinear}
+\pgfdeclareimage[width=0.55\textwidth]{Rect}{ParaView_UG_Rectilinear}
+\pgfdeclareimage[width=0.55\textwidth]{AMR}{ParaView_UG_AMR}
+% \logo{\pgfuseimage{UCM-logo}}
+
+%% figures
+
+\input{latex-defs}
+
+\definecolor{navy}{RGB}{0,0,128}
+\definecolor{forestgreen}{RGB}{34,139,34}
+\definecolor{mylightsteelblue}{RGB}{176,196,222}
+\definecolor{mylightcyan}{RGB}{180,255,255}
+\definecolor{mypaleturquoise}{RGB}{175,238,238}
+\definecolor{mylightgoldenrod}{RGB}{250,250,210}
+\definecolor{mylightyellow}{RGB}{255,255,224}
+\definecolor{mylightsalmon}{RGB}{255,160,122}
+
+\setbeamercolor{blacklightsteelblue}{fg=black,bg=mylightsteelblue}
+\setbeamercolor{blackpaleturquoise}{fg=black,bg=mypaleturquoise}
+\setbeamercolor{blacklightcyan}{fg=black,bg=mylightcyan}
+\setbeamercolor{blacklightgoldenrod}{fg=black,bg=mylightgoldenrod}
+\setbeamercolor{blacklightyellow}{fg=black,bg=mylightyellow}
+\setbeamercolor{blacklightsalmon}{fg=black,bg=mylightsalmon}
+\setbeamercolor{blackcyan}{fg=black,bg=cyan}
+
+
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+
+\titlepage
+
+} % end frame
+
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Structured Grids}
+
+\begin{itemize}
+\item Some terminology
+\begin{itemize}
+\item cells, elements; triangles, quads, tetrahedrons, hex
+\item node, vertex
+\item edge, face
+\end{itemize}
+
+\item Properties
+\begin{itemize}
+\item quality of mesh
+\item degeneracy
+\item dof
+\end{itemize}
+
+\end{itemize}
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Structured Grid Examples}
+
+\begin{columns}[t]
+\column{.5\textwidth}
+Uniform Grid
+\begin{itemize}
+\item Simplest of all structured grids, $(i,j,k)$ indexing
+\item Easy formula determining location of all nodes
+\item What are the advantages/disadvantages?
+\end{itemize}	
+\column{.5\textwidth}
+		\pgfputat{\pgfxy(-.5,-4.0)}{\pgfbox[left,base]{\pgfuseimage{Uniform}}}
+\end{columns}
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Structured Grid Examples}
+
+\begin{columns}[t]
+\column{.5\textwidth}
+Rectilinear Grid
+\begin{itemize}
+\item Similar to uniform grid
+\item What is the main advantage here?
+\item What are the disadvantages?
+\end{itemize}	
+\column{.5\textwidth}
+		\pgfputat{\pgfxy(-0.5,-4.0)}{\pgfbox[left,base]{\pgfuseimage{Rect}}}
+\end{columns}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Structured Grid Examples}
+
+
+\begin{columns}[t]
+\column{.5\textwidth}
+Curvilinear Grid
+\begin{itemize}
+\item Note that each node still has the same number of neighbors
+\item What is the main advantage here?
+\item What are the disadvantages?
+\end{itemize}	
+\column{.5\textwidth}
+	\pgfputat{\pgfxy(-0.5,-4.0)}{\pgfbox[left,base]{\pgfuseimage{Curve}}}
+\end{columns}
+
+
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Structured Grid Examples}
+
+\begin{columns}[t]
+\column{.5\textwidth}
+Adaptive Mesh Refinement Grid
+\begin{itemize}
+\item Block structured
+\item Solves problem of having too much resolution in places that you don't need it
+\item Software is more complicated
+\item Error analysis more difficult
+\end{itemize}	
+\column{.5\textwidth}
+	\pgfputat{\pgfxy(-0.5,-4.0)}{\pgfbox[left,base]{\pgfuseimage{AMR}}}
+\end{columns}
+
+} % end frame
+
+\section{SIM}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Properties of Structured Grids}
+
+\begin{itemize}
+
+\item Number of adjacent mesh elements is always the same
+\item Generally more accurate per dof
+\item Convergence of algorithms (linear solvers) usually faster
+\item Better data layout, which is good for computation
+\end{itemize}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{5-Point Stencil}
+
+\begin{columns}[c]
+\begin{column}{.4\textwidth}
+5-point stencil
+\begin{itemize}
+\item Simplest 2-D case
+\item Leads directly to a sparse (penta-diagonal) matrix
+\item Easy to solve with iterative methods
+\end{itemize}
+\end{column}
+
+\begin{column}{.6\textwidth}
+\begin{tikzpicture}[x=1cm, y=1cm, semitransparent]
+%\draw[step=1mm, line width=0.1mm, black!30!white] (0,0) grid (\width,\hauteur);
+%\draw[step=5mm, line width=0.2mm, black!40!white] (0,0) grid (\width,\hauteur);
+%\draw[step=5cm, line width=0.5mm, black!50!white] (0,0) grid (\width,\hauteur);
+\draw[step=1cm, line width=0.5mm, black!50!white] (-1,-1) grid (\width,\hauteur);
+    \coordinate (u0) at (2,2);
+    \coordinate (u1) at (2,1);
+    \coordinate (u2) at (1,2);
+    \coordinate (u3) at (3,2);
+    \coordinate (u4) at (2,3);
+    \fill[red] (u0) circle (2pt);
+    \fill[red] (u1) circle (2pt);
+    \fill[red] (u2) circle (2pt);
+    \fill[red] (u3) circle (2pt);
+    \fill[red] (u4) circle (2pt);
+\end{tikzpicture}
+\end{column}
+\end{columns}
+
+} % end frame
+
+
+\section{Applications}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Structured Grid Applications: Climate Modeling}
+
+\pgfputat{\pgfxy(0.0,-4.0)}{\pgfbox[left,base]{\pgfuseimage{Hurricane}}}
+
+} % end frame
+
+\section{Summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Summary}
+
+\begin{itemize}
+\item Structured grids exist in many shapes and forms
+\item Well developed and well understood methods available
+\item Work extremely well on parallel and other high performance computing environments
+\end{itemize}
+
+}% end frame
+
+\end{document}

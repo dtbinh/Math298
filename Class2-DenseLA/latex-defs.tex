@@ -1,0 +1,160 @@
+
+
+
+
+
+% Common abbreviations
+% (Remember to put '\ ' after if an interword space is
+%  desired rather than end-of-sentence space. Same for '.etc)' ).
+\newcommand{\eg}{{\em e.g.}}		% e.g.
+\newcommand{\ie}{{\em i.e.}}		% i.e.
+\newcommand{\etc}{{\em etc.}}		% etc.
+\newcommand{\vs}{{\em vs.}}		% vs.
+
+
+
+\newcommand {\DS} {\displaystyle}
+\newcommand{\eref}[1]{{\rm{(\ref{#1})}}}
+\newcommand{\tref}[1]{{\rm{\ref{#1}}}}
+
+
+\def\frechet{Fr\'echet\ }
+\def\more{Mor\'e\ }
+\def\fl{{\sf fl}}
+\def\flop{{\sf flop} }
+\def\flops{{\sf flops} }
+\def\matlab{{\sc Matlab} }
+\def\Matlab{\matlab}
+
+
+
+% Mathematical Symbols
+
+\newcommand{\deq}{\raisebox{0pt}[1ex][0pt]{$\stackrel{\scriptscriptstyle{\rm def}}{{}={}}$}}
+
+
+\newcommand {\half} {\mbox{$\frac{1}{2}$}}  %machine epsilon
+\newcommand{\set}[2]{\left\{ #1 \;:\; #2 \right\}}
+
+
+\newcommand {\macheps} {\mathbf{\epsilon}}  %machine epsilon
+\newcommand {\real} {\mathbb{R}}
+\newcommand {\nat} {\mathbb{N}}
+\newcommand {\compl} {\mathbb{C}}
+\newcommand {\diag} {{\mbox{diag}}}
+\newcommand {\meas} {{\mbox{meas}}}
+\newcommand {\mspan} {{\mbox{span}}}
+
+\newcommand {\pdx} {\frac{\partial}{\partial x}}
+\newcommand {\pdt} {\frac{\partial}{\partial t}}
+\newcommand {\pdxx} {\frac{\partial^2}{\partial x^2}}
+\newcommand {\dx} {\frac{d}{d x}}
+\newcommand {\dt} {\frac{d}{d t}}
+\newcommand {\dxx} {\frac{d^2}{d x^2}}
+
+\newcommand {\bA} {\mbox{\boldmath $A$}}
+\newcommand {\bB} {\mbox{\boldmath $B$}}
+\newcommand {\bF} {\mbox{\boldmath $F$}}
+\newcommand {\bI} {\mbox{\boldmath $I$}}
+\newcommand {\bP} {\mbox{\boldmath $P$}}
+\newcommand {\bY} {\mbox{\boldmath $Y$}}
+\newcommand {\bZ} {\mbox{\boldmath $Z$}}
+\newcommand {\ba} {\mbox{\boldmath $a$}}
+\newcommand {\bb} {\mbox{\boldmath $b$}}
+\newcommand {\bd} {\mbox{\boldmath $d$}}
+\newcommand {\bff}{\mbox{\boldmath $f$}}
+\newcommand {\bk} {\mbox{\boldmath $k$}}
+\newcommand {\bp} {\mbox{\boldmath $p$}}
+\newcommand {\bs} {\mbox{\boldmath $s$}}
+\newcommand {\bu} {\mbox{\boldmath $u$}}
+\newcommand {\bv} {\mbox{\boldmath $v$}}
+\newcommand {\bw} {\mbox{\boldmath $w$}}
+\newcommand {\bx} {\mbox{\boldmath $x$}}
+\newcommand {\by} {\mbox{\boldmath $y$}}
+\newcommand {\bz} {\mbox{\boldmath $z$}}
+\newcommand {\blambda} {\mbox{\boldmath $\lambda$}}
+\newcommand {\btau} {\mbox{\boldmath $\tau$}}
+
+%
+% JCM Quantum Chemistry commands
+%
+\newcommand{\bra}[1]{\langle #1|}
+\newcommand{\ket}[1]{|#1\rangle}
+\newcommand{\braket}[2]{\langle #1|#2\rangle}
+% Example of usage
+%\[
+%\ket{\Psi}=\sum_{i}\ket{\phi_i}\braket{\phi_i}{\Psi}
+%\]
+
+%
+% Other symbols
+%
+\newcommand {\grad}{\nabla}
+\newcommand {\hess}{\nabla^2}
+\newcommand {\condA}{\kappa(A)}
+
+
+\newtheorem{algorithm}{Algorithm}
+
+%
+
+% \boxfig{pos}{wid}{text}:  A figure with a box around it
+%
+% pos	the usual figure placement arg: eg. htbp
+% wid	the width of the figure, in some units: eg. 5in
+% text	the contents of the figure, including picture/caption/label/etc
+%
+\newlength{\boxwidth}
+\newcommand{\boxfigure}[3]{
+	\begin{figure}[#1]
+		\setlength{\boxwidth}{#2}
+		\addtolength{\boxwidth}{.1in}
+
+		\centering
+		\framebox[\boxwidth]{
+			\begin{minipage}{#2}
+			#3
+			\end{minipage}
+		}
+	\end{figure}  
+}
+
+% use \fullboxwidth for arg 2 of boxfigure to get box of size \textwidth
+
+
+% \boxalg{pos}{text}:  An algorithm with a box around it
+%
+% title  the name of the algorithm
+% text   the contents of the figure, including picture/caption/label/etc
+%
+\newcommand{\boxalg}[2]{
+            \setlength{\boxwidth}{\fullboxwidth}
+            \addtolength{\boxwidth}{.1in}
+            \vspace{2ex}
+            \framebox[\boxwidth][#1]{
+                    \vspace{1ex}
+                    \begin{minipage}{\fullinboxwidth}
+                        #2
+                    \end{minipage}
+                    \vspace{1ex}
+            }
+            \vspace{2ex}
+}
+
+
+
+
+
+
+% see above
+\newlength{\fullboxwidth}
+\setlength{\fullboxwidth}{\textwidth}
+\addtolength{\fullboxwidth}{-0.5in}
+
+\newlength{\fullinboxwidth}
+\setlength{\fullinboxwidth}{\fullboxwidth}
+\addtolength{\fullinboxwidth}{-0.5in}
+
+
+
+
