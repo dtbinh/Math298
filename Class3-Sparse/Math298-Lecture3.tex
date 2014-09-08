@@ -1,4 +1,4 @@
-\documentclass[mathserif,handout]{beamer}
+\documentclass[mathserif,handout]{beamer} % Math 298 Fall 2014
 \usepackage{mybeamertheme}
 \usepackage{pdfsync} % works only on TeXShop, comment otherwise
 \usepackage{pgf}
@@ -14,8 +14,8 @@
 {
   \usetheme{Madrid}   %  \usetheme{Warsaw}
   % Note: this next command makes nice slides, but Adobe doesn't like it (you get blank pages)
-  %\setbeamertemplate{background canvas}[vertical shading][bottom=white,top=structure.fg!15]
-  \setbeamertemplate{footline}{\pgfuseimage{UCM-logo}}
+  \setbeamertemplate{background canvas}[vertical shading][bottom=white,top=structure.fg!15]
+  %\setbeamertemplate{footline}{\pgfuseimage{UCM-logo}}
 
   %\usecolortheme{seahorse}
   \usecolortheme{beaver}
@@ -23,8 +23,8 @@
 }
 %\usepackage[T1]{fontenc}
 % For printing purposes only
-\pgfpagesuselayout{4 on 1}[letterpaper,border shrink=5mm,landscape]
-%\pgfpagesuselayout{resize to}[letterpaper,border shrink=5mm,landscape]  % print out full size on paper
+%\pgfpagesuselayout{4 on 1}[letterpaper,border shrink=5mm,landscape]
+\pgfpagesuselayout{resize to}[letterpaper,border shrink=5mm,landscape]  % print out full size on paper
 
 \usepackage{amssymb,amsmath}
 \hypersetup{%
@@ -34,13 +34,12 @@
  pdfkeywords={linear algebra, sparse, iterative}
  }
  
-\title[Math 298]{Math 298 \\
-Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{Lecture 3}
+\title[Math 298 Lecture 3]{Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{}
 \author[Juan Meza]{Juan Meza \\ School of Natural Sciences \\ University of California, Merced}
-\date[September 23, 2013]{}
+\date[Fall 2014]{Fall 2014}
 \institute[UC Merced]
 
-\pgfdeclareimage[height=0.35cm]{UCM-logo}{UCM-logo}
+%\pgfdeclareimage[height=0.35cm]{UCM-logo}{UCM-logo}
 % \logo{\pgfuseimage{UCM-logo}}
 
 %% figures
@@ -78,21 +77,21 @@ Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{Lec
 
 \section{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Sparse methods}
-
-\begin{itemize}
-\item Why would we use a sparse method
-\item Consider the following matrix
-\end{itemize}
-} % end frame
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Sparse Matrix Example}
-
+Consider the following matrix:
 \pgfputat{\pgfxy(0.0,-4.6)}{\pgfbox[left,base]{\pgfimage[width=0.6\textwidth]{SparseMatrix.pdf}}}
 
 } % end frame
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Sparse methods}
 
+\begin{itemize}
+\item Sparse matrices arise in many science and engineering applications
+\item Almost all discretization methods you will encounter will have a special structure
+\item Sparse methods take advantage of special structure in matrices to improve computational efficiency
+\end{itemize}
+} % end frame
 
 \section{SIM}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

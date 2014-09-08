@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 \beamer@endinputifotherversion {3.33pt}
-=======
-\beamer@endinputifotherversion {3.20pt}
->>>>>>> FETCH_HEAD
 \beamer@sectionintoc {1}{Introduction}{2}{0}{1}
 \beamer@sectionintoc {2}{SIM}{4}{0}{2}
 \beamer@sectionintoc {3}{CG}{7}{0}{3}
