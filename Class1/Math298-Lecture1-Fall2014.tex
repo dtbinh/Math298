@@ -235,11 +235,34 @@ What value of h should we choose?
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Finite Precision Example: $f(x) = \sin(x),$ where $x = $}
+\frame{\frametitle{Finite Precision Example: $f(x) = \sin(x), x = 1.0$}
 
 \pgfputat{\pgfxy(0.0,-4.6)}{\pgfbox[left,base]{\pgfimage[width=0.85\textwidth]{Rplot01.pdf}}}
+\pgfputat{\pgfxy(0.0,-4.6)}{\pgfbox[left,base]{\pgfimage[width=0.85\textwidth]{Lect1-fig1.png}}}
 
 } % end frame
+
+\begin{frame}[fragile]
+\frametitle{Python Code}
+\begin{semiverbatim}
+import numpy as np
+from numpy import *
+import matplotlib.pyplot as plt
+
+n = 20
+x = np.ones(n) # create an array of ones
+
+h0   = 0.1*np.ones(n)
+h    = h0**np.arange(n)    # create an array of increasingly 
+                           # smaller h values
+yhat = (sin(x+h) - sin(x))/h # compute finite difference
+err  = abs(yhat - cos(x))    # error in numerical approx.
+
+plt.loglog(h,err) # Plot the results
+plt.title('Error in derivative vs. h')
+plt.show
+\end{semiverbatim}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Finite Precision}
@@ -359,4 +382,22 @@ What do you think of the following algorithm for computing $\exp(x)$?
  \end{thebibliography}
 \end{frame}
 
+
 \end{document}
+
+\begin{frame}[fragile]
+\frametitle{Matlab Code}
+\begin{semiverbatim}
+x = 1.0; h = 1.0; n = 1;
+
+deriv = cos(x);
+
+while n <= 20;
+    h = h/10;
+    diffquo = (sin(x+h) - sin(x))/h;
+    error   = abs(cos(x) - diffquo);
+    fprintf('\%5.1e \%13.6e \%13.6e \\n', h, diffquo, error);
+    n = n + 1;
+end
+\end{semiverbatim}
+\end{frame}
