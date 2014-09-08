@@ -94,108 +94,94 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Dense Linear Algebra methods}
 
+Let $ x, y \in R^N$ and $A \in R^{N \times N}$
+
 \begin{itemize}
 \item Basic Linear Algebra
 \begin{itemize}
-\item dot products, matvec, sappy
+\item dot products: $x^T y$
+\item matvec: $Ax$
+\item saxpy: $ax + y$
 \item Solve $Ax=b$
 \item Solve $Ax = \lambda x$
 \end{itemize}
 \begin{block}{Rule of Thumb}
 We cannot solve anything except linear systems
 \end{block}
-
-\item Almost all discretization methods you will encounter will have a special structure
-\item Sparse methods take advantage of special structure in matrices to improve computational efficiency
+\begin{alertblock}{Warning}
+Never (EVER) solve a linear system by calculating the inverse of the matrix and multiplying!
+\end{alertblock}
+\end{itemize}
+}
+\frame{\frametitle{Linear Algebra methods}
+\begin{itemize}
+\item Various standard methods
+\begin{itemize}
+\item LU
+\item Cholesky
+\item QR
+\item SVD
+\end{itemize}
+\item All have advantages and disadvantages -- learn about them!
+\item Your choice will depend on the application, software availability, and time constraints
 \end{itemize}
 } % end frame
 
 \section{SIM}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Stationary Iterative Methods}
+\frame{\frametitle{Some Useful Definitions}
+
+\begin{definition}[Condition Number]
+The condition number of a matrix A is given by: $ \condA = || A || \cdot || A^{-1} ||$
+\end{definition}
+
+\begin{definition}[Residual]
+The residual of linear system is given by $b - Ax$
+\end{definition}
+
+\begin{definition}[Machine Precisions]
+The machine precision is denoted by $\mu$
+\end{definition}
+
+\begin{definition}
+A problem is said to be ill-conditioned if $\mu \kappa_\infty (A) \approx 1$
+\end{definition}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Fun Facts}
 
 \begin{itemize}
+\item Gaussian elimination always produces solutions with relatively small residuals (minor caveats)
 
-\item Based on splitting techniques
-\item Widely used in engineering, but have been superseded by more modern techniques
-\item Still useful in certain contexts, e.g. preconditioners
-\end{itemize}
-
-} % end frame
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Basic Method}
-Consider $Ax = b$
-
-Let  $A = L  + D + U$ and then "split" the matrix $A$ such that
-$$
-(L + D) x^{k+1} = b - Ux^{k}, k=0, \ldots
-$$
-or
-\begin{eqnarray}
-M x^{k+1} &=& b + Nx^{k}, k=0, \ldots \\
-   x^{k+1} &=&  M^{-1}b + M^{-1}Nx^{k}, \\
-   x^{k+1} &=&  Gx^{k} + c \label{eq:SIM}
-\end{eqnarray}
-where $G = M^{-1}N, c = M^{-1}b$
-
-} % end frame
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Useful Facts}
-
-Fact 1: If we use the SIM in equation~(\ref{eq:SIM}) $x^{k} \rightarrow \hat{x} \iff \rho(G) < 1$
-
-\vspace{.2in}
-
-Fact 2: $e^{k+1} = G e^{k}$
-\vspace{.2in}
-
-Fact 3: Many matrices resulting from problems in S\&E satisfy $\rho(G) < 1$
-
-} % end frame
-
-\section{CG}
-
-
-\section{Theory vs. Practice}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Finite Precision}
-
-\begin{itemize}
-\item In exact arithmetic the CG method will converge to the solution of $Ax=b$
-\item Sadly, in finite precision, roundoff error will contaminate the solution
-\item And even in the exact case, what does this mean for a system with dimension 1M or 1B
-\end{itemize}
-
-} % end frame
-
-
-\section{Krylov subspaces}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Krylov subspace methods}
-CG is an example of what we now call a Krylov space method
-
-\begin{itemize}
-\item Definition: A {\it Krylov} space is defined by:
-$$
-\mathcal{K}_k(A,b) = span \{b, Ab, A^2b, A^3b, \ldots, A^{k-1}b\}
-$$
-Idea:  Choose your iterate, $x^{k}$, such that it belongs to the Krylov space and it minimizes the distance between it and $\hat{x}$
-
-\end{itemize}
-
-} % end frame
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{CG Convergence Rate}
-Can show that
+\item Best possible error bound for solving a system of linear equations can be given by
 \begin{equation}
-|| x^{k} - \hat{x} ||_{A} \leq 2 \left ( \frac{\sqrt{\condA} - 1 }{ \sqrt{\condA}+ 1 } \right )^{k} || x^{0} - \hat{x} ||_{A}
+\frac{|| x - \hat{x} ||_{\infty} }{|| x ||_{\infty}}  \leq 4 \mu \kappa_{\infty}(A)
 \end{equation}
+where $\mu$ is machine precision of the computer.
 
+\end{itemize}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Stable or Unstable? Well conditioned or ill-conditioned?}
+Consider $Ax = b$
+where
+
+$$
+A = \begin{bmatrix}
+0 & 1\\
+1 & 0
+\end{bmatrix}
+$$
+
+} % end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Comparison of algorithms}
 % Requires the booktabs if the memoir class is not being used
 \begin{table}[htbp]
    \centering
@@ -217,30 +203,35 @@ Can show that
 \end{table}
 } % end frame
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Preconditioning Idea}
+\section{CG}
 
-Discussion
+
+\section{LU with partial pivoting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{LU with Partial Pivoting}
+
 \begin{itemize}
-\item Why precondition?
-\item What should the general idea be?
-\item How would you go about doing that?
+\item Can show that LU/PP generates the exact solution to a perturbed problem $(A+E) x = b$, such that
+\begin{equation}
+|| E ||_{\infty} \leq 8 n^3 \rho || A ||_{\infty} \mu
+\end{equation}
+\item The growth factor $\rho$ can grow exponentially, but in practice is usually of order 10
+\item Consider the residual, $b - Ax$:
+
 \end{itemize}
 
-\vspace{.2in}
+
 
 } % end frame
-
-
-
 \section{Summary}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Summary}
 
 \begin{itemize}
-\item Sparse methods can be used to take advantage of special structure
-\item Iterative methods are the dominant form of solving systems of linear equations in modern day applications 
-\item Most iterative methods must be preconditioned to be effective
+\item A
+\item B 
+\item C 
 \end{itemize}
 
 }% end frame
