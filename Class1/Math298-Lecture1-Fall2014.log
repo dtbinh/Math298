@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  7 SEP 2014 20:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  7 SEP 2014 21:07
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -993,7 +993,7 @@ Overfull \vbox (1.96284pt too high) detected at line 265
 
 [14
 
- <./Rplot01.pdf> <./Lect1-fig1.png>] [15
+ <./Lect1-fig1.png>] [15
 
 ] [16
 
@@ -1036,8 +1036,8 @@ LaTeX Font Warning: Size substitutions with differences
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 386.
  ) 
 Here is how much of TeX's memory you used:
- 17844 strings out of 493117
- 347869 string characters out of 6135433
+ 17842 strings out of 493117
+ 347852 string characters out of 6135433
  432609 words of memory out of 5000000
  20812 multiletter control sequences out of 15000+600000
  13829 words of font info for 53 fonts, out of 8000000 for 9000
@@ -1057,10 +1057,10 @@ texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/local/
 texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/t
 exlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/tex
 live/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on Math298-Lecture1-Fall2014.pdf (20 pages, 206848 bytes).
+Output written on Math298-Lecture1-Fall2014.pdf (20 pages, 201693 bytes).
 PDF statistics:
- 283 PDF objects out of 1000 (max. 8388607)
- 219 compressed objects within 3 object streams
+ 277 PDF objects out of 1000 (max. 8388607)
+ 215 compressed objects within 3 object streams
  51 named destinations out of 1000 (max. 500000)
- 161 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 156 words of extra memory for PDF output out of 10000 (max. 10000000)
 
