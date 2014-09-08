@@ -3,6 +3,6 @@
 \beamer@sectionintoc {2}{Preliminaries}{5}{0}{2}
 \beamer@sectionintoc {3}{Classics, Dwarfs, Motifs}{6}{0}{3}
 \beamer@sectionintoc {4}{Finite Precision}{10}{0}{4}
-\beamer@sectionintoc {5}{Conditioning}{16}{0}{5}
-\beamer@sectionintoc {6}{Stability}{17}{0}{6}
-\beamer@sectionintoc {7}{Summary}{18}{0}{7}
+\beamer@sectionintoc {5}{Conditioning}{17}{0}{5}
+\beamer@sectionintoc {6}{Stability}{18}{0}{6}
+\beamer@sectionintoc {7}{Summary}{19}{0}{7}
