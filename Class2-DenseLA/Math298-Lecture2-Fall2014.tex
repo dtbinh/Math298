@@ -1,5 +1,4 @@
 \documentclass[mathserif,handout]{beamer} % Math 298 Fall 2014
-\usepackage{mybeamertheme}
 \usepackage{pdfsync} % works only on TeXShop, comment otherwise
 \usepackage{pgf}
 \usepackage{multimedia} % to embed movies in the PDF file
@@ -9,6 +8,7 @@
 \usepackage{pgfpages}
 \usepackage{topcapt}
 \usepackage{booktabs}
+\usepackage{biblatex}
 
 \mode<presentation>
 {
@@ -44,7 +44,12 @@
 
 %% figures
 
-\input{latex-defs}
+%\input{latex-defs}
+\newcommand {\condA}{\kappa(A)}
+\newcommand {\condAi}{\kappa_{\infty}(A)}
+\providecommand{\abs}[1]{\lvert#1\rvert}
+\providecommand{\norm}[1]{\lVert#1\rVert}
+\providecommand{\bigO}[1]{\mathcal{O}(#1)}
 
 \definecolor{navy}{RGB}{0,0,128}
 \definecolor{forestgreen}{RGB}{34,139,34}
@@ -92,12 +97,24 @@
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Dense Linear Algebra methods}
+\frame{\frametitle{Informally}
 
-Let $ x, y \in R^N$ and $A \in R^{N \times N}$
+\begin{block}{Conditioning}
+A problem is well conditioned if small changes in the input lead to small changes in the output. 
+\end{block}
+
+\begin{block}{Stability}
+An algorithm is stable if it solves a "nearby" problem.
+\end{block}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Basic Linear Algebra methods}
 
 \begin{itemize}
-\item Basic Linear Algebra
+\item Suppose $ x, y \in R^N$ and $A \in R^{N \times N}$
+\item Familiar linear algebra operations
 \begin{itemize}
 \item dot products: $x^T y$
 \item matvec: $Ax$
@@ -105,17 +122,17 @@ Let $ x, y \in R^N$ and $A \in R^{N \times N}$
 \item Solve $Ax=b$
 \item Solve $Ax = \lambda x$
 \end{itemize}
-\begin{block}{Rule of Thumb}
+
+\item These operations have been immortalized into the {\sc BLAS} libraries
+\end{itemize}
+\begin{block}{Fundamental Fact of Computational Mathematics}
 We cannot solve anything except linear systems
 \end{block}
-\begin{alertblock}{Warning}
-Never (EVER) solve a linear system by calculating the inverse of the matrix and multiplying!
-\end{alertblock}
-\end{itemize}
+
 }
-\frame{\frametitle{Linear Algebra methods}
+\frame{\frametitle{Methods for solving $Ax=b$}
 \begin{itemize}
-\item Various standard methods
+\item Various standard methods for solving systems of linear equations
 \begin{itemize}
 \item LU
 \item Cholesky
@@ -123,29 +140,32 @@ Never (EVER) solve a linear system by calculating the inverse of the matrix and 
 \item SVD
 \end{itemize}
 \item All have advantages and disadvantages -- learn about them!
-\item Your choice will depend on the application, software availability, and time constraints
+\item Your choice will depend on the application, software availability, and time (\$\$) constraints
 \end{itemize}
+\begin{alertblock}{Warning}
+Never (EVER) solve a linear system by calculating the inverse of the matrix and multiplying!
+\end{alertblock}
+
 } % end frame
 
-\section{SIM}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Some Useful Definitions}
+\frame{\frametitle{Some Useful Terms to Know}
 
-\begin{definition}[Condition Number]
+\begin{block}{Condition Number}
 The condition number of a matrix A is given by: $ \condA = || A || \cdot || A^{-1} ||$
-\end{definition}
+\end{block}
 
-\begin{definition}[Residual]
+\begin{block}{Residual}
 The residual of linear system is given by $b - Ax$
-\end{definition}
+\end{block}
 
-\begin{definition}[Machine Precisions]
-The machine precision is denoted by $\mu$
-\end{definition}
+\begin{block}{Machine Precision}
+Machine precision is denoted by $\mu$. Modern computers have $\mu \approx 10^{-16}.$
+\end{block}
 
-\begin{definition}
-A problem is said to be ill-conditioned if $\mu \kappa_\infty (A) \approx 1$
-\end{definition}
+\begin{block}{Ill-conditioning}
+A problem is said to be ill-conditioned if $\mu \cdot \condA \approx 1$
+\end{block}
 
 } % end frame
 
@@ -153,16 +173,18 @@ A problem is said to be ill-conditioned if $\mu \kappa_\infty (A) \approx 1$
 \frame{\frametitle{Fun Facts}
 
 \begin{itemize}
-\item Gaussian elimination always produces solutions with relatively small residuals (minor caveats)
+\item Gaussian elimination always produces solutions with relatively small residuals (minor caveats).
 
 \item Best possible error bound for solving a system of linear equations can be given by
 \begin{equation}
-\frac{|| x - \hat{x} ||_{\infty} }{|| x ||_{\infty}}  \leq 4 \mu \kappa_{\infty}(A)
+\frac{|| x - \hat{x} ||_{\infty} }{|| x ||_{\infty}}  \leq 4 \mu \kappa_{\infty}(A),
 \end{equation}
 where $\mu$ is machine precision of the computer.
 
 \end{itemize}
-
+\begin{block}{Discussion}
+If the residual of a computed solution is small, can I say that I have an "good" answer?  Can I trust it?
+\end{block}
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -180,22 +202,44 @@ $$
 } % end frame
 
 
+\section{Partial pivoting}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Comparison of algorithms}
+\frame{\frametitle{LU with Partial Pivoting (LU/PP)}
+
+\begin{itemize}
+\item Can show that LU/PP generates the exact solution to a perturbed problem $(A+E) x = b$, such that
+\begin{equation*}
+|| E ||_{\infty} \leq 8 n^3 \rho || A ||_{\infty} \mu.
+\end{equation*}
+\item {\em In theory}, the growth factor $\rho$ can grow exponentially, {\em but in practice} it is usually of order 10.
+\item Consider the residual, $b - Ax$:
+\begin{eqnarray*}
+\norm{b - Ax}_{\infty} &=& \norm{Ex}_{\infty} \\
+                           &\leq& 8 n^3 \rho \norm{A}_{\infty} \mu \norm{x}_\infty \\
+                           &\approx&  \mu \norm{A}_\infty \norm{x}_\infty.
+\end{eqnarray*}
+\end{itemize}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Comparison of some familiar algorithms for $Ax=b$}
 % Requires the booktabs if the memoir class is not being used
 \begin{table}[htbp]
    \centering
-   \topcaption{Number of iterations to reduce error by $10^{-3}$.} % requires the topcapt package
-   \begin{tabular}{@{} llr @{}} % Column formatting, @{} suppresses leading/trailing space
+   \topcaption{Familiar $Ax=b$ solution methods} % requires the topcapt package
+   \begin{tabular}{@{} llll @{}} % Column formatting, @{} suppresses leading/trailing space
       \toprule
       %\multicolumn{2}{c}{Convergence Rates} \\
       %\cmidrule(r){1-2} % Partial rule. (r) trims the line a little bit on the right; (l) & (lr) also possible
-      $\condA$    & Value & iter \\
+      Algorithm    & Work & Advantages & Disadvantages \\
       \midrule
-      1          & 0.0 & 1 \\
-      $10^{2}$   & 0.82  &  15 \\
-      $10^{4}$  & 0.98  &    150\\
-      $10^{8}$  & 0.9998  &  15,000 \\
+      LU          & $\bigO{n^{3}}$   & simple  &  unstable \\
+      LU w/PP & $\bigO{n^{3}}$   & (usually) stable &  growth factor; pivoting will change structure \\
+      LU w/FP & $\bigO{n^{3}}$   & stable  &  more work than PP \\     
+      QR         & $\bigO{n^{3}}$   & stable,no growth  &  2x work of LU \\    
+      SVD       & $\bigO{n^{3}}$   & stable  &  more than 2x work \\    
       \bottomrule
    \end{tabular}
    %\caption{}
@@ -203,35 +247,14 @@ $$
 \end{table}
 } % end frame
 
-\section{CG}
-
-
-\section{LU with partial pivoting}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{LU with Partial Pivoting}
-
-\begin{itemize}
-\item Can show that LU/PP generates the exact solution to a perturbed problem $(A+E) x = b$, such that
-\begin{equation}
-|| E ||_{\infty} \leq 8 n^3 \rho || A ||_{\infty} \mu
-\end{equation}
-\item The growth factor $\rho$ can grow exponentially, but in practice is usually of order 10
-\item Consider the residual, $b - Ax$:
-
-\end{itemize}
-
-
-
-} % end frame
 \section{Summary}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Summary}
 
 \begin{itemize}
-\item A
-\item B 
-\item C 
+\item Basic Linear Algebra Subroutines ({\sc BLAS}) are at the core of many modern computer simulations.
+\item Solution of linear systems is essential to your knowledge of computational mathematics.
+\item Small residuals are not enough to show you have a good solution -- need to do a deeper analysis.
 \end{itemize}
 
 }% end frame
@@ -240,9 +263,7 @@ $$
 \frame{\frametitle{References}
 
 \begin{itemize}
-\item {\bf Methods of Conjugate Gradients for Solving Linear Systems}, Magnus R. Hestenes and Eduard Stiefel, J. Res. of NBS, Vol. 49, No. 6, Dec. 1952.
 \item {\bf Matrix Computations, 3rd Ed.}, Gene H. Golub and Charles F. Van Loan, Johns Hopkins, 1996.
-\item {\bf Iterative Methods for Linear and Nonlinear Equations}, C.T. Kelley, SIAM,  1995.
 \end{itemize}
 
 }% end frame
