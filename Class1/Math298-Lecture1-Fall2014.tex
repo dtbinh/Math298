@@ -1,5 +1,5 @@
 \documentclass[mathserif,handout]{beamer} % Math 298 Fall 2014 Lecture 1
-\usepackage{mybeamertheme}
+%\usepackage{mybeamertheme}
 \usepackage{pdfsync} % works only on TeXShop, comment otherwise
 \usepackage{pgf}
 \usepackage{multimedia} % to embed movies in the PDF file
@@ -7,15 +7,13 @@
 \usepackage{graphicx}
 \usepackage{comment}
 \usepackage{pgfpages}
+\usepackage{biblatex}
 
 \mode<presentation>
 {
   \usetheme{Madrid}   %  \usetheme{Warsaw}
-  % Note: this next command makes nice slides, but Adobe doesn't like it (you get blank pages)
+  % Note: this next command makes nice slides, but Adobe doesn't like it (you sometimes get blank pages)
 \setbeamertemplate{background canvas}[vertical shading][bottom=white,top=structure.fg!15]
-%  \setbeamertemplate{footline}{\pgfuseimage{UCM-logo}}
-
-  %\usecolortheme{seahorse}
   \usecolortheme{beaver}
  % \setbeamercovered{transparent}
 }
@@ -38,11 +36,6 @@ Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{}
 \institute{School of Natural Sciences, University of California, Merced}
 \date[Fall 2014]{Math 298 Fall 2014}
 \institute[UC Merced]
-
-%\pgfdeclareimage[height=0.35cm]{UCM-logo}{UCM-logo}
-% \logo{\pgfuseimage{UCM-logo}}
-
-%% figures
 
 \input{latex-defs}
 
@@ -142,7 +135,7 @@ Please note that we will not be able to go into any one subject in much depth. T
 
 \begin{enumerate}
 \item Dense linear algebra
-\item Sparse line algebra
+\item Sparse linear algebra
 \item Spectral methods (Fast Fourier transform)
 \item N-body (particle) methods 
 \item Structured grids
@@ -168,7 +161,9 @@ Please note that we will not be able to go into any one subject in much depth. T
 \item Graphical Models
 \item Finite State Machines
 \end{enumerate} 
-\href{http://www.eecs.berkeley.edu/Pubs/TechRpts/2006/EECS-2006-183.pdf}{The Landscape of Parallel Computing View from Berkeley}
+
+{\small The Landscape of Parallel Computing View from Berkeley, \\
+\url{http://www.eecs.berkeley.edu/Pubs/TechRpts/2006/EECS-2006-183.pdf}}
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
