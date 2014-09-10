@@ -104,7 +104,7 @@ A problem is well conditioned if small changes in the input lead to small change
 \end{block}
 
 \begin{block}{Stability}
-An algorithm is stable if it solves a "nearby" problem.
+An algorithm is stable if it solves a "nearby" problem exactly.
 \end{block}
 
 } % end frame
@@ -175,7 +175,7 @@ A problem is said to be ill-conditioned if $\mu \cdot \condA \approx 1$
 \begin{itemize}
 \item Gaussian elimination always produces solutions with relatively small residuals (minor caveats).
 
-\item Best possible error bound for solving a system of linear equations can be given by
+\item Best possible error bound\footnote{Golub and van Loan, Matrix Computations 3rd ed., pp. 105} for solving a system of linear equations can be given by
 \begin{equation}
 \frac{|| x - \hat{x} ||_{\infty} }{|| x ||_{\infty}}  \leq 4 \mu \kappa_{\infty}(A),
 \end{equation}
@@ -194,11 +194,14 @@ where
 
 $$
 A = \begin{bmatrix}
-0 & 1\\
+\epsilon & 1\\
 1 & 0
-\end{bmatrix}
+\end{bmatrix}, b = [1, 1]^T
 $$
-
+\begin{block}{Discussion}
+What do you think that Gaussian Elimination will do with this?\\
+Is the problem well conditioned or ill-conditioned?
+\end{block}
 } % end frame
 
 
