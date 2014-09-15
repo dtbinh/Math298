@@ -100,13 +100,27 @@
 \frame{\frametitle{Informally}
 
 \begin{block}{Conditioning}
-A problem is well conditioned if small changes in the input lead to small changes in the output. 
+A problem is well conditioned if small changes in the inputs lead to small changes in the outputs. 
 \end{block}
 
 \begin{block}{Stability}
 An algorithm is stable if it solves a "nearby" problem exactly.
 \end{block}
 
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Claim: We cannot solve anything numerically except linear systems}
+
+\begin{itemize}
+\item Usually start by taking a continuous problem and discretizing
+\item Next step is to linearize the problem (if it already isn't linear)
+\item Final step involves solving some form of $Ax=b$
+\end{itemize}
+
+\begin{block}{N.B.}
+These days, there is usually another step where the algorithm is parallelized
+\end{block}
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -123,11 +137,8 @@ An algorithm is stable if it solves a "nearby" problem exactly.
 \item Solve $Ax = \lambda x$
 \end{itemize}
 
-\item These operations have been immortalized into the {\sc BLAS} libraries
+\item These operations have been immortalized into the {\sc BLAS} and {\sc LAPACK} libraries
 \end{itemize}
-\begin{block}{Fundamental Fact of Computational Mathematics}
-We cannot solve anything except linear systems
-\end{block}
 
 }
 \frame{\frametitle{Methods for solving $Ax=b$}
@@ -140,7 +151,7 @@ We cannot solve anything except linear systems
 \item SVD
 \end{itemize}
 \item All have advantages and disadvantages -- learn about them!
-\item Your choice will depend on the application, software availability, and time (\$\$) constraints
+\item Your choice of method will depend on the application, software availability, and time (\$\$) constraints
 \end{itemize}
 \begin{alertblock}{Warning}
 Never (EVER) solve a linear system by calculating the inverse of the matrix and multiplying!
@@ -151,20 +162,21 @@ Never (EVER) solve a linear system by calculating the inverse of the matrix and 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Some Useful Terms to Know}
 
-\begin{block}{Condition Number}
-The condition number of a matrix A is given by: $ \condA = || A || \cdot || A^{-1} ||$
-\end{block}
 
 \begin{block}{Residual}
-The residual of linear system is given by $b - Ax$
+The residual of linear system is given by $b - Ax$.
 \end{block}
 
 \begin{block}{Machine Precision}
 Machine precision is denoted by $\mu$. Modern computers have $\mu \approx 10^{-16}.$
 \end{block}
 
+\begin{block}{Condition Number}
+The condition number of a matrix A is given by: $ \condA = || A || \cdot || A^{-1} ||$.
+\end{block}
+
 \begin{block}{Ill-conditioning}
-A problem is said to be ill-conditioned if $\mu \cdot \condA \approx 1$
+A problem is said to be ill-conditioned if $\mu \cdot \condA \approx 1$.
 \end{block}
 
 } % end frame
@@ -189,14 +201,14 @@ If the residual of a computed solution is small, can I say that I have an "good"
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Stable or Unstable? Well conditioned or ill-conditioned?}
-Consider $Ax = b$
+Consider $Ax = b$,
 where
 
 $$
 A = \begin{bmatrix}
 \epsilon & 1\\
 1 & 0
-\end{bmatrix}, b = [1, 1]^T
+\end{bmatrix}, b = [1, 1]^T.
 $$
 \begin{block}{Discussion}
 What do you think that Gaussian Elimination will do with this?\\

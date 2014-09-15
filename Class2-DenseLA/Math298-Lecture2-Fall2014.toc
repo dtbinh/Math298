@@ -4,6 +4,6 @@
 \defcounter {refsection}{0}\relax 
 \beamer@sectionintoc {1}{Introduction}{2}{0}{1}
 \defcounter {refsection}{0}\relax 
-\beamer@sectionintoc {2}{Partial pivoting}{9}{0}{2}
+\beamer@sectionintoc {2}{Partial pivoting}{10}{0}{2}
 \defcounter {refsection}{0}\relax 
-\beamer@sectionintoc {3}{Summary}{11}{0}{3}
+\beamer@sectionintoc {3}{Summary}{12}{0}{3}

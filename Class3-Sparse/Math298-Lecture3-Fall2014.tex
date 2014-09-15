@@ -76,20 +76,9 @@
 } % end frame
 
 \section{Introduction}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Sparse Matrix Example}
-Consider the following matrix:
-\pgfputat{\pgfxy(0.0,-4.6)}{\pgfbox[left,base]{\pgfimage[width=0.6\textwidth]{SparseMatrix.pdf}}}
-
-} % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Consider the following matrix}
-
-\begin{itemize}
-
-\item We will encounter matrices of this form in future talks
-\end{itemize}
 
 $$
 K_n = \begin{bmatrix}
@@ -101,16 +90,17 @@ K_n = \begin{bmatrix}
 0       & 0          &  0 & 0 & -1     &   2 \\
 \end{bmatrix}
 $$
-{\color{red} Note:}  This matrix is Toeplitz (diagonal-constant).  \\
-We will encounter this matrix again when talking about derivatives
+\begin{itemize}
+
+\item We will encounter matrices of this form in future talks
+\item We can take advantage of the special structure to improve our algorithms
+\item This matrix is known as a Toeplitz matrix (constant diagonal)
+\end{itemize}
+
+
 } % end frame
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Another interesting matrix}
-
-\begin{itemize}
-
-\item A second order method can be given by the following matrix
-\end{itemize}
 
 $$
 D= \begin{bmatrix}
@@ -122,8 +112,25 @@ D= \begin{bmatrix}
 1/2       & 0          &  0 & 0 & -1/2     &   0 \\
 \end{bmatrix}
 $$
-{\color{red} Note:}  This matrix is skew-symmetrix, Toeplitz (diagonal-constant), and circulant!  All very nice properties. \\
-The derivative is given by $w = \frac{1}{h} D \cdot u$
+
+\begin{itemize}
+\item A second order method can be given by the following matrix
+\item This matrix is Toeplitz, skew-symmetrix, and circulant.  All very nice properties. 
+\item Does this structure remind you of anything?
+\end{itemize}
+
+%\color{red} N.B.  The derivative is given by $w = \frac{1}{h} D \cdot u$
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{More generally}
+
+\pgfputat{\pgfxy(0.0,-4.6)}{\pgfbox[left,base]{\pgfimage[width=0.5\textwidth]{SparseMatrix.pdf}}}
+
+\begin{definition}
+Any matrix where the majority of entries are zero is referred to as a {\it sparse} matrix.
+\end{definition}
+
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -131,7 +138,7 @@ The derivative is given by $w = \frac{1}{h} D \cdot u$
 
 \begin{itemize}
 \item Sparse matrices arise in many science and engineering applications
-\item Almost all discretization methods you will encounter will have a special structure
+\item Almost all discretization methods you will encounter will have a sparse structure
 \item Sparse methods take advantage of special structure in matrices to improve computational efficiency
 \end{itemize}
 } % end frame
@@ -144,26 +151,26 @@ The derivative is given by $w = \frac{1}{h} D \cdot u$
 
 \item Based on splitting techniques
 \item Widely used in engineering, but have been superseded by more modern techniques
-\item Still useful in certain contexts, e.g. preconditioners
+\item Still useful in certain contexts, e.g. preconditioners (more later)
 \end{itemize}
 
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Basic Method}
+\frame{\frametitle{Basic Stationary Iterative Method (SIM)}
 Consider $Ax = b$
 
-Let  $A = L  + D + U$ and then "split" the matrix $A$ such that
+First we'll "split" the matrix $A = L  + D + U$, such that
 $$
-(L + D) x^{k+1} = b - Ux^{k}, k=0, \ldots
+(L + D) x^{k+1} = b - Ux^{k}, \quad k=0, \ldots
 $$
 or
 \begin{eqnarray}
-M x^{k+1} &=& b + Nx^{k}, k=0, \ldots \\
+M x^{k+1} &=& b + Nx^{k}, \quad k=0, \ldots \\
    x^{k+1} &=&  M^{-1}b + M^{-1}Nx^{k}, \\
-   x^{k+1} &=&  Gx^{k} + c \label{eq:SIM}
+   x^{k+1} &=&  Gx^{k} + c ,\label{eq:SIM}
 \end{eqnarray}
-where $G = M^{-1}N, c = M^{-1}b$
+where $G = M^{-1}N, c = M^{-1}b$.
 
 } % end frame
 
@@ -171,29 +178,39 @@ where $G = M^{-1}N, c = M^{-1}b$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Useful Facts}
 
-Fact 1: If we use the SIM in equation~(\ref{eq:SIM}) $x^{k} \rightarrow \hat{x} \iff \rho(G) < 1$
+\begin{block}{Fact 1}
+If we use the SIM in equation~(\ref{eq:SIM}) $x^{k} \rightarrow \hat{x} \iff \rho(G) < 1$.
+\end{block}
 
 \vspace{.2in}
 
-Fact 2: $e^{k+1} = G e^{k}$
+\begin{block}
+{Fact 2} $e^{k+1} = G e^{k}$.
+\end{block}
 \vspace{.2in}
 
-Fact 3: Many matrices resulting from problems in S\&E satisfy $\rho(G) < 1$
+\begin{block}{Fact 3}
+Many important matrices resulting from problems arising in S\&E satisfy $\rho(G) < 1$.
+\end{block}
 
 } % end frame
 
 \section{CG}
 
-
+\frame{\frametitle{Discussion: Hestenes and Stiefel}
+%
+% Hestenes and Stiefel Paper
+%
+}
 \section{Theory vs. Practice}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Finite Precision}
 
 \begin{itemize}
-\item In exact arithmetic the CG method will converge to the solution of $Ax=b$
-\item Sadly, in finite precision, roundoff error will contaminate the solution
-\item And even in the exact case, what does this mean for a system with dimension 1M or 1B
+\item In exact arithmetic the CG method will converge to the solution of $Ax=b$.
+\item Sadly, in finite precision, roundoff error will contaminate the solution.
+\item And even in the exact case, what does this mean for a system with dimension 1M or 1B?
 \end{itemize}
 
 } % end frame
@@ -202,16 +219,20 @@ Fact 3: Many matrices resulting from problems in S\&E satisfy $\rho(G) < 1$
 \section{Krylov subspaces}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Krylov subspace methods}
-CG is an example of what we now call a Krylov space method
-
-\begin{itemize}
-\item Definition: A {\it Krylov} space is defined by:
+CG is an example of what we now call a Krylov space method.
+\vspace{.25in}
+\begin{definition}
+A {\it Krylov} space is defined by:
 $$
-\mathcal{K}_k(A,b) = span \{b, Ab, A^2b, A^3b, \ldots, A^{k-1}b\}
+\mathcal{K}_k(A,b) = span \{b, Ab, A^2b, A^3b, \ldots, A^{k-1}b\}.
 $$
-Idea:  Choose your iterate, $x^{k}$, such that it belongs to the Krylov space and it minimizes the distance between it and $\hat{x}$
+\end{definition}
+\vspace{.25in}
+\begin{block}{Idea}
+Choose your iterate, $x^{k}$, such that it belongs to the Krylov space and it minimizes the distance between  $x^{k}$ and $\hat{x}$.
+\end{block}
 
-\end{itemize}
+
 
 } % end frame
 
@@ -244,17 +265,36 @@ Can show that
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Preconditioning Idea}
+\frame{\frametitle{Advanced Topic -- Preconditioning}
 
-Discussion
+
+\begin{block}{Fundamental Idea}
+If you don't like the problem you're given to solve, then change it into something that is easier to work with!
+\end{block}
+\vspace{.2in}
 \begin{itemize}
-\item Why precondition?
-\item What should the general idea be?
-\item How would you go about doing that?
+\item If the error bound is dependent on the condition number can we do something about it?
+\item Ideally what would we want the condition number of the problem to be?
+\item Can we alter the problem to make it better conditioned, without changing the solution of the problem
 \end{itemize}
 
-\vspace{.2in}
 
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Advanced Topic -- Preconditioning}
+Consider $Ax = b$, where $\condA$ is large. Let  $M$ be a symmetric positive definite (spd) matrix. Then I can use CG to solve the equivalent problem:
+
+\begin{eqnarray}
+M^{-1} A x^{k+1} &=& M^{-1} b, \quad k=0, \ldots \\
+   \tilde{M}x^{k+1} &=&  \tilde{b}. 
+\end{eqnarray}
+
+and if $\kappa(\tilde{M}) < \condA$, I should be able to reduce the number of iterations.
+\vspace{.25in}
+\begin{block}{Preconditioning}
+Choose $\tilde{M}$ wisely and you will reduce the number of iterations significantly.  Choose poorly and all you've done is create more work for yourself!
+\end{block}
 } % end frame
 
 
@@ -264,22 +304,35 @@ Discussion
 \frame{\frametitle{Summary}
 
 \begin{itemize}
-\item Sparse methods can be used to take advantage of special structure
-\item Iterative methods are the dominant form of solving systems of linear equations in modern day applications 
-\item Most iterative methods must be preconditioned to be effective
+\item Sparse methods can be used to take advantage of special structure.
+\item Iterative methods are the dominant form of solving large-scale systems of linear equations in modern day applications.
+\item Most iterative methods must be preconditioned to be effective.
 \end{itemize}
 
 }% end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{References}
+\begin{frame}[allowframebreaks]
+  \frametitle<presentation>{References}    
+  \begin{thebibliography}{10}    
+  \beamertemplatebookbibitems
+ \bibitem{GoVa96}
+   Gene H. Golub and Charles F. Van Loan.
+    \newblock {\em Matrix Computations, 3rd Ed}.
+   \newblock Johns Hopkins, 1996.
+    \beamertemplatearticlebibitems
+  \beamertemplatebookbibitems
+ \bibitem{Ke95}
+   C. Tim Kelley.
+    \newblock {\em Iterative Methods for Linear and Nonlinear Equations}.
+   \newblock SIAM, 1995.
+     \beamertemplatearticlebibitems
+ \bibitem{HeSt52}
+ Magnus R. Hestenes and Eduard Stiefel.
+  \newblock Methods of Conjugate Gradients for Solving Linear Systems
+ \newblock J. Res. of NBS, Vol. 49, No. 6, Dec. 1952.
+ \end{thebibliography}
 
-\begin{itemize}
-\item {\bf Methods of Conjugate Gradients for Solving Linear Systems}, Magnus R. Hestenes and Eduard Stiefel, J. Res. of NBS, Vol. 49, No. 6, Dec. 1952.
-\item {\bf Matrix Computations, 3rd Ed.}, Gene H. Golub and Charles F. Van Loan, Johns Hopkins, 1996.
-\item {\bf Iterative Methods for Linear and Nonlinear Equations}, C.T. Kelley, SIAM,  1995.
-\end{itemize}
-
-}% end frame
+\end{frame}% end frame
 
 \end{document}
