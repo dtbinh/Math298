@@ -167,7 +167,7 @@ $$
 \frame{\frametitle{Basic Stationary Iterative Method (SIM)}
 Consider $Ax = b$
 
-First we'll "split" the matrix $A = L  + D + U$, such that
+First we'll ``split" the matrix $A = M - N$, where $M = L + D$ and $U = -N$. In other words
 $$
 (L + D) x^{k+1} = b - Ux^{k}, \quad k=0, \ldots
 $$
@@ -179,25 +179,27 @@ M x^{k+1} &=& b + Nx^{k}, \quad k=0, \ldots \\
 \end{eqnarray}
 where $G = M^{-1}N, c = M^{-1}b$.
 
+\begin{block}{Note}
+This is one of several splittings one can use.  Can you think of others?
+\end{block}
 } % end frame
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Useful Facts}
 
-\begin{block}{Fact 1}
-If we use the SIM in equation~(\ref{eq:SIM}) $x^{k} \rightarrow \hat{x} \iff \rho(G) < 1$.
-\end{block}
 
+\begin{block}{Fact 1} $e^{k+1} = G e^{k}, \quad k=0, \ldots$.
+\end{block}
 \vspace{.2in}
 
-\begin{block}
-{Fact 2} $e^{k+1} = G e^{k}$.
+\begin{block}{Fact 2}
+If we use the SIM in equation~(\ref{eq:SIM}) $x^{k} \rightarrow \hat{x} \iff \rho(G) < 1$.
 \end{block}
 \vspace{.2in}
 
 \begin{block}{Fact 3}
-Many important matrices resulting from problems arising in S\&E satisfy $\rho(G) < 1$.
+Many important matrices resulting from problems arising in CSE satisfy $\rho(G) < 1$.
 \end{block}
 
 } % end frame
