@@ -3,5 +3,5 @@
 \beamer@sectionintoc {2}{SIM}{6}{0}{2}
 \beamer@sectionintoc {3}{CG}{9}{0}{3}
 \beamer@sectionintoc {4}{Theory vs. Practice}{10}{0}{4}
-\beamer@sectionintoc {5}{Krylov subspaces}{11}{0}{5}
+\beamer@sectionintoc {5}{Advanced Topic}{12}{0}{5}
 \beamer@sectionintoc {6}{Summary}{15}{0}{6}
