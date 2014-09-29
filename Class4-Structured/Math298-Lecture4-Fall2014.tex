@@ -1,5 +1,5 @@
 \documentclass[mathserif,handout]{beamer} % Math 298 Fall 2014
-\usepackage{mybeamertheme}
+%\usepackage{mybeamertheme}
 \usepackage{pdfsync} % works only on TeXShop, comment otherwise
 \usepackage{pgf}
 \usepackage{multimedia} % to embed movies in the PDF file
@@ -12,11 +12,16 @@
 
 % for the tikz pictures
 \usepackage{geometry}
-\geometry{hmargin=1cm,vmargin=1cm}
+%\geometry{hmargin=1cm,vmargin=1cm}
 \usepackage{tikz}
 \def\width{5}
 \def\hauteur{5}
-
+\tikzset{
+  node4/.style = {fill = red,
+                 label = center:\textsf{\Large 4}},
+  node1/.style = {fill = blue70!yellow, text = black,
+                 label = center:\textsf{\Large -1}}
+}
 \mode<presentation>
 {
   \usetheme{Madrid}   %  \usetheme{Warsaw}
@@ -46,11 +51,11 @@
 \date[Fall 2014]{Fall 2014}
 \institute[UC Merced]
 
-\pgfdeclareimage[height=0.35cm]{UCM-logo}{UCM-logo}
+\pgfdeclareimage[width=0.6\textwidth]{Mesh4}{Mesh4}
 \pgfdeclareimage[width=0.8\textwidth]{Hurricane}{Hurricane}
-\pgfdeclareimage[width=0.55\textwidth]{Uniform}{ParaView_UG_Uniform}
+\pgfdeclareimage[width=0.55\textwidth]{Uniform}{Uniform}
 \pgfdeclareimage[width=0.55\textwidth]{Curve}{ParaView_UG_Curvilinear}
-\pgfdeclareimage[width=0.55\textwidth]{Rect}{ParaView_UG_Rectilinear}
+\pgfdeclareimage[width=0.55\textwidth]{Rect}{Rectilinear}
 \pgfdeclareimage[width=0.55\textwidth]{AMR}{ParaView_UG_AMR}
 % \logo{\pgfuseimage{UCM-logo}}
 
@@ -82,42 +87,46 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{
-
 \titlepage
+} % end frame
+
+\frame{\frametitle{Homework 1 Discussion}
 
 } % end frame
 
 \section{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Structured Grids}
+\frame{\frametitle{Grid Terminology}
 
+\begin{columns}[c]
+\column{.5\textwidth}
 \begin{itemize}
-\item Some terminology
-\begin{itemize}
-\item cells, elements; triangles, quads, tetrahedrons, hex
-\item node, vertex
-\item edge, face
-\end{itemize}
+   \item {\it mesh}
+    \item {\it cells, elements}, \\ e.g. triangles, quads, tetrahedrons, hex
+    \item {\it node, vertex}
+   \item {\it edge, face}
 
-\item Properties
+\item Grid properties
 \begin{itemize}
 \item quality of mesh
 \item degeneracy
 \item dof
 \end{itemize}
-
 \end{itemize}
+
+\column{.6\textwidth}
+		\pgfputat{\pgfxy(-0.5,-3.0)}{\pgfbox[left,base]{\pgfuseimage{Mesh4}}}
+\end{columns}
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Structured Grid Examples}
+\frame{\frametitle{Structured Grid Examples -- Uniform}
 
 \begin{columns}[t]
 \column{.5\textwidth}
-Uniform Grid
 \begin{itemize}
-\item Simplest of all structured grids, $(i,j,k)$ indexing
-\item Easy formula determining location of all nodes
+\item $(i,j,k)$ indexing
+%\item Easy formula determining location of all nodes
 \item What are the advantages/disadvantages?
 \end{itemize}	
 \column{.5\textwidth}
@@ -126,29 +135,26 @@ Uniform Grid
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Structured Grid Examples}
+\frame{\frametitle{Structured Grid Examples -- Rectilinear}
 
 \begin{columns}[t]
 \column{.5\textwidth}
-Rectilinear Grid
 \begin{itemize}
 \item Similar to uniform grid
-\item What is the main advantage here?
+\item What is the main advantage here as compared to a uniform grid?
 \item What are the disadvantages?
 \end{itemize}	
 \column{.5\textwidth}
-		\pgfputat{\pgfxy(-0.5,-4.0)}{\pgfbox[left,base]{\pgfuseimage{Rect}}}
+		\pgfputat{\pgfxy(-0.5,-4.5)}{\pgfbox[left,base]{\pgfuseimage{Rect}}}
 \end{columns}
 
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Structured Grid Examples}
-
+\frame{\frametitle{Structured Grid Examples -- Curvilinear}
 
 \begin{columns}[t]
 \column{.5\textwidth}
-Curvilinear Grid
 \begin{itemize}
 \item Note that each node still has the same number of neighbors
 \item What is the main advantage here?
@@ -163,13 +169,12 @@ Curvilinear Grid
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Structured Grid Examples}
+\frame{\frametitle{Structured Grid Examples - Block Structured}
 
 \begin{columns}[t]
 \column{.5\textwidth}
-Adaptive Mesh Refinement Grid
 \begin{itemize}
-\item Block structured
+\item Used in Adaptive Mesh Refinement methods
 \item Solves problem of having too much resolution in places that you don't need it
 \item Software is more complicated
 \item Error analysis more difficult
@@ -182,20 +187,20 @@ Adaptive Mesh Refinement Grid
 
 \section{SIM}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Properties of Structured Grids}
+\frame{\frametitle{Main properties of structured grids}
 
 \begin{itemize}
 
 \item Number of adjacent mesh elements is always the same
-\item Generally more accurate per dof
-\item Convergence of algorithms (linear solvers) usually faster
+\item Generally more accurate per unknown/dof than unstructured
+\item Convergence of algorithms (linear solvers) well understood
 \item Better data layout, which is good for computation
 \end{itemize}
 
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{5-Point Stencil}
+\frame{\frametitle{Example: 5-Point Stencil}
 
 \begin{columns}[c]
 \begin{column}{.4\textwidth}
@@ -203,32 +208,62 @@ Adaptive Mesh Refinement Grid
 \begin{itemize}
 \item Simplest 2-D case
 \item Leads directly to a sparse (penta-diagonal) matrix
-\item Easy to solve with iterative methods
+\item Iterative methods easy to apply
 \end{itemize}
 \end{column}
 
 \begin{column}{.6\textwidth}
-\begin{tikzpicture}[x=1cm, y=1cm, semitransparent]
+\begin{tikzpicture}[x=1cm, y=1cm, thick,every node/.style = {draw, circle, line width = 1pt, minimum size = .5 mm}]
 %\draw[step=1mm, line width=0.1mm, black!30!white] (0,0) grid (\width,\hauteur);
 %\draw[step=5mm, line width=0.2mm, black!40!white] (0,0) grid (\width,\hauteur);
 %\draw[step=5cm, line width=0.5mm, black!50!white] (0,0) grid (\width,\hauteur);
+
 \draw[step=1cm, line width=0.5mm, black!50!white] (-1,-1) grid (\width,\hauteur);
     \coordinate (u0) at (2,2);
     \coordinate (u1) at (2,1);
     \coordinate (u2) at (1,2);
     \coordinate (u3) at (3,2);
     \coordinate (u4) at (2,3);
-    \fill[red] (u0) circle (2pt);
-    \fill[red] (u1) circle (2pt);
-    \fill[red] (u2) circle (2pt);
-    \fill[red] (u3) circle (2pt);
-    \fill[red] (u4) circle (2pt);
+    \node[red] at (u0) {{\bf 4}};
+    \node[blue] at (u1) {{\bf -1}};
+    \node[blue] at (u2) {{\bf -1}};
+    \node[blue] at (u3) {{\bf -1}};
+    \node[blue] at (u4) {{\bf -1}};
+    %\fill[red] (u0) circle (2pt);
+   %\fill[red] (u1) circle (2pt);
+   % \fill[red] (u2) circle (2pt);
+   % \fill[red] (u3) circle (2pt);
+   % \fill[red] (u4) circle (2pt);
+
 \end{tikzpicture}
 \end{column}
 \end{columns}
 
 } % end frame
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{5-Point Stencil Matrix for $N=3$ grid}
+
+$$
+A_9 = \left[ \begin{array}{rrr | rrr | rrr}
+4   & -1  &  \     & -1    &  \ & \      &  \ & \  & \ \\
+-1  &  4  &  -1    & \    &  -1 & \       &  \ & \ &  \ \\
+\   & -1  &   4    & \   &  \ & -1      &  \ & \ &  \  \\
+\hline
+-1   &  \  &  \     & 4 &  -1 & \       &  -1 & \ &   \  \\
+\ &  -1  &  \      & -1 &  4 & -1      &  \ & -1 &   \  \\
+\  &  \  &  -1      & \ &  -1 & 4       &  \ & \  & -1  \\
+\hline
+\ &  \ & \       & -1 &  &         & 4 & -1 &  \  \\
+\  & \  & \       &  &  -1 &          &  -1 & 4 &  -1 \\
+\  & \  & \        &   &  & -1        & \ &  -1 & 4   \\
+\end{array} \right]
+$$
+
+\begin{block}{Question}
+What matrix properties can you name?
+\end{block}
+} % end frame\
 
 \section{Applications}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -244,8 +279,12 @@ Adaptive Mesh Refinement Grid
 
 \begin{itemize}
 \item Structured grids exist in many shapes and forms
-\item Well developed and well understood methods available
-\item Work extremely well on parallel and other high performance computing environments
+\item Well understood methods 
+\item Well developed software available
+\item Work well on parallel and other high performance computing environments
+
+\item Don't work as well with complex geometries
+\item Also harder to use with multi-material, multi-block problems
 \end{itemize}
 
 }% end frame

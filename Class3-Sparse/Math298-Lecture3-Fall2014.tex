@@ -167,13 +167,11 @@ $$
 \frame{\frametitle{Basic Stationary Iterative Method (SIM)}
 Consider $Ax = b$
 
-First we'll ``split" the matrix $A = M - N$, where $M = L + D$ and $U = -N$. In other words
-$$
-(L + D) x^{k+1} = b - Ux^{k}, \quad k=0, \ldots
-$$
-or
+First we'll ``split" the matrix $A = M - N$, where $M = L + D$ and $N = -U$. Now I'll define an iteration for $k=0, \ldots$, s.t.
+
 \begin{eqnarray}
-M x^{k+1} &=& b + Nx^{k}, \quad k=0, \ldots \\
+(L + D) x^{k+1} &=& b - Ux^{k},  \\
+M x^{k+1} &=& b + Nx^{k},  \\
    x^{k+1} &=&  M^{-1}b + M^{-1}Nx^{k}, \\
    x^{k+1} &=&  Gx^{k} + c ,\label{eq:SIM}
 \end{eqnarray}
@@ -217,7 +215,7 @@ Many important matrices resulting from problems arising in CSE satisfy $\rho(G) 
 \frame{\frametitle{Finite Precision}
 
 \begin{itemize}
-\item In exact arithmetic the CG method will converge to the solution of $Ax=b$ in $n$ iterations.
+\item In exact arithmetic the CG method will converge to the solution of $Ax=b$ in at most $n$ iterations for $A$ spd.
 \item In finite precision, roundoff error will contaminate the solution.
 \item And even in the exact case, what does this mean for a system with dimension 1M or 1B?
 \end{itemize}
@@ -346,5 +344,23 @@ Note that in general $M^{-1}A$ may not be symmetric.  How then would you apply C
  \end{thebibliography}
 
 \end{frame}% end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Appendix: Basic CG Method}
+Consider $Ax = b$, where $A$ is spd.
+Let $x_0 = 0, r_0 = b, p_0 = r_0$. 
+
+\vspace{.25in}
+\qquad \qquad for $k = 1, 2, 3, \ldots $
+\begin{eqnarray*}
+\alpha_k &=& (r^T_{k-1} r_{k-1})/(p^T_{k-1}Ap_{k-1})  \\
+x_{k}       &=& x_{k-1}  + \alpha_k p_{k-1}  \\
+r_{k}       &=&  r_{k-1}  - \alpha_k A p_{k-1} \\
+\beta_{k} &=& (r^T_{k} r_{k}) / (r^T_{k-1}r_{k-1}) \\
+p_{k} &=&  r_{k}  + \beta_k p_{k-1} \\  \label{alg:CG}
+\end{eqnarray*}
+
+} % end frame
+
 
 \end{document}
