@@ -103,8 +103,8 @@
 \begin{itemize}
    \item {\it mesh}
     \item {\it cells, elements}, \\ e.g. triangles, quads, tetrahedrons, hex
-    \item {\it node, vertex}
-   \item {\it edge, face}
+    \item {\it node, vertex, grid point}
+   \item {\it cell center, edge, face}
 
 \item Grid properties
 \begin{itemize}
@@ -287,6 +287,32 @@ What matrix properties can you name?
 \item Also harder to use with multi-material, multi-block problems
 \end{itemize}
 
+\begin{block}{More information on meshing}
+A nice summary of meshing can be found at A. Bakker's web site \cite{Bakker2002}
+\end{block}
 }% end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[allowframebreaks]
+  \frametitle<presentation>{References}    
+  \begin{thebibliography}{10}    
+  \beamertemplateonlinebibitems
+ \bibitem{Bakker2002}
+   Andre Bakker.
+    \newblock {\em Lecture 7 - Meshing}.
+   \newblock http://www.bakker.org/dartmouth06/engs150/07-mesh.pdf
+  \beamertemplatebookbibitems
+ \bibitem{Iserles09}
+   Arieh Iserles.
+    \newblock {\em A First Course in the Numerical Analysis of Differential Equations, 2nd Ed.},
+   \newblock Cambridge University Press, 2009.
+     \beamertemplatearticlebibitems
+ \bibitem{CFL}
+ R. Courant, K. Friedrichs, H. Lewy.
+  \newblock On the Partial Difference Equations of Mathematical Physics,
+ \newblock IBM Journal, March 1967.
+ \end{thebibliography}
+
+\end{frame}% end frame
 
 \end{document}
