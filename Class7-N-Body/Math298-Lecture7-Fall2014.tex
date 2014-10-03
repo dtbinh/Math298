@@ -40,7 +40,7 @@
  pdfkeywords={N-Body, Fast Multipole}
  }
  
-\title[Math 298 Lecture 7]{Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{}
+\title[Math 298 Lecture 7: N-Body]{Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{}
 \author[Juan Meza]{Juan Meza \\ School of Natural Sciences \\ University of California, Merced}
 \date[Fall 2014]{Fall 2014}
 \institute[UC Merced]
@@ -99,16 +99,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{N-Body Problem Description}
 
-Want to compute sums of the following form:
+Suppose we are given a set of  {\color{navy} source} points $x_i, i=1, \ldots, N$ and we want to compute sums of the following form:
 \begin{equation}
-u(x) = \sum^N_{i=1} w_i K(x,y_i), \label{eq:nbody}
+u(x_i) = \sum^N_{j=1} w_j K(x,y_j), \label{eq:nbody}
 \end{equation}
 where
 \begin{itemize}
-\item $x_i, i=1, \ldots, N$ are called the {\color{navy} source} points
+
 \item $y_j, j=1, \ldots, N$ are called the {\color{navy} target} points
-\item $w_i$ are source weights
-\item $K(x,y_i)$ is called the kernel, e.g. potential function
+\item $w_j$ are source weights
+\item $K(x,y_j)$ is called the kernel, e.g. potential function
 \end{itemize}
 \vspace{.25in}
 \remark: A straightforward algorithm would appear to be $\bigO (N^2)$ 
@@ -117,13 +117,13 @@ where
 
 \section{Examples}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{N-Body problem of gravitation}
+\frame{\frametitle{Example: N-Body problem of gravitation}
 
 The gravitational potential is given by 
 $$
 \Phi(x_j) = \sum^{N}_{\substack{
 i=1 \\
-i \neq j}} \frac{m_i}{r_{ij}}
+i \neq j}} \frac{m_i}{r_{ij}},
 $$
 and the gravitational field $E$ by:
 $$
@@ -140,9 +140,9 @@ $$
 
 Recall one such problem from our previous class, i.e. the FFT:
 $$
-u_j = \sum^N_{k=1} e^{2\pi i j k / N}w_k ,
+u_j = \sum^N_{k=1} e^{2\pi i j k / N} \cdot w_k , \qquad j = 1, \ldots, N.
 $$
-for $j = 1, \ldots, N.$ \\
+
 \vspace{.25in}
 What is the complexity for such an algorithm?
 } % end frame
@@ -155,25 +155,24 @@ $$
 K(x,y) =  \sum^p_{k=1} \phi_k(x) \psi_k(y). 
 $$
 These are called {\color{forestgreen} finite rank or degenerate} kernels.  \\
-We can reduce our original problem Eq (\ref{eq:nbody}) to the following 2-step procedure.
+\vspace{.25in}
+We can reduce our original problem Eq. (\ref{eq:nbody}) to the following 2-step procedure.
 \begin{enumerate}
 \item Compute $A_k = \sum^N_{i=1} w_i \psi_k (y)$
 \item Evaluate $u(x) = \sum^p_{k=1} A_k \phi_k (x)$
 \end{enumerate}
 \vspace{.25in}
-What was the complexity for such an algorithm?
+What is the complexity for such an algorithm?
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Class Participation}
+\frame{\frametitle{Discussion}
 
-Question:
-\vspace{.5in}
+\begin{block}{Question}
 
 Can you think of another example where you might be able to use this idea?
 
-\vspace{.5in}
-Answer:
+\end{block}
 
 } % end frame
 
@@ -202,15 +201,16 @@ Like many other problems first take a look at the structure of the problem
 
 Example: Electrostatic Potential due to a set of charges $q_i$ located at $x_i$\\
 \vspace{.15in}
-Want \\
-$$ K(y-x) = \frac{1}{|y - x|} \approx \sum_{k=0}^{p} \phi_k(x) \psi_k(y)$$
-which is given by
+Want $$ K(y-x) = \frac{1}{|y - x|} \approx \sum_{k=0}^{p} \phi_k(x) \psi_k(y),$$
+which can be written as
 $$
- \frac{1}{|y - x|} = \frac{1}{|y|} \sum_{n=0}^{\infty} P_n(\cos \theta) \left ( \frac{|x|}{|y|} \right )^n
+ \frac{1}{|y - x|} = \frac{1}{|y|} \sum_{n=0}^{\infty} P_n(\cos \theta) \left ( \frac{|x|}{|y|} \right )^n ,
 $$
 where $P_n(\cos \theta)$ are the Legendre polynomials.\\
 \vspace{.15in}
-{\color{forestgreen} N.B.} Series is convergent for $v = \frac{|x|}{|y|} < 1 $ 
+\begin{block}{N.B.} 
+Series is convergent for $v = \frac{|x|}{|y|} < 1 $ 
+\end{block}
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -227,7 +227,7 @@ where $P_n(\cos \theta)$ are the Legendre polynomials.\\
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Four key features of an FMM code}
+\frame{\frametitle{Four key features of an FMM code \footnote{Beatson and Greengard\cite{BeGr09}} }
 
 \begin{itemize}
 \item A specified acceptable accuracy
@@ -235,7 +235,6 @@ where $P_n(\cos \theta)$ are the Legendre polynomials.\\
 \item A far field expansion of the kernel in which the influence of source and evaluation of points separates
 \item (Optional) Conversion of far field expansions into local expansions
 \end{itemize}
-N.B. From Reference 2, Beatson and Greengard
 }% end frame
 
 
@@ -246,11 +245,11 @@ N.B. From Reference 2, Beatson and Greengard
 % Requires the booktabs if the memoir class is not being used
 \begin{table}[htbp]
    \centering
-   %\topcaption{Table captions are better up top} % requires the topcapt package
+   \topcaption{Comparison of FFT with FMM} % requires the topcapt package
    \begin{tabular}{@{} lcr @{}} % Column formatting, @{} suppresses leading/trailing space
       \toprule
 %      \cmidrule(r){1-2} % Partial rule. (r) trims the line a little bit on the right; (l) & (lr) also possible
-      Property   & FFT & FFM \\
+      Property   & FFT & FMM \\
       \midrule
       Work         & $5N \log N$             & $N \log N$ \\
       Accuracy   & exact                       & approximate \\
@@ -258,21 +257,36 @@ N.B. From Reference 2, Beatson and Greengard
       Based on  & Algebra                   & Analytics \\
       \bottomrule
    \end{tabular}
-   \caption{Comparison of FFT with FMM}
    \label{tab:booktabs}
 \end{table}
 
 }% end frame
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{References}
+\begin{frame}[allowframebreaks]
+  \frametitle<presentation>{References}    
+  \begin{thebibliography}{10}    
 
-\begin{itemize}
-\item {\bf A Fast Algorithm for Particle Simulations}, L. Greengard and V. Rokhlin, J. Comp. Phys. 73, 325-348, 1987
-\item {\bf A Short Course on Fast Multipole Methods}, R. Beatson and L. Greengard
-\item {\bf A Short Primer on the Fast Multipole Method}, Vikas Chandrakant Raykar, vikas@umiacs.umd.edu
-\end{itemize}
+ \beamertemplatebookbibitems
+ \bibitem{BeGr09}
+ R. Beatson and L. Greengard
+    \newblock {\em A Short Course on Fast Multipole Methods},
+   \newblock Cambridge University Press, 2009.
 
-}% end frame
+ \beamertemplatearticlebibitems
+ \bibitem{GrRo87}
+L. Greengard and V. Rokhlin.
+  \newblock A Fast Algorithm for Particle Simulations,
+ \newblock J. Comp. Phys. 73, 325-348, 1987.
+ 
+\beamertemplateonlinebibitems
+ \bibitem{Ch}
+ Vikas Chandrakant Raykar
+    \newblock {\em A short primer on the fast multipole method},
+   \newblock \url{http://www.umiacs.umd.edu/labs/cvl/pirl/vikas/publications/FMM_tutorial.pdf}
 
+ \end{thebibliography}
+ \end{frame}
+ 
 \end{document}

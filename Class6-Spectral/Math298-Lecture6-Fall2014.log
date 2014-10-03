@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  3 OCT 2014 12:01
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  3 OCT 2014 16:32
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -791,6 +791,24 @@ Package: booktabs 2005/04/14 v1.61803 publication quality tables
 \@lastruleclass=\count166
 \@thisrulewidth=\dimen206
 )
+(/usr/local/texlive/2014/texmf-dist/tex/latex/mh/mathtools.sty
+Package: mathtools 2014/05/21 v1.14 mathematical typesetting tools
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/mh/mhsetup.sty
+Package: mhsetup 2010/01/21 v1.2a programming setup (MH)
+)
+LaTeX Info: Thecontrolsequence`\['isalreadyrobust on input line 129.
+LaTeX Info: Thecontrolsequence`\]'isalreadyrobust on input line 129.
+\g_MT_multlinerow_int=\count167
+\l_MT_multwidth_dim=\dimen207
+\origjot=\skip60
+\l_MT_shortvdotswithinadjustabove_dim=\dimen208
+\l_MT_shortvdotswithinadjustbelow_dim=\dimen209
+\l_MT_above_intertext_sep=\dimen210
+\l_MT_below_intertext_sep=\dimen211
+\l_MT_above_shortintertext_sep=\dimen212
+\l_MT_below_shortintertext_sep=\dimen213
+)
 (/usr/local/texlive/2014/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
 (/usr/local/texlive/2014/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
 (/usr/local/texlive/2014/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
@@ -801,8 +819,8 @@ Package: booktabs 2005/04/14 v1.61803 publication quality tables
 Package: pgffor 2013/12/13 v3.0.0 (rcs-revision 1.25)
 
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)
-\pgffor@iter=\dimen207
-\pgffor@skip=\dimen208
+\pgffor@iter=\dimen214
+\pgffor@skip=\dimen215
 \pgffor@stack=\toks43
 \pgffor@toks=\toks44
 ))
@@ -813,32 +831,32 @@ Package: tikz 2013/12/13 v3.0.0 (rcs-revision 1.142)
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
 dlers.code.tex
 File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.0 (rcs-revision 1.20)
-\pgf@plot@mark@count=\count167
-\pgfplotmarksize=\dimen209
+\pgf@plot@mark@count=\count168
+\pgfplotmarksize=\dimen216
 )
-\tikz@lastx=\dimen210
-\tikz@lasty=\dimen211
-\tikz@lastxsaved=\dimen212
-\tikz@lastysaved=\dimen213
-\tikzleveldistance=\dimen214
-\tikzsiblingdistance=\dimen215
+\tikz@lastx=\dimen217
+\tikz@lasty=\dimen218
+\tikz@lastxsaved=\dimen219
+\tikz@lastysaved=\dimen220
+\tikzleveldistance=\dimen221
+\tikzsiblingdistance=\dimen222
 \tikz@figbox=\box55
 \tikz@figbox@bg=\box56
 \tikz@tempbox=\box57
 \tikz@tempbox@bg=\box58
-\tikztreelevel=\count168
-\tikznumberofchildren=\count169
-\tikznumberofcurrentchild=\count170
-\tikz@fig@count=\count171
+\tikztreelevel=\count169
+\tikznumberofchildren=\count170
+\tikznumberofcurrentchild=\count171
+\tikz@fig@count=\count172
 
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
 e.tex
 File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
-\pgfmatrixcurrentrow=\count172
-\pgfmatrixcurrentcolumn=\count173
-\pgf@matrix@numberofcolumns=\count174
+\pgfmatrixcurrentrow=\count173
+\pgfmatrixcurrentcolumn=\count174
+\pgf@matrix@numberofcolumns=\count175
 )
-\tikz@expandcount=\count175
+\tikz@expandcount=\count176
 
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarytopaths.code.tex
@@ -872,34 +890,34 @@ Package: beamercolorthemebeaver 2010/06/17  (rcs-revision d02a7cf4d8ae)
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\\' on input line 43.
+(hyperref)                removing `\\' on input line 44.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\\' on input line 43.
+(hyperref)                removing `\\' on input line 44.
 
 (./latex-defs.tex
-\c@algorithm=\count176
-\boxwidth=\skip60
-\fullboxwidth=\skip61
-\fullinboxwidth=\skip62
+\c@algorithm=\count177
+\boxwidth=\skip61
+\fullboxwidth=\skip62
+\fullinboxwidth=\skip63
 ) (./Math298-Lecture6-Fall2014.aux)
 \openout1 = `Math298-Lecture6-Fall2014.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 75.
+LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 75.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -937,16 +955,16 @@ LaTeX Font Info:    ... okay on input line 74.
 
 (/usr/local/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count177
-\scratchdimen=\dimen216
+\scratchcounter=\count178
+\scratchdimen=\dimen223
 \scratchbox=\box60
-\nofMPsegments=\count178
-\nofMParguments=\count179
+\nofMPsegments=\count179
+\nofMParguments=\count180
 \everyMPshowfont=\toks45
-\MPscratchCnt=\count180
-\MPscratchDim=\dimen217
-\MPnumerator=\count181
-\makeMPintoPDFobject=\count182
+\MPscratchCnt=\count181
+\MPscratchDim=\dimen224
+\MPnumerator=\count182
+\makeMPintoPDFobject=\count183
 \everyMPtoPDFconversion=\toks46
 ) (/usr/local/texlive/2014/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
@@ -965,7 +983,7 @@ e
 ))
 ABD: EveryShipout initializing macros
 \AtBeginShipoutBox=\box61
-Package hyperref Info: Link coloring OFF on input line 74.
+Package hyperref Info: Link coloring OFF on input line 75.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -973,11 +991,11 @@ Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 (/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count183
+\c@section@level=\count184
 )
-LaTeX Info: Redefining \ref on input line 74.
-LaTeX Info: Redefining \pageref on input line 74.
-LaTeX Info: Redefining \nameref on input line 74.
+LaTeX Info: Redefining \ref on input line 75.
+LaTeX Info: Redefining \pageref on input line 75.
+LaTeX Info: Redefining \nameref on input line 75.
 
 (./Math298-Lecture6-Fall2014.out) (./Math298-Lecture6-Fall2014.out)
 \@outlinefile=\write6
@@ -1008,13 +1026,13 @@ Dictionary: translator-numbers-dictionary, Language: English
 r-theorem-dictionary/translator-theorem-dictionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
 )
-LaTeX Info: Redefining \includegraphics on input line 74.
+LaTeX Info: Redefining \includegraphics on input line 75.
 Configuring pdfsync
 \PDFSYNC@ut=\write7
 \openout7 = `Math298-Lecture6-Fall2014.pdfsync'.
 
-\PDFSYNCf@li@=\count184
-\PDFSYNC@rder=\count185
+\PDFSYNCf@li@=\count185
+\PDFSYNC@rder=\count186
 **** pdfsync.sty: Synchronizing at \everypar
 \PDFSYNCeveryp@r=\toks47
 **** pdfsync.sty: Synchronizing at \everymath
@@ -1026,7 +1044,7 @@ Configuring pdfsync
 (./Math298-Lecture6-Fall2014.nav)
 
 LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <4> not available
-(Font)              size <5> substituted on input line 81.
+(Font)              size <5> substituted on input line 82.
 
 [2
 
@@ -1034,11 +1052,11 @@ LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <4> not available
 [3
 
 ]
-LaTeX Font Info:    Try loading font information for U+msa on input line 154.
+LaTeX Font Info:    Try loading font information for U+msa on input line 156.
  (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 154.
+LaTeX Font Info:    Try loading font information for U+msb on input line 156.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -1067,6 +1085,8 @@ Missing character: There is no ; in font nullfont!
 
 ] [14
 
+] [15
+
 ]
 \tf@nav=\write8
 \openout8 = `Math298-Lecture6-Fall2014.nav'.
@@ -1077,29 +1097,35 @@ Missing character: There is no ; in font nullfont!
 \tf@snm=\write10
 \openout10 = `Math298-Lecture6-Fall2014.snm'.
 
- [15
+ [16
 
-]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 338.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 338.
- (./Math298-Lecture6-Fall2014.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 338.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 338.
+ </usr/local/texlive/2014/texmf-dist/tex/latex/beamer/art/beamericonarticle.pdf
+> </usr/local/texlive/2014/texmf-dist/tex/latex/beamer/art/beamericonbook.pdf>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 372.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 372.
+
+(./Math298-Lecture6-Fall2014.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 372.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 372.
 Package rerunfilecheck Info: File `Math298-Lecture6-Fall2014.out' has not chang
 ed.
-(rerunfilecheck)             Checksum: FEC304B8380A6C67744B3C4FBBE10056;192.
+(rerunfilecheck)             Checksum: 3B85ED51B5EE3C4E78A9AD68E0348B60;150.
+
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.0pt have occurred.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 338.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 372.
  ) 
 Here is how much of TeX's memory you used:
- 20117 strings out of 493117
- 399873 string characters out of 6135433
- 488241 words of memory out of 5000000
- 23075 multiletter control sequences out of 15000+600000
- 10094 words of font info for 38 fonts, out of 8000000 for 9000
+ 20641 strings out of 493117
+ 410234 string characters out of 6135433
+ 497762 words of memory out of 5000000
+ 23588 multiletter control sequences out of 15000+600000
+ 10156 words of font info for 38 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  48i,34n,57p,468b,761s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
@@ -1110,13 +1136,13 @@ r/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/l
 ocal/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/lo
 cal/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/loc
 al/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/local
-/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/loca
-l/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local
-/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on Math298-Lecture6-Fall2014.pdf (14 pages, 144151 bytes).
+/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/local
+/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
+texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on Math298-Lecture6-Fall2014.pdf (15 pages, 150456 bytes).
 PDF statistics:
- 469 PDF objects out of 1000 (max. 8388607)
- 424 compressed objects within 5 object streams
- 34 named destinations out of 1000 (max. 500000)
- 109 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 509 PDF objects out of 1000 (max. 8388607)
+ 458 compressed objects within 5 object streams
+ 38 named destinations out of 1000 (max. 500000)
+ 101 words of extra memory for PDF output out of 10000 (max. 10000000)
 

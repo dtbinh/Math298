@@ -41,7 +41,7 @@
  pdfkeywords={linear algebra, sparse, structured grids}
  }
  
-\title[Math 298 Lecture 5b]{Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{}
+\title[Math 298 Lecture 5: CFL Condition]{Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{}
 \author[Juan Meza]{Juan Meza \\ School of Natural Sciences \\ University of California, Merced}
 \date[Fall 2014]{Fall 2014}
 \institute[UC Merced]
@@ -87,49 +87,52 @@
 \begin{itemize}
 \item Elementary discussion of algebraic problems arising in discretization of differential equations
 \item Behavior of the solution as mesh width tends to zero
-\item Treat BVP end EV problems for elliptic pdes and IVP for hyperbolic and parabolic pdes 
-
-\item For elliptic
+\item BVP and EV problems for elliptic pdes 
+\item IVP for hyperbolic and parabolic pdes 
 \end{itemize}
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Main Results}
 \begin{itemize}
-\item For elliptic equations a difference quotient tends to the corresponding derivative
-\item For elliptic equations convergence is guaranteed independently of mesh
-\item For hyperbolic equations convergence is obtained iff certain ratio of mesh width is satisfied 
+\item For elliptic equations
+\begin{itemize}
+\item difference quotient tends to the corresponding derivative
+\item convergence is guaranteed independently of mesh
+\end{itemize}
+\item For hyperbolic equations 
+\begin{itemize}
+\item convergence is obtained iff certain ratio of mesh width is satisfied
+\item something else
+\end{itemize} 
 \end{itemize}
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Outline}
-\begin{itemize}
+\frame{\frametitle{Paper Outline}
+\begin{enumerate}
 \item Introduction
 \item Elliptic equations 
 \item Hyperbolic equations
-\end{itemize}
+\end{enumerate}
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Motivation}
 
 \begin{itemize}
-\item Consider case in 1D, on an equally spaced grid $u(x)$
+\item Consider case in 1D on an equally spaced grid $u(x)$
 \item $h$ is the spatial discretization
 
 \vspace{.25in}
 
 \end{itemize}
 \begin{tikzpicture}[x=1cm, y=1cm, semitransparent]
-%\draw[step=1mm, line width=0.1mm, black!30!white] (0,0) grid (\width,\hauteur);
-%\draw[step=5mm, line width=0.2mm, black!40!white] (0,0) grid (\width,\hauteur);
-\draw[step=5cm, line width=0.5mm, black!50!white] (0,0) grid (10,0);
-%\draw[step=1cm, line width=0.5mm, black!50!white] (1,1) grid (10,0);
 
+\draw[step=5cm, line width=0.5mm, black!50!white] (0,0) grid (10,0);
 
     \coordinate (u0) at (0,0)     node[above]  {$u_0$};  
-    \coordinate (u1) at (1,0);
+    \coordinate (u1) at (1,0);     
     \coordinate (u2) at (2,0);
     \coordinate (u3) at (3,0);
     \coordinate (u4) at (4,0);
@@ -140,7 +143,7 @@
     \coordinate (u9) at (9,0);
     \coordinate (u10) at (10,0);
     \fill[red] (u0) circle (2pt);
-    \fill[red] (u1) circle (2pt);
+    \fill[red] (u1) circle (2pt) node[ above  ] {{\color{black}$u_1$}};
     \fill[red] (u2) circle (2pt);
     \fill[red] (u3) circle (2pt);
     \fill[red] (u4) circle (2pt);
@@ -151,10 +154,13 @@
      \fill[red] (u9) circle (2pt);
      \fill[red] (u10) circle (2pt);
 
-\draw[step=1cm, line width=0.5mm, black!50!white] (0,0) grid (10,0)     node[above] {$u_N$};;
+\draw[step=1cm, line width=0.5mm, black!50!white] (0,0) grid (10,0)     node[above] {{\color{black}$u_N$}};;
 
                 
 \end{tikzpicture}
+
+\vspace{.25in}
+The difference quotient for approximating $\partial u / \partial x$ can be written as:
 $$
 u_{x} = \frac{u(x_{j+1}) - u(x_{j-1})}{2h}
 $$
@@ -193,27 +199,27 @@ u_{\bar{y}} &=& \frac{u(x,y) - u(x, y-h)}{h}
 \end{tikzpicture}
 \end{column}
 \end{columns}
-$$u_{xx} = \frac{u(x+h,y) - 2u(x,y) + u(x-h,y)}{h}$$
+\vspace{.25in}
+Corresponding second derivatives $$u_{xx} = \frac{u(x+h,y) - 2u(x,y) + u(x-h,y)}{h^2}$$
 } % end frame
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Definitions}
+\frame{\frametitle{Equations}
 \begin{itemize}
-\item Introduction
 \item Elliptic equations: $$ \frac{\partial^2 u}{\partial t^2} + \frac{\partial^2 u}{\partial x^2} = 0 $$ or $$ \Delta u = u_{xx} + u_{yy}$$
 \item Hyperbolic equations: $$ \frac{\partial^2 u}{\partial t^2} - \frac{\partial^2 u}{\partial x^2} = 0 $$
 \end{itemize}
+both on a simply connected region $G$ with boundary $\partial G$, and appropriate B.C.'s and I.C.'s
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Main Results: Section 1}
+\frame{\frametitle{Main Results: Section 1 (Elliptic Case)}
 
 Assume 
 \begin{itemize}
-\item a simply connected region $G$ with boundary $\partial G$, 
-\item $f(x,y)$ is a given continuous function 
-\item $f(x,y)$ has continuous first and second partial derivatives in a region containing $G$.
+\item $f(x,y)$ is a given continuous function,
+\item $f(x,y)$ has continuous first and second partial derivatives in a region containing $G$,
 \item a mesh $G_h$, with mesh width $h$,
 \item $u_h(x,y)$ is the solution of the difference equation $\Delta u = 0$. 
 \end{itemize}
@@ -226,22 +232,26 @@ Then
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Main Results: Section 2}
+\frame{\frametitle{Main Results: Section 2 (Hyperbolic Case)}
 Assume 
 \begin{itemize}
-\item Hyperbolic equation: $$ \frac{\partial^2 u}{\partial t^2} - \frac{\partial^2 u}{\partial x^2} = 0 $$
+\item Hyperbolic equation: 
+\begin{equation} \frac{\partial^2 u}{\partial t^2} - \frac{\partial^2 u}{\partial x^2} = 0 \label{eq:hyp} \end{equation}
 \item a rectangular mesh, with mesh size $h$ in the time direction, and $kh$, in the spatial ($x$) direction
 \end{itemize}
 
 \begin{itemize}
-\item For $k < 1$, as $h \rightarrow 0$, the solution to the difference equation cannot converge to the solution of the differential equation
+\item For $k < 1$, as $h \rightarrow 0$, the solution to the difference equation {\bf cannot converge} to the solution of the differential equation~(\ref{eq:hyp})
 \end{itemize}
 
-In other words for:
+
+\begin{block}{In other words for:}
 $$
 k = \frac{\Delta x}{\Delta t} < 1 
 $$
 the difference quotient solution will not converge!!!
+\end{block}
+
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -256,11 +266,11 @@ the difference quotient solution will not converge!!!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Main Results: CFL Condition}
 
-Today for the general wave equation with velocity $c$: 
+For the general wave equation with velocity $c$: 
 
 $$ \frac{\partial^2 u}{\partial t^2} - c \frac{\partial^2 u}{\partial x^2} = 0, $$
 
-we say that the time step $\Delta t$ must be chosen so that the CFL condition is met, i.e.:
+today we say that the time step $\Delta t$ must be chosen so that the CFL condition is met, i.e.:
 $$
 \sigma = c \frac{\Delta t}{\Delta x} \leq \sigma_{max} 
 $$
@@ -274,21 +284,25 @@ The value of $\sigma_{max}$ will vary according to the numerical method used.  F
 \begin{frame}[allowframebreaks]
   \frametitle<presentation>{References}    
   \begin{thebibliography}{10}    
-  \beamertemplateonlinebibitems
- \bibitem{Bakker2002}
-   Andre Bakker.
-    \newblock {\em Lecture 7 - Meshing}.
-   \newblock http://www.bakker.org/dartmouth06/engs150/07-mesh.pdf
+
+ \beamertemplatearticlebibitems
+ \bibitem{CFL}
+ R. Courant, K. Friedrichs, H. Lewy.
+  \newblock On the Partial Difference Equations of Mathematical Physics,
+ \newblock IBM Journal, March 1967.
+ 
   \beamertemplatebookbibitems
  \bibitem{Iserles09}
    Arieh Iserles.
     \newblock {\em A First Course in the Numerical Analysis of Differential Equations, 2nd Ed.},
    \newblock Cambridge University Press, 2009.
-     \beamertemplatearticlebibitems
- \bibitem{CFL}
- R. Courant, K. Friedrichs, H. Lewy.
-  \newblock On the Partial Difference Equations of Mathematical Physics,
- \newblock IBM Journal, March 1967.
+
+  \beamertemplateonlinebibitems
+ \bibitem{Ba2014}
+   Lorena Barber
+    \newblock {\em CFD Python: 12 steps to Navier Stokes}.
+   \newblock \url{http://lorenabarba.com/blog/cfd-python-12-steps-to-navier-stokes/}
+
  \end{thebibliography}
 
 \end{frame}% end frame
