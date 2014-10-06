@@ -47,10 +47,13 @@
 \institute[UC Merced]
 
 \pgfdeclareimage[width=\textwidth]{CFLcondition}{CFLcondition}
+\pgfdeclareimage[width=0.7\textwidth]{figure1-4}{figure1-4}
+\pgfdeclareimage[width=0.6\textwidth]{Climate}{Climatemodelresolutions-sidebyside}
 
 % \logo{\pgfuseimage{UCM-logo}}
 
 %% figures
+
 
 \input{latex-defs}
 
@@ -83,12 +86,12 @@
 
 \section{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Introduction}
+\frame{\frametitle{On the Partial Difference Equations of Mathematical Physics \footnote{R. Courant, K. Friedrichs, H. Lewy, IBM Journal, pp. 215--231, March 1967}}
 \begin{itemize}
-\item Elementary discussion of algebraic problems arising in discretization of differential equations
-\item Behavior of the solution as mesh width tends to zero
-\item BVP and EV problems for elliptic pdes 
-\item IVP for hyperbolic and parabolic pdes 
+\item Discussion of algebraic problems arising in discretization of differential equations
+\item Behavior of the difference solution as mesh width goes to zero
+\item BVP and EV problems for elliptic p.d.e.s 
+\item IVP for hyperbolic and parabolic p.d.e.s 
 \end{itemize}
 } % end frame
 
@@ -113,7 +116,21 @@
 \begin{enumerate}
 \item Introduction
 \item Elliptic equations 
+\begin{enumerate}
+\item Preliminaries
+\item Boundary value and eigenvalue problems
+\item Connections to Random Walk
+\item {\bf Solution of differential equation as a limiting form of solution of the difference equation}
+\end{enumerate}
+
 \item Hyperbolic equations
+\begin{enumerate}
+\item Equation of vibrating string
+\item {\bf Influence of the choice of mesh}
+\item Limiting values for arbitrary rectangular grids
+\item Wave equation in 3 variables
+\end{enumerate}
+
 \end{enumerate}
 } % end frame
 
@@ -214,7 +231,7 @@ both on a simply connected region $G$ with boundary $\partial G$, and appropriat
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Main Results: Section 1 (Elliptic Case)}
+\frame{\frametitle{Main Results: Part 1 (Elliptic Case)\footnote{Section 4. pp. 221}}
 
 Assume 
 \begin{itemize}
@@ -226,18 +243,18 @@ Assume
 
 Then 
 \begin{itemize}
-\item As $h \rightarrow 0$, $u_h (x,y)$ converges to $u(x,y)$ satisfying the pde on the domain $G$ and equals $f$ on the boundary 
+\item As $h \rightarrow 0$, $u_h (x,y)$ converges to $u(x,y)$ satisfying $ \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0 $ on the domain $G$ and equals $f$ on the boundary 
 \item For any interior region within $G$ the difference quotients, $u_h$ tend to the corresponding partial derivatives of $u(x,y)$
 \end{itemize}
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Main Results: Section 2 (Hyperbolic Case)}
+\frame{\frametitle{Main Results: Part 2 (Hyperbolic Case) \footnote{Section 2, pp. 228}}
 Assume 
 \begin{itemize}
 \item Hyperbolic equation: 
 \begin{equation} \frac{\partial^2 u}{\partial t^2} - \frac{\partial^2 u}{\partial x^2} = 0 \label{eq:hyp} \end{equation}
-\item a rectangular mesh, with mesh size $h$ in the time direction, and $kh$, in the spatial ($x$) direction
+\item a rectangular mesh, with mesh size $h$ in the time direction, and $kh$, in the spatial, i.e. $x$ direction
 \end{itemize}
 
 \begin{itemize}
@@ -279,6 +296,25 @@ The value of $\sigma_{max}$ will vary according to the numerical method used.  F
 \end{block}
 } % end frame
 
+\section{Applications}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Example: Climate Modeling}
+
+\begin{columns}[c]
+\begin{column}{.4\textwidth}
+\begin{itemize}
+\item Resolution has increased by factor of almost 5 in the last 20 years
+\item Assuming an explicit method, what is the time step needed to maintain stability?
+\item What is the resulting change in computational work?
+\end{itemize}
+\end{column}
+
+\begin{column}{.6\textwidth}
+\pgfputat{\pgfxy(0.0,-2.0)}{\pgfbox[left,base]{\pgfuseimage{Climate}}}
+\end{column}
+
+\end{columns}
+} % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[allowframebreaks]
