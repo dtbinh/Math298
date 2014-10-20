@@ -48,6 +48,7 @@
 %\pgfdeclareimage[height=0.35cm]{UCM-logo}{UCM-logo}
 % \logo{\pgfuseimage{UCM-logo}}
 \pgfdeclareimage[width=0.7\textwidth]{galaxy}{galaxy}
+\pgfdeclareimage[width=0.6\textwidth]{FMM.key}{FMM.key}
 %% figures
 
 % My LaTeX definitions with some common abbreviations
@@ -123,7 +124,7 @@ The gravitational potential is given by
 $$
 \Phi(x_j) = \sum^{N}_{\substack{
 i=1 \\
-i \neq j}} \frac{m_i}{r_{ij}},
+i \neq j}} \frac{m_i}{r_{ij}}, \quad r_{ij} = || x_i - x_j ||,
 $$
 and the gravitational field $E$ by:
 $$
@@ -135,6 +136,7 @@ $$
 \remark Same equations applicable to electrostatics
 } % end frame
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{N-Body Problem (Short Detour)}
 
@@ -143,8 +145,9 @@ $$
 u_j = \sum^N_{k=1} e^{2\pi i j k / N} \cdot w_k , \qquad j = 1, \ldots, N.
 $$
 
-\vspace{.25in}
+\begin{block}{Question:}
 What is the complexity for such an algorithm?
+\end{block} % Answer: O(NlogN)
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -161,8 +164,9 @@ We can reduce our original problem Eq. (\ref{eq:nbody}) to the following 2-step 
 \item Compute $A_k = \sum^N_{i=1} w_i \psi_k (y)$
 \item Evaluate $u(x) = \sum^p_{k=1} A_k \phi_k (x)$
 \end{enumerate}
-\vspace{.25in}
+\begin{block}{Question:}
 What is the complexity for such an algorithm?
+\end{block} % Answer: O(Np)
 } % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -194,10 +198,25 @@ Like many other problems first take a look at the structure of the problem
 
 } % end frame
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Pictorially}
+
+\begin{columns}
+\column{.4\textwidth}
+\begin{itemize}
+\item Brute force method would compute the interactions between each pair of particles
+\item Idea is to combine the effects of several nearby particles into one 
+\item Then the interaction can be reduced to just 2 "particles"
+\end{itemize}
+\column{.6\textwidth}
+	\pgfputat{\pgfxy(0,-3)}{\pgfbox[left,base]{\pgfuseimage{FMM.key}}}
+\end{columns}
+} % end frame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Replacing group of particles: multipole expansion}
 
+%A multipole expansion is a series expansion of the effect produced by a given system in terms of an expansion parameter which becomes small as the distance away from the system increases. Therefore, the leading one or terms in a multipole expansion are generally the strongest. The first-order behavior of the system at large distances can therefore be obtained from the first terms of this series, which is generally much easier to compute than the general solution. Multipole expansions are most commonly used in problems involving the gravitational field of mass aggregations, the electric and magnetic fields of charge and current distributions, and the propagation of electromagnetic waves. Wolfram, http://scienceworld.wolfram.com/physics/MultipoleExpansion.html
 
 Example: Electrostatic Potential due to a set of charges $q_i$ located at $x_i$\\
 \vspace{.15in}
