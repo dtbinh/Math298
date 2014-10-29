@@ -1,0 +1,340 @@
+\documentclass[mathserif,notes]{beamer}
+
+\usepackage{pdfsync} % works only on TeXShop, comment otherwise
+\usepackage{pgf}
+\usepackage{multimedia} % to embed movies in the PDF file
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{pgfpages}
+\usepackage{topcapt}
+\usepackage{booktabs}
+
+% for the tikz pictures
+\usepackage{geometry}
+%\geometry{hmargin=1cm,vmargin=1cm}
+\usepackage{tikz}
+\def\width{5}
+\def\hauteur{5}
+\mode<presentation>
+{
+  \usetheme{Madrid}   %  \usetheme{Warsaw}
+  % Note: this next command makes nice slides, but Adobe doesn't like it (you get blank pages)
+  \setbeamertemplate{background canvas}[vertical shading][bottom=white,top=structure.fg!15]
+  %\setbeamertemplate{footline}{\pgfuseimage{UCM-logo}}
+
+  %\usecolortheme{seahorse}
+  \usecolortheme{beaver}
+ % \setbeamercovered{transparent}
+}
+%\usepackage[T1]{fontenc}
+% For printing purposes only
+%\pgfpagesuselayout{2 on 1}[letterpaper,border shrink=5mm,portrait]
+\pgfpagesuselayout{resize to}[letterpaper,border shrink=5mm,landscape]  % print out full size on paper
+
+\usepackage{amssymb,amsmath}
+\hypersetup{%
+ pdftitle={Math298 Lecture 8},
+ pdfauthor={Juan Meza(UC Merced)},
+ pdfsubject={Fundamental Concepts in Computational and Applied Mathematics},
+ pdfkeywords={Optimization and Nonlinear Equations}
+ }
+ 
+\title[Math 298 Lecture 8: Optimization]{Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{}
+\author[Juan Meza]{Juan Meza \\ School of Natural Sciences \\ University of California, Merced}
+\date[Fall 2014]{Fall 2014}
+\institute[UC Merced]
+
+\pgfdeclareimage[height=0.35cm]{UCM-logo}{UCM-logo}
+% \logo{\pgfuseimage{UCM-logo}}
+\pgfdeclareimage[width=0.7\textwidth]{UCM-topo}{UCM-topo}
+%% figures
+
+% My LaTeX definitions with some common abbreviations
+%\input{latex-defs}
+\def\bigO{\mathcal{O}}
+\def\xstar{x_{*}}
+\def\Rn{\real^{n}}
+\newcommand {\real} {\mathbb{R}}
+\newcommand {\grad}{\nabla}
+\newcommand {\hess}{\nabla^2}
+
+\definecolor{navy}{RGB}{0,0,128}
+\definecolor{forestgreen}{RGB}{34,139,34}
+\definecolor{mylightsteelblue}{RGB}{176,196,222}
+\definecolor{mylightcyan}{RGB}{180,255,255}
+\definecolor{mypaleturquoise}{RGB}{175,238,238}
+\definecolor{mylightgoldenrod}{RGB}{250,250,210}
+\definecolor{mylightyellow}{RGB}{255,255,224}
+\definecolor{mylightsalmon}{RGB}{255,160,122}
+
+\setbeamercolor{blacklightsteelblue}{fg=black,bg=mylightsteelblue}
+\setbeamercolor{blackpaleturquoise}{fg=black,bg=mypaleturquoise}
+\setbeamercolor{blacklightcyan}{fg=black,bg=mylightcyan}
+\setbeamercolor{blacklightgoldenrod}{fg=black,bg=mylightgoldenrod}
+\setbeamercolor{blacklightyellow}{fg=black,bg=mylightyellow}
+\setbeamercolor{blacklightsalmon}{fg=black,bg=mylightsalmon}
+\setbeamercolor{blackcyan}{fg=black,bg=cyan}
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+
+\titlepage
+
+} % end frame
+
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Optimization and Nonlinear Equations}
+
+\begin{itemize}
+\item Optimization and nonlinear equations at the heart of many science and engineering problems
+\item Many of the ideas/methods used in optimization are the same as in nonlinear equations
+\item Can divide methods generically into derivative and non-derivative methods
+\end{itemize}
+For minimization we usually state the problem as: $\min f(x)$ \\
+For nonlinear equations we usually state the problem as : Solve $F(x) = 0$
+} % end frame
+
+
+\section{Notation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Nonlinear Equations (NLE)}
+
+Suppose we have:
+
+$$
+F: \real^n \rightarrow \Rn
+$$
+then the problem of solving a set of nonlinear equations is given by:
+$$
+\mbox{find} \ \xstar \in \Rn  \ \mbox{such that} \ F(\xstar) = 0 \in \Rn
+$$
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Miminization}
+
+Suppose we have:
+
+$$
+f: \Rn \rightarrow \real
+$$
+then the problem of minimization is given by:
+$$
+\mbox{find} \ \xstar \in \Rn  \ \mbox{such that} \ f(\xstar) \leq f(x), \ \forall x \in \Rn
+$$
+{\color{red} Remark.} Another variation of this is the {\color{red} constrained version}, i.e.
+$$
+\min_{x \in \Omega \subset \Rn}  f:  \Rn \rightarrow \real
+$$
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Some important terminology}
+
+\begin{columns}
+\column{.5\textwidth}
+
+\begin{itemize}
+\item Level sets (curves) are set of points where $f(x) = c$, for some constant; think topographic map 
+\item {\color{red} gradient} $g(x) = \nabla f(x) $ is the (column) vector of first derivatives of $f$
+\item {\color{red} Jacobian} $J(x) = \nabla F^T (x) $ is the matrix of first derivatives of $F$
+\item {\color{red} Hessian} $H(x) = \hess f(x) $ is the matrix of second derivatives of $f$
+\end{itemize}
+\column{.5\textwidth}
+	\pgfputat{\pgfxy(0,-4.0)}{\pgfbox[left,base]{\pgfuseimage{UCM-topo}}}
+\end{columns}
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Motivation}
+
+Main approach to solving nonlinear equations/optimization can be viewed in several ways.
+We will consider the {\color{red} model-based} approach
+
+\begin{itemize}
+\item Replace your nonlinear problem with a ``model"
+\item Solve resulting model system
+\item Check for convergence, iterate
+\item So for example:
+\begin{itemize}
+\item Nonlinear equations can be replaced by a linear problem
+\item Minimization problem can be replaced by a quadratic model
+\end{itemize}
+\end{itemize}
+
+} % end frame
+
+\section{Examples}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Example 1}
+
+Consider the problem of solving one equation in one unknown, $f(x) = 0$.
+
+First replace $f(x)$ by a linear model $M_c(x)$:
+$$
+M_c(x) = f(x_c) + f^{\prime}(x_c)(x - x_c).
+$$
+
+Solving for $M_c(x) = 0$ we get:
+\begin{eqnarray*}
+f(x_c) + f^{\prime}(x_c)(x - x_c) &=& 0 \\
+x - x_c & = &  - \frac{f(x_c)}{f^{\prime}(x_c)} \\
+x &=& x_c  - \frac{f(x_c)}{f^{\prime}(x_c)}
+\end{eqnarray*}
+
+\begin{block}{Remark}
+You may recognize this as just Newton's method. What does $M_c$ look like in the general $n-$dimensional case?
+\end{block}
+} % end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Example 2}
+
+Consider the problem of minimizing a general nonlinear function, $f(x)$.
+
+First replace $f(x)$ by a quadratic model:
+
+$$
+m_c(x) = f(x_c) + f^{\prime}(x_c)(x - x_c) + \frac{1}{2} f^{\prime \prime}(x_c)(x - x_c)^2 .
+$$
+
+\begin{block}{Remark}
+All we have to do now is find the minimum of a quadratic function, i.e. take the derivative of $m_c$ wrt $x$ and set it equal to 0. 
+\end{block}
+\begin{block}{Remark}
+Alternately, we could have just as easily said that we would use our previous approach in Example 1 to solving $f^{\prime}(x) = 0 !$ 
+\end{block}
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Theory}
+
+\begin{itemize}
+\item Under some fairly standard assumptions one can show convergence for Newton's method applied to nonlinear equations (NLE)
+\begin{itemize}
+\item $F(x)$ is continuously differentiable
+\item A solution $\xstar$ exists s.t. $F(\xstar) = 0$
+\item $J(x)$ is Lipschitz continuous and $J(\xstar)^{-1}$ exists
+\end{itemize}
+
+\item For Newton's method one can show {\em quadratic convergence}, i.e.
+$$
+|| x_{k+1} - \xstar || \leq C || x_{k} - \xstar ||^2 .
+$$
+\item Variations on Newton's method still have fast convergence, i.e. superlinear convergence.
+
+\end{itemize}
+
+} % end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Practicalities}
+
+\begin{itemize}
+\item Many variations of optimization methods based on problem characteristics
+  \begin{itemize}
+      \item Convex programming
+      \item Derivative-free optimization
+      \item Large-scale optimization
+      \item Stochastic optimization
+      \item $\ldots$
+   \end{itemize}
+\item Many of the usual theoretical assumptions do not hold for science and engineering problems
+   \begin{itemize}
+     \item Smoothness/continuity
+     \item Availability of derivatives
+     \item Infinite precision
+   \end{itemize}
+
+\end{itemize}
+
+} % end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Class Discussion}
+
+Question:  Discuss the advantages and disadvantages to the model-based approach
+
+\vspace{.5in}
+
+Starter questions
+\pause
+\begin{itemize}[<+->]
+\item<2-> What assumptions are we making, relying on?
+\item<3-> How do you choose a good model?
+\item<4-> What does the model-based approach look like in $\Rn$?
+\item<5-> What does convergence mean?
+\end{itemize}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Advantages/Disadvantages of Newton's Method\footnote{Numerical Methods for Unconstrained Optimization and Nonlinear Equations, J.E. Dennis, Jr. and Robert B. Schnabel, Prentice-Hall}  }
+% Requires the booktabs if the memoir class is not being used
+\begin{table}[htbp]
+   \caption{Newton's method }\centering
+   %\topcaption{Table captions are better up top} % requires the topcapt package
+   \begin{tabular}{@{} l @{}} % Column formatting, @{} suppresses leading/trailing space
+      \toprule
+%      \cmidrule(r){1-2} % Partial rule. (r) trims the line a little bit on the right; (l) & (lr) also possible
+      {\bf Advantages}\\
+      \midrule
+	1. $q$-quadratic convergence if $J(\xstar)$ is nonsingular. \\
+	2. superlinear convergence for other variations of Newton's method. \\
+	3. Exact solution in 1 iteration for affine F. \\
+      \midrule
+      {\bf Disadvantages} \\
+      \midrule
+      1. Not globally convergent for all problems. \\
+      2. Requires $J(x_k)$ at each iteration. \\
+      3. Need solution to system of linear equations at each iteration. \\
+      \bottomrule
+         \end{tabular}
+
+   \label{tab:NM}
+\end{table}
+
+}% end frame
+
+\section{Summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Summary}
+\begin{itemize}
+\item Newton-based methods provide some of the most popular and powerful methods for solving nonlinear equations and optimization.
+\item Strong theoretical foundation. 
+\item Many variations of basic method that take advantage of special structure or problem properties.
+\item Most practical science and engineering problems do not lend themselves easily to standard set of assumptions.
+\end{itemize}
+}% end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[allowframebreaks]
+  \frametitle<presentation>{References}    
+  \begin{thebibliography}{10}    
+
+ \beamertemplatebookbibitems
+ \bibitem{DeSc}
+ J.E. Dennis, Jr. and Robert B. Schnabel
+    \newblock {\em Numerical Methods for Unconstrained Optimization and Nonlinear Equations, }
+   \newblock SIAM Classics in Applied Mathematics,1987.
+
+ \beamertemplatearticlebibitems
+ \bibitem{FlPo}
+R. Fletcher and M.J.D. Powell
+  \newblock A Rapidly Convergent  Descent Method for Minimization,
+ \newblock Comput. J., 6 pp. 163--168, 1963.
+
+ \end{thebibliography}
+ \end{frame}
+
+\end{document}
