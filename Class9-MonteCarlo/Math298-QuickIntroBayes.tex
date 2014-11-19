@@ -1,0 +1,153 @@
+%\documentclass[smaller]{beamer}
+\documentclass[mathserif,notes]{beamer}
+%
+%\usepackage{mybeamertheme}
+\usepackage{pdfsync} % works only on TeXShop, comment otherwise
+\usepackage{pgf}
+\usepackage{pgfpages}
+\usepackage{multimedia} % to embed movies in the PDF file
+\usepackage{xcolor}
+\usepackage{graphicx}
+%\usepackage{comment}
+\usepackage{tikz}
+\usepackage{amssymb,amsmath}
+\usepackage{dcolumn}
+
+\mode<presentation>
+{
+  \usetheme{Madrid}
+  \setbeamertemplate{background canvas}[vertical shading][bottom=white,top=structure.fg!15]
+  \usecolortheme{beaver}
+}
+\usebackgroundtemplate{
+%\includegraphics[width=1.1\paperwidth,height=\paperheight]{CrayonLine}
+%\includegraphics[width=8.5in,height=11in]{CrayonLine}
+}
+% For printing purposes only
+%\pgfpagesuselayout{2 on 1}[letterpaper,border shrink=5mm,landscape]
+%\pgfpagesuselayout{2 on 1}[letterpaper,border shrink=5mm]
+ 
+\title[Bayesian Models]{Bayesian Models}  \subtitle{Probability Basics}
+ 
+\title[Math 298 Lecture 10: Bayesian Models]{Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{}
+\author[Juan Meza]{Juan Meza \\ School of Natural Sciences \\ University of California, Merced}
+\date[Fall 2014]{Fall 2014}
+\institute[UC Merced]
+
+%% figures
+
+\input{latex-defs}
+
+\definecolor{navy}{RGB}{0,0,128}
+\definecolor{forestgreen}{RGB}{34,139,34}
+\definecolor{mylightsteelblue}{RGB}{176,196,222}
+\definecolor{mylightcyan}{RGB}{180,255,255}
+\definecolor{mypaleturquoise}{RGB}{175,238,238}
+\definecolor{mylightgoldenrod}{RGB}{250,250,210}
+\definecolor{mylightyellow}{RGB}{255,255,224}
+\definecolor{mylightsalmon}{RGB}{255,160,122}
+
+\setbeamercolor{blacklightsteelblue}{fg=black,bg=mylightsteelblue}
+\setbeamercolor{blackpaleturquoise}{fg=black,bg=mypaleturquoise}
+\setbeamercolor{blacklightcyan}{fg=black,bg=mylightcyan}
+\setbeamercolor{blacklightgoldenrod}{fg=black,bg=mylightgoldenrod}
+\setbeamercolor{blacklightyellow}{fg=black,bg=mylightyellow}
+\setbeamercolor{blacklightsalmon}{fg=black,bg=mylightsalmon}
+\setbeamercolor{blackcyan}{fg=black,bg=cyan}
+
+\setbeamertemplate{block title}[bg=red]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some convenient shortcuts
+
+\newcommand{\bce}{\begin{center}}
+\newcommand{\ece}{\end{center}}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+
+\titlepage
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame[c]{\frametitle{Bayes Formula}
+
+Combine (prior) information you have with new data, $D$, to update your understanding of a model:
+\begin{equation}
+P( \theta | D) = \frac{P(D | \theta)   P (\theta)}{\int \! P(D | \theta)   P (\theta) \mathrm{d} \theta}
+\end{equation}
+where
+\begin{itemize}
+\item $ P(\theta | D)  $ is called the \emph{posterior}
+\item $ P(D | \theta)  $ is called the \emph{likelihood}
+\item $ P(\theta) $ is called the \emph{prior}
+\end{itemize}
+
+The term
+$$
+m(x) = \int \! P(D | \theta)   P (\theta) \mathrm{d} \theta
+$$
+is called the {\em marginal density} of the random variable $X$.
+
+} % end frame
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame[c]{\frametitle{Basic Idea}
+\begin{itemize}
+
+\item Replaced quantity of interest (posterior) with something that we are more likely to be able to compute
+\item The prior represents our state of the knowledge before we analyze the data
+\item The likelihood modifies this state once we've analyzed the new experimental data
+\item is just a normalization constant in most cases
+\end{itemize}
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame[c]{\frametitle{Bayes}
+
+Of interest are various functions of the posterior (e.g. moments, quantiles, etc.), which can be expressed as expectations of functions of $\theta$:
+\begin{equation}
+E \left [ f(\theta) | D \right ] = \frac{ \int \! f(\theta) P(D | \theta)   P (\theta)  \mathrm{d} \theta}{\int \! P(D | \theta)   P (\theta) \mathrm{d} \theta}
+\end{equation}
+
+\begin{itemize}
+\item Computation of the integrals have been the computational bottlenecks
+\item In most applications no analytic expressions for the posterior are impossible
+\end{itemize}
+} % end frame
+
+
+\section{Computing}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame[c]{\frametitle{Example}
+
+} % end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame[c]{\frametitle{Summary}
+
+\begin{Large}
+\begin{itemize}
+
+\item blah
+\item blah
+\item blah
+\end{itemize}
+\end{Large}
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

@@ -1,0 +1,342 @@
+\documentclass[mathserif,notes]{beamer}
+
+\usepackage{pdfsync} % works only on TeXShop, comment otherwise
+\usepackage{pgf}
+\usepackage{multimedia} % to embed movies in the PDF file
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{pgfpages}
+\usepackage{topcapt}
+\usepackage{booktabs}
+%
+% for algorithm
+\usepackage{algorithm2e}
+\usepackage{algorithmic}
+\usepackage{float}
+
+% for the tikz pictures
+\usepackage{geometry}
+%\geometry{hmargin=1cm,vmargin=1cm}
+\usepackage{tikz}
+\def\width{5}
+\def\hauteur{5}
+\mode<presentation>
+{
+  \usetheme{Madrid}   %  \usetheme{Warsaw}
+  % Note: this next command makes nice slides, but Adobe doesn't like it (you get blank pages)
+  \setbeamertemplate{background canvas}[vertical shading][bottom=white,top=structure.fg!15]
+  %\setbeamertemplate{footline}{\pgfuseimage{UCM-logo}}
+
+  %\usecolortheme{seahorse}
+  \usecolortheme{beaver}
+ % \setbeamercovered{transparent}
+}
+%\usepackage[T1]{fontenc}
+% For printing purposes only
+%\pgfpagesuselayout{2 on 1}[letterpaper,border shrink=5mm,portrait]
+\pgfpagesuselayout{resize to}[letterpaper,border shrink=5mm,landscape]  % print out full size on paper
+
+\usepackage{amssymb,amsmath}
+\hypersetup{%
+ pdftitle={Math298 Lecture 8},
+ pdfauthor={Juan Meza(UC Merced)},
+ pdfsubject={Fundamental Concepts in Computational and Applied Mathematics},
+ pdfkeywords={Monte Carlo, Markov Chain, MCMC}
+ }
+ 
+\title[Math 298 Lecture 9: Monte Carlo]{Fundamental Concepts in \\ Computational and Applied Mathematics}  \subtitle{}
+\author[Juan Meza]{Juan Meza \\ School of Natural Sciences \\ University of California, Merced}
+\date[Fall 2014]{Fall 2014}
+\institute[UC Merced]
+
+% My LaTeX definitions with some common abbreviations
+%\input{latex-defs}
+\def\bigO{\mathcal{O}}
+\def\xstar{x_{*}}
+\def\Rn{\real^{n}}
+\newcommand {\real} {\mathbb{R}}
+\newcommand {\grad}{\nabla}
+\newcommand {\hess}{\nabla^2}
+
+\definecolor{navy}{RGB}{0,0,128}
+\definecolor{forestgreen}{RGB}{34,139,34}
+\definecolor{mylightsteelblue}{RGB}{176,196,222}
+\definecolor{mylightcyan}{RGB}{180,255,255}
+\definecolor{mypaleturquoise}{RGB}{175,238,238}
+\definecolor{mylightgoldenrod}{RGB}{250,250,210}
+\definecolor{mylightyellow}{RGB}{255,255,224}
+\definecolor{mylightsalmon}{RGB}{255,160,122}
+
+\setbeamercolor{blacklightsteelblue}{fg=black,bg=mylightsteelblue}
+\setbeamercolor{blackpaleturquoise}{fg=black,bg=mypaleturquoise}
+\setbeamercolor{blacklightcyan}{fg=black,bg=mylightcyan}
+\setbeamercolor{blacklightgoldenrod}{fg=black,bg=mylightgoldenrod}
+\setbeamercolor{blacklightyellow}{fg=black,bg=mylightyellow}
+\setbeamercolor{blacklightsalmon}{fg=black,bg=mylightsalmon}
+\setbeamercolor{blackcyan}{fg=black,bg=cyan}
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+
+\titlepage
+
+} % end frame
+
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Short History of Monte Carlo}
+
+\begin{itemize}
+\item Original Metropolis algorithm dates back to 1953 paper (J. Chem Phys) for integrals in $\real^{2N}$, where $N$ denoted the number of particles in a problem of interest
+\item Hastings proposed a solution to the "curse of dimensionality" in 1970 paper\cite{Hastings} .
+\item Gelfand and Smith \cite{GeSm90} (1990) brought more attention to the subject
+\item Advent of more computational power, especially parallel processing makes MC methods more popular
+\item Combination of computing power and algorithms drives new interest in Bayesian statistics
+\end{itemize}
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Motivating applications}
+
+Example 1: Generate samples from a given probability distribution function (pdf), $f(x)$
+$$
+X_1, X_2, \ldots, X_t 
+$$
+Example 2: Computation of certain integrals:
+$$
+I = \int \! f(x) \, \mathrm{d}x
+$$ 
+Example 3: Given $f: \Rn \rightarrow \real$
+$$
+\mbox{find} \ \xstar \in \Rn  \ \mbox{such that} \ f(\xstar) \leq f(x), \ \forall x \in \Rn
+$$
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Some important assumptions \& facts}
+
+\begin{itemize}
+\item We will usually assume that we can compute the pdf $f(x) $ only up to a multiplicative constant
+\item Don't always know the normalizing constant 
+\item Sampling from a given distribution can be quite difficult, especially in the high-dimensional case
+\item We should pick more samples from regions where $f(x)$ is "big", but how do we know that without knowing where $f$ is "big"
+\end{itemize}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Acceptance/Rejection Method}
+\begin{algorithm}[H]
+\caption{Acceptance-Rejection (AR)}
+Given  $f(x) \leq M g(x)$ \\ 
+%\begin{algorithmic}[1]
+\Repeat{(done)}{
+Generate  $X \sim g \mbox{ and } u \sim U(0,1)$ \\
+\If {$u \leq f(X) / Mg(X)$}{$Y = X$}\
+}
+%\end{algorithmic}
+
+\label{alg:AR}
+\end{algorithm}
+
+\begin{block}{Remark}
+Algorithm (AR) produces a variable Y distributed according to $f(x)$.
+\end{block}
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Integration Example}
+
+Suppose we want to compute the following integral (expectation):
+$$
+E[f(X)] = \frac{\int \! f(x) \pi(x) \, \mathrm{d}x}{\int \! \pi(x) \, \mathrm{d}x},
+$$  and the distribution of $X$ is in $k$-dimensional Euclidian space.
+\vspace{.25in}
+
+First we compute samples $\left ( X_t, t = 1, \ldots , N \right )$ with the given distribution $f(x)$ and then approximate
+$$
+E[f(X)] = \frac{1}{n} \sum_{t=1}^{n} \! f(X_t) .
+$$ 
+
+\begin{block}{Remark}
+Accuracy will depend on distribution, number of samples we generate, and dimension of the problem. The last is known as the "curse of dimensionality"
+\end{block}
+} % end frame
+
+ 
+\section{Metropolis-Hastings}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Metropolis-Hastings (1970)}
+Let 
+$$
+\alpha(X,Y) = \min \left ( 1, \frac{\pi(Y) q(X|Y)}{\pi(X) q(Y|X)} \right ) .
+$$
+\begin{algorithm}[H]
+\caption{Metropolis-Hastings (MH)}
+Initialize $X_0 $; set $ t =0 $ \\
+%\begin{algorithmic}[1]
+\While{(not done)}{
+Generate  $Y \sim q( \cdot | X_t) ;  u \sim U(0,1)$ \\
+\eIf {$u \leq \alpha (X_t, Y)$}{$X_{t+1} = Y$}
+{$X_{t+1} = X_t$}
+Increment $t$
+}
+%\end{algorithmic}
+\label{alg:MH}
+\end{algorithm}
+
+\begin{block}{Terminology}
+$q(\cdot|X) $ is called the proposal distribution. 
+\end{block}
+
+} % end frame
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Ising Model Part 1}
+
+Suppose we have a $2D$ array of spins $\sigma_i \in [-1,1]$ and an energy function defined for a configuration of a system
+$$
+E(\sigma) = - \sum_{ij} {\cal J}_{ij} \sigma_i \sigma_j - B \sum_k \sigma_k
+$$
+and we want to take the mean of some function $f(\sigma)$:
+$$
+{\cal F} = \frac{1}{Z(T)} \sum_{\sigma} f(\sigma) \exp( -E(\sigma) / \kappa T),
+$$ 
+where $Z(T) = \sum_{\sigma}  \exp( -E(\sigma) / \kappa T)$ is the {\it partition function}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Ising Model Part 2}
+
+Ideally would like to select configurations from the distribution
+$$
+g( \sigma) = \frac{\exp( -E(\sigma) / \kappa T)}{Z(T)},
+$$ 
+and we could approximate the mean by:
+$$
+F = \frac{\sum_{k} f (\sigma_k)}{M}
+$$
+\begin{block}{Remark}
+Original Metropolis algorithm observed that if only one spin is changed, sampling $g$ is easy. Showed that if a move lowers the energy accept it. If it raises the energy accept it with probability $p$.  Use AR algorithm to choose site for move.
+\end{block}
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Simulated Annealing Method}
+\begin{algorithm}[H]
+\caption{Simulated Annealing (AR)}
+
+%\begin{algorithmic}[1]
+Initialize $X_0 $; set $ t =0 $ \\
+\While{(not converged)}{
+Generate new state $Y$ and $u \sim U(0,1)$ \\
+\eIf {$E(Y) < E(X_t)$}{
+$X_{t+1} = Y$
+}{
+\If {$ u <  e^{- \left [ (E(Y) - E(X_n)) / T \right ]}$}{$X_{t+1} = Y$}
+}
+}
+%\end{algorithmic}
+
+\label{alg:SA}
+\end{algorithm}
+
+\begin{block}{Remark}
+Simulated Annealing always takes a point where function is lower.  But it will also accept a higher function value with a certain probability depending on the "temperature" $T$.
+\end{block}
+}
+\section{Markov Chain}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Basic Markov Chain Facts}
+
+\begin{itemize}
+\item A Markov Chain is a sequence of random variables
+\item Constructed from a transition kernel K, which is a conditional probability density s.t.
+$ X_{n+1} \sim K(X_n, X_{n+1})$
+\item Has stability property in that a {\it stationary probability distribution} exists by construction, i.e.  if $ X_n \sim \pi $ then $X_{n+1} \sim \pi $
+\item Homogeneous is when transition probability is independent of state -- hence if the initial distribution or initial state is known, then the construction of MC is entirely dependent on transition
+\end{itemize}
+
+} % end frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Basic Idea for Markov Chain Monte Carlo}
+
+\begin{itemize}
+\item Use properties of Markov Chains to construct a transition kernel that has a stationary probability distribution that matches the one we want
+\item Assume stationarity, irreducibility, and aperiodic, we can prove Ergodic Theorem.
+\item Needs to also satisfy reversibility condition $ \pi_i p(i \rightarrow j) = \pi_j p(j \rightarrow i) $
+\end{itemize}
+} %
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Practicalities}
+
+\begin{itemize}
+\item Need to have a "burn-in" period
+\item How long do you run the Markov Chain
+\item Can use multiple chains to accelerate convergence
+\end{itemize}
+
+} % end frame
+
+
+\section{Summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Summary}
+\begin{itemize}
+\item Metropolis algorithm defines a Markov Chain whose limit is the desired probability distribution
+\item Many variations on the proposal distribution
+\item Growing number of applications
+\end{itemize}
+}% end frame
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[allowframebreaks]
+  \frametitle<presentation>{References}    
+  \begin{thebibliography}{10}    
+
+ \beamertemplatearticlebibitems
+ \bibitem{Hastings} W.K. Hastings, \newblock {\em Monte Carlo Sampling Methods Using Markov Chains and Their Applications, }Biometrika, Vol. 57, No. 1., pp. 97-109, 1970
+
+ \beamertemplatearticlebibitems
+ \bibitem{GeSm90} A.E. Gelfand and A.F.M. Smith, \newblock {\em Sampling-Based Approaches to Calculating Marginal Densities,} Journal of the American Statistical Association, Vol. 85, No. 410. (Jun., 1990), pp. 398-409
+
+ \beamertemplatearticlebibitems
+ \bibitem{BeSu00}
+I. Beichi, F. Sullivan
+  \newblock The Metropolis Algorithm, Computing in Science and Engineering, January/February 2000.
+
+ \end{thebibliography}
+ \end{frame}
+
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Metropolis Example}
+
+Suppose we want to compute the following integral:
+$$
+I = \int \! F (\theta ) \exp \left ( -E(\theta) /kT \right ) \, \mathrm{d}\theta
+$$ 
+on $\real^{2N}, \theta$ are the positions of $N$ particles on $\real^2$. \\
+
+First we compute samples with the given distribution $f(x)$ and then approximate
+$$
+I = \sum_{i=1}^{n} \! f(x_i) 
+$$ 
+
+\begin{block}{Remark}
+Accuracy will depend on distribution, number of samples we generate, and dimension of the problem. The last is known as the "curse of dimensionality"
+\end{block}
+} % end frame
+
